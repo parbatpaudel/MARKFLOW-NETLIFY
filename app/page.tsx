@@ -103,11 +103,12 @@ export default function HomePage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-8">
               {/* Primary Button */}
               <button
-                onClick={() => router.push(isAuthed ? '/services' : '/login')}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-[#003459] to-[#007ea7] hover:from-[#00171f] hover:to-[#003459] shadow-lg shadow-[#003459]/25 hover:shadow-xl hover:shadow-[#003459]/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden"
+                onClick={() => router.push(isAuthed ? '/services' : '/services')}
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-[#003459] to-[#007ea7] hover:from-[#00171f] hover:to-[#003459] shadow-lg shadow-[#003459]/25 hover:shadow-xl hover:shadow-[#003459]/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden touch-manipulation"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,168,232,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10">{isAuthed ? 'Our Services' : 'Get Started'}</span>
+                <span className="relative z-10">Our Services</span>
                 <svg className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>

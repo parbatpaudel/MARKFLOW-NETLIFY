@@ -97,46 +97,54 @@ const Navbar = () => {
           />
           {/* Mobile Menu Sheet */}
           <div 
-            className="fixed top-0 right-0 h-full w-[280px] max-w-[85vw] bg-white shadow-2xl z-[95] md:hidden flex flex-col"
+            className="fixed top-0 right-0 h-full w-[300px] max-w-[85vw] bg-gradient-to-br from-white via-blue-50/30 to-white shadow-2xl z-[95] md:hidden flex flex-col border-l-4 border-blue-600"
             style={{ transform: 'translateZ(0)', WebkitOverflowScrolling: 'touch' }}
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white shrink-0">
-              <span className="text-lg font-bold text-gray-900">Menu</span>
+            {/* Header with Gradient */}
+            <div className="flex items-center justify-between px-5 py-5 border-b-2 border-blue-100 bg-gradient-to-r from-blue-600 to-cyan-500 shrink-0">
+              <span className="text-xl font-extrabold text-white drop-shadow-sm">Menu</span>
               <button 
                 onClick={toggleMenu}
-                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 active:bg-gray-300 touch-manipulation"
+                className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 backdrop-blur-sm touch-manipulation transition-all"
                 aria-label="Close menu"
                 style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                <X className="w-6 h-6 text-gray-900" strokeWidth={2.5} />
+                <X className="w-6 h-6 text-white" strokeWidth={3} />
               </button>
             </div>
             
-            {/* Navigation Links - Scrollable */}
-            <div className="flex-1 overflow-y-auto bg-white" style={{ WebkitOverflowScrolling: 'touch' }}>
+            {/* Navigation Links - Scrollable with Better Design */}
+            <div className="flex-1 overflow-y-auto bg-gradient-to-b from-transparent to-blue-50/20" style={{ WebkitOverflowScrolling: 'touch' }}>
               <nav className="px-4 py-6">
-                <div className="space-y-2">
-                  {navigation.map((item) => (
+                <div className="space-y-3">
+                  {navigation.map((item, index) => (
                     <Link
                       key={item.name}
                       href={item.href}
                       onClick={toggleMenu}
-                      className="block px-4 py-4 text-base font-semibold text-gray-900 rounded-lg bg-white hover:bg-blue-50 active:bg-blue-100 border border-gray-200 touch-manipulation"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                      className="group block px-5 py-4 text-base font-bold text-gray-900 rounded-xl bg-white hover:bg-blue-50 active:bg-blue-100 border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-md transition-all touch-manipulation"
+                      style={{ 
+                        WebkitTapHighlightColor: 'transparent',
+                        animationDelay: `${index * 50}ms`
+                      }}
                     >
-                      {item.name}
+                      <div className="flex items-center justify-between">
+                        <span>{item.name}</span>
+                        <svg className="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </div>
                     </Link>
                   ))}
                 </div>
               </nav>
             </div>
               
-            {/* Bottom CTA */}
-            <div className="px-4 py-4 border-t border-gray-200 bg-white shrink-0">
+            {/* Bottom CTA with Gradient */}
+            <div className="px-4 py-5 border-t-2 border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 shrink-0">
               <button 
                 onClick={() => { setIsOpen(false); setLoginOpen(true) }} 
-                className="w-full px-4 py-4 text-base font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 active:bg-blue-800 touch-manipulation"
+                className="w-full px-5 py-4 text-base font-extrabold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl hover:from-blue-700 hover:to-cyan-600 active:from-blue-800 active:to-cyan-700 shadow-lg hover:shadow-xl touch-manipulation transition-all"
                 style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 Get Started

@@ -1,4 +1,5 @@
 "use client"
+"use client"
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
@@ -190,26 +191,26 @@ export default function ChatWidget() {
               {/* Right column */}
               <section className="flex-1 flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between px-3 md:px-4 py-4 md:py-3 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900">
+                <div className="flex items-center justify-between px-4 py-4 border-b border-slate-600 bg-slate-800">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white text-[11px] font-bold">AI</span>
-                    <span className="text-sm font-semibold text-slate-100">marketflow Assistant</span>
+                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-600 text-white text-xs font-bold shadow-sm">AI</span>
+                    <span className="text-sm md:text-base font-bold text-white">marketflow Assistant</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setShowSessions(s => !s)} 
-                      className="h-10 px-4 text-sm font-semibold text-white bg-slate-600 hover:bg-slate-500 active:bg-slate-700 rounded-lg shadow-sm touch-manipulation"
+                      className="h-11 px-4 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-lg shadow-md touch-manipulation"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       Chats
                     </button>
                     <button 
                       onClick={() => setOpen(false)} 
-                      className="h-10 w-10 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-lg touch-manipulation"
+                      className="h-11 w-11 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-xl border-2 border-white/20 touch-manipulation"
                       aria-label="Close chat"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
-                      <X className="w-6 h-6" strokeWidth={3} />
+                      <X className="w-7 h-7" strokeWidth={3.5} />
                     </button>
                   </div>
                 </div>
