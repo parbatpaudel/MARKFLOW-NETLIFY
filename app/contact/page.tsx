@@ -7,20 +7,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
 import Script from "next/script"
 
-declare global {
-  interface Window {
-    Calendly?: {
-      initBadgeWidget: (options: {
-        url: string
-        text: string
-        color: string
-        textColor: string
-        branding: boolean
-      }) => void
-    }
-  }
-}
-
 export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -98,46 +84,7 @@ export default function ContactPage() {
   }
 
   return (
-    <>
-      {/* Calendly Widget Scripts - Smaller, Left Positioned */}
-      <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
-      <Script
-        src="https://assets.calendly.com/assets/external/widget.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          if (window.Calendly) {
-            window.Calendly.initBadgeWidget({
-              url: 'https://calendly.com/proboscisparasite/30min',
-              text: '📅 Schedule',
-              color: '#0069ff',
-              textColor: '#ffffff',
-              branding: true
-            })
-          }
-        }}
-      />
-      <style jsx global>{`
-        .calendly-badge-widget {
-          bottom: 15px !important;
-          left: 15px !important;
-          right: auto !important;
-        }
-        .calendly-badge-content {
-          padding: 8px 14px !important;
-          font-size: 13px !important;
-          font-weight: 600 !important;
-          border-radius: 12px !important;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-        }
-        @media (max-width: 768px) {
-          .calendly-badge-content {
-            padding: 7px 12px !important;
-            font-size: 12px !important;
-          }
-        }
-      `}</style>
-
-      <div className="min-h-screen py-12 md:py-20">
+    <div className="min-h-screen py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -370,6 +317,5 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </>
   )
 }

@@ -98,9 +98,9 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
             </button>
 
             {/* Body - Perfectly Centered on Mobile */}
-            <div className="px-4 sm:px-8 py-0 sm:py-6 overflow-y-auto flex-1 min-h-0" style={{ WebkitOverflowScrolling: 'touch' }}>
-              <div className="min-h-full py-12 sm:py-0 flex items-center justify-center">
-                <div className="w-full max-w-sm space-y-5">
+            <div className="flex-1 flex items-center justify-center overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="w-full max-w-sm px-4 sm:px-8 py-6">
+              <div className="space-y-5">
               {/* Google */}
               <Button 
                 onClick={onGoogle} 
