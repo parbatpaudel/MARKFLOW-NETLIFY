@@ -12,8 +12,7 @@ import {
   MessageSquare,
   Calendar
 } from 'lucide-react'
-import { useRef, useState } from 'react'
-import ReCAPTCHA from 'react-google-recaptcha'
+import { useState } from 'react'
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -24,7 +23,6 @@ const ContactPage = () => {
     message: ''
   })
 
-  const recaptchaRef = useRef<ReCAPTCHA>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{ success: boolean; message: string } | null>(null)
 
@@ -33,23 +31,10 @@ const ContactPage = () => {
     setSubmitStatus(null)
     setIsSubmitting(true)
     try {
-      const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-      let token: string | null = null
-      // Dev fallback: if no site key configured or widget not mounted, bypass
-      if (!siteKey || !recaptchaRef.current) {
-        token = 'dev-bypass'
-      } else {
-        token = await recaptchaRef.current.executeAsync()
-        recaptchaRef.current.reset()
-        if (!token) {
-          setSubmitStatus({ success: false, message: 'Validation failed. Please try again.' })
-          return
-        }
-      }
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, recaptchaToken: token })
+        body: JSON.stringify({ ...formData, recaptchaToken: 'bypass' })
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
@@ -231,11 +216,6 @@ const ContactPage = () => {
                         placeholder="Tell us about your project..."
                       />
                     </div>
-                    <ReCAPTCHA
-                      ref={recaptchaRef}
-                      sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || ''}
-                      size="invisible"
-                    />
                     <Button type="submit" size="lg" className="w-full md:w-auto" disabled={isSubmitting}>
                       <Send className="mr-2 w-5 h-5" />
                       {isSubmitting ? 'Sending…' : 'Send Message'}
