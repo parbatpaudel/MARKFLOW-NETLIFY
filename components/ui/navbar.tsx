@@ -91,44 +91,53 @@ const Navbar = () => {
         <>
           {/* Backdrop */}
           <div
-            className="fixed inset-0 bg-black/50 z-[90] md:hidden"
+            className="fixed inset-0 bg-black/60 z-[90] md:hidden"
             onClick={toggleMenu}
+            style={{ touchAction: 'none' }}
           />
           {/* Mobile Menu Sheet */}
-          <div className="fixed top-0 right-0 h-full w-[280px] bg-white shadow-2xl z-[95] md:hidden overflow-hidden flex flex-col">
+          <div 
+            className="fixed top-0 right-0 h-full w-[280px] max-w-[85vw] bg-white shadow-2xl z-[95] md:hidden flex flex-col"
+            style={{ transform: 'translateZ(0)', WebkitOverflowScrolling: 'touch' }}
+          >
             {/* Header */}
-            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 shrink-0">
-              <span className="text-lg font-semibold text-gray-900">Menu</span>
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white shrink-0">
+              <span className="text-lg font-bold text-gray-900">Menu</span>
               <button 
                 onClick={toggleMenu}
-                className="p-2 rounded-lg hover:bg-gray-100 active:bg-gray-200"
+                className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 active:bg-gray-300 touch-manipulation"
                 aria-label="Close menu"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                <X className="w-6 h-6 text-gray-900" />
+                <X className="w-6 h-6 text-gray-900" strokeWidth={2.5} />
               </button>
             </div>
             
             {/* Navigation Links - Scrollable */}
-            <nav className="flex-1 overflow-y-auto px-4 py-4">
-              <div className="space-y-2">
-                {navigation.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    onClick={toggleMenu}
-                    className="block px-4 py-3 text-base font-medium text-gray-900 rounded-lg hover:bg-blue-50 active:bg-blue-100"
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-            </nav>
+            <div className="flex-1 overflow-y-auto bg-white" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <nav className="px-4 py-6">
+                <div className="space-y-2">
+                  {navigation.map((item) => (
+                    <Link
+                      key={item.name}
+                      href={item.href}
+                      onClick={toggleMenu}
+                      className="block px-4 py-4 text-base font-semibold text-gray-900 rounded-lg bg-white hover:bg-blue-50 active:bg-blue-100 border border-gray-200 touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
+                </div>
+              </nav>
+            </div>
               
             {/* Bottom CTA */}
-            <div className="px-4 py-4 border-t border-gray-200 shrink-0">
+            <div className="px-4 py-4 border-t border-gray-200 bg-white shrink-0">
               <button 
                 onClick={() => { setIsOpen(false); setLoginOpen(true) }} 
-                className="w-full px-4 py-3 text-base font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 active:bg-blue-800"
+                className="w-full px-4 py-4 text-base font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 active:bg-blue-800 touch-manipulation"
+                style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 Get Started
               </button>

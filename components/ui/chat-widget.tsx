@@ -195,19 +195,21 @@ export default function ChatWidget() {
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white text-[11px] font-bold">AI</span>
                     <span className="text-sm font-semibold text-slate-100">marketflow Assistant</span>
                   </div>
-                  <div className="flex items-center gap-1">
+                  <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setShowSessions(s => !s)} 
-                      className="h-9 px-3 text-xs font-medium text-white bg-slate-700 hover:bg-slate-600 rounded-md"
+                      className="h-10 px-4 text-sm font-semibold text-white bg-slate-600 hover:bg-slate-500 active:bg-slate-700 rounded-lg shadow-sm touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       Chats
                     </button>
                     <button 
                       onClick={() => setOpen(false)} 
-                      className="h-9 w-9 flex items-center justify-center text-white bg-slate-700 hover:bg-slate-600 rounded-md"
+                      className="h-10 w-10 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-lg touch-manipulation"
                       aria-label="Close chat"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
-                      <X className="w-5 h-5" strokeWidth={2.5} />
+                      <X className="w-6 h-6" strokeWidth={3} />
                     </button>
                   </div>
                 </div>
