@@ -97,9 +97,10 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
               <X className="w-6 h-6 text-slate-600" strokeWidth={2.5} />
             </button>
 
-            {/* Body - Perfectly Centered */}
-            <div className="px-6 sm:px-8 py-8 sm:py-6 overflow-y-auto flex-1 flex items-center justify-center" style={{ WebkitOverflowScrolling: 'touch' }}>
-              <div className="w-full max-w-sm space-y-5">
+            {/* Body - Perfectly Centered on Mobile */}
+            <div className="px-4 sm:px-8 py-6 sm:py-6 overflow-y-auto flex-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="h-full flex items-center justify-center">
+                <div className="w-full max-w-sm space-y-5">
               {/* Google */}
               <Button 
                 onClick={onGoogle} 
@@ -154,6 +155,7 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                 >
                   Sign In
                 </Button>
+              </div>
               </div>
               </div>
             </div>

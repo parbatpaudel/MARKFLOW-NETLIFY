@@ -98,9 +98,9 @@ const Navbar = () => {
             style={{ touchAction: 'none' }}
           />
           
-          {/* Desktop-Style Mobile Menu */}
+          {/* Desktop-Style Mobile Menu - Solid Background */}
           <div 
-            className="fixed top-16 left-0 right-0 bg-white/98 backdrop-blur-lg border-b border-gray-200/80 shadow-lg z-[95] md:hidden"
+            className="fixed top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-[95] md:hidden"
             style={{ 
               transform: 'translateZ(0)',
               animation: 'slideDown 0.3s ease-out'
