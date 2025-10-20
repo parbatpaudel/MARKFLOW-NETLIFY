@@ -1,8 +1,7 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Play } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
@@ -21,6 +20,10 @@ const Navbar = () => {
       return () => { document.body.style.overflow = prev }
     }
   }, [isOpen, loginOpen])
+  
+  const toggleMenu = useCallback(() => {
+    setIsOpen(prev => !prev)
+  }, [])
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -41,12 +44,12 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium py-2 px-1 block"
+                className="text-gray-700 hover:text-blue-600 font-medium text-sm py-2 px-3 block"
               >
                 {item.name}
               </Link>
@@ -74,8 +77,9 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            onClick={() => setIsOpen(!isOpen)}
+            onClick={toggleMenu}
             className="md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+            aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -83,31 +87,20 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="md:hidden fixed inset-0 z-[60]"
+      {isOpen && (
+        <div className="md:hidden fixed inset-0 z-[60]">
+          {/* Backdrop */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={toggleMenu}
+            aria-hidden
+          />
+          {/* Sheet */}
+          <div className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-50"
           >
-            {/* Backdrop */}
-            <div
-              className="absolute inset-0 bg-black/40"
-              onClick={() => setIsOpen(false)}
-              aria-hidden
-            />
-            {/* Sheet */}
-            <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ type: "tween", duration: 0.3 }}
-              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-50"
-            >
               <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 sticky top-0 bg-white z-10">
                 <span className="text-base font-semibold">Menu</span>
-                <button className="p-2 rounded-md hover:bg-gray-100" onClick={() => setIsOpen(false)}>
+                <button className="p-2 rounded-md hover:bg-gray-100" onClick={toggleMenu}>
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -117,7 +110,7 @@ const Navbar = () => {
                     key={item.name}
                     href={item.href}
                     className="block rounded-lg px-3 py-3.5 text-[15px] font-medium text-slate-900 hover:bg-gray-100"
-                    onClick={() => setIsOpen(false)}
+                    onClick={toggleMenu}
                   >
                     {item.name}
                   </Link>
@@ -128,10 +121,9 @@ const Navbar = () => {
                   </button>
                 </div>
               </div>
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
         )}
-      </AnimatePresence>
       {/* Login Modal */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </nav>
