@@ -88,7 +88,7 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Modern Mobile Navigation */}
+      {/* Modern Mobile Navigation - Slide from LEFT */}
       {isOpen && (
         <>
           {/* Backdrop with blur */}
@@ -98,10 +98,14 @@ const Navbar = () => {
             style={{ touchAction: 'none' }}
           />
           
-          {/* Modern Slide-in Menu */}
+          {/* Modern Slide-in Menu from LEFT */}
           <div 
-            className="fixed top-0 right-0 h-full w-[min(85vw,340px)] bg-white shadow-2xl z-[95] md:hidden flex flex-col"
-            style={{ transform: 'translateZ(0)', WebkitOverflowScrolling: 'touch' }}
+            className="fixed top-0 left-0 h-full w-[min(85vw,340px)] bg-white shadow-2xl z-[95] md:hidden flex flex-col"
+            style={{ 
+              transform: 'translateZ(0)', 
+              WebkitOverflowScrolling: 'touch',
+              animation: 'slideInLeft 0.3s ease-out'
+            }}
           >
             {/* Modern Header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
@@ -132,7 +136,7 @@ const Navbar = () => {
                     className="group flex items-center justify-between px-5 py-4 text-base font-bold text-gray-800 rounded-2xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 active:from-blue-100 active:to-cyan-100 transition-all touch-manipulation"
                     style={{ 
                       WebkitTapHighlightColor: 'transparent',
-                      animation: `slideIn 0.3s ease-out ${index * 0.05}s both`
+                      animation: `slideInItem 0.3s ease-out ${index * 0.05}s both`
                     }}
                   >
                     <span className="group-hover:text-blue-600 transition-colors">{item.name}</span>
@@ -174,10 +178,20 @@ const Navbar = () => {
           </div>
           
           <style jsx>{`
-            @keyframes slideIn {
+            @keyframes slideInLeft {
               from {
                 opacity: 0;
-                transform: translateX(20px);
+                transform: translateX(-100%);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+            @keyframes slideInItem {
+              from {
+                opacity: 0;
+                transform: translateX(-20px);
               }
               to {
                 opacity: 1;

@@ -179,38 +179,6 @@ export default function ContactPage() {
                       </a>
                     </div>
                   </div>
-
-                  <div className="flex items-start gap-4 group">
-                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a8e8] to-[#003459] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <MapPin className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-semibold text-gray-500 mb-1">Location</p>
-                      <p className="text-gray-900 font-medium">
-                        123 Business Street<br />
-                        New York, NY 10001
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Business Hours */}
-              <div className="bg-gradient-to-br from-[#003459] to-[#007ea7] rounded-2xl shadow-xl p-6 md:p-8 text-white">
-                <h3 className="text-xl font-bold mb-4">Business Hours</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Monday - Friday</span>
-                    <span>9:00 AM - 6:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Saturday</span>
-                    <span>10:00 AM - 4:00 PM</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Sunday</span>
-                    <span>Closed</span>
-                  </div>
                 </div>
               </div>
             </div>

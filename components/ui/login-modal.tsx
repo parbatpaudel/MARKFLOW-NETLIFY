@@ -15,7 +15,6 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
   const supabase = useSupabase()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -39,13 +38,8 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
         setError('Email and password are required')
         return
       }
-      if (mode === 'signin') {
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
-        if (error) throw error
-      } else {
-        const { error } = await supabase.auth.signUp({ email, password })
-        if (error) throw error
-      }
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
+      if (error) throw error
       onClose()
     } catch (e: any) {
       setError(e?.message || 'Authentication failed')
@@ -93,8 +87,9 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
               </button>
             </div>
 
-            {/* Body - Scrollable */}
-            <div className="px-4 sm:px-6 py-5 space-y-4 overflow-y-auto flex-1" style={{ WebkitOverflowScrolling: 'touch' }}>
+            {/* Body - Scrollable, Centered on Mobile */}
+            <div className="px-4 sm:px-6 py-5 space-y-4 overflow-y-auto flex-1 flex flex-col items-center justify-center" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="w-full max-w-md space-y-4">
               {/* Google */}
               <Button 
                 onClick={onGoogle} 
@@ -141,23 +136,15 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                     <p className="text-xs sm:text-sm text-red-600 font-medium">{error}</p>
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                  <Button 
-                    onClick={onEmail} 
-                    disabled={loading} 
-                    className="flex-1 h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all touch-manipulation"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  >
-                    {mode === 'signin' ? 'Sign In' : 'Create Account'}
-                  </Button>
-                  <button
-                    className="text-xs sm:text-sm text-slate-600 hover:text-slate-900 font-medium py-2 sm:py-0 transition-colors touch-manipulation"
-                    onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  >
-                    {mode === 'signin' ? 'Create account' : 'Sign in instead'}
-                  </button>
-                </div>
+                <Button 
+                  onClick={onEmail} 
+                  disabled={loading} 
+                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                  Sign In
+                </Button>
+              </div>
               </div>
             </div>
           </motion.div>
