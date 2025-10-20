@@ -98,10 +98,16 @@ const Navbar = () => {
               aria-hidden
             />
             {/* Sheet */}
-            <div className="absolute top-0 right-0 bottom-0 w-[80%] max-w-xs bg-slate-900 text-white shadow-2xl border-l border-slate-800 overflow-y-auto">
-              <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-50"
+            >
+              <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 sticky top-0 bg-white z-10">
                 <span className="text-base font-semibold">Menu</span>
-                <button className="p-2 rounded-md hover:bg-slate-800" onClick={() => setIsOpen(false)}>
+                <button className="p-2 rounded-md hover:bg-gray-100" onClick={() => setIsOpen(false)}>
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -110,19 +116,19 @@ const Navbar = () => {
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="block rounded-lg px-3 py-3.5 text-[15px] font-medium hover:bg-slate-800"
+                    className="block rounded-lg px-3 py-3.5 text-[15px] font-medium text-slate-900 hover:bg-gray-100"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-slate-800 mt-2">
+                <div className="pt-4 border-t border-gray-200 mt-2">
                   <button onClick={() => { setIsOpen(false); setLoginOpen(true) }} className="block w-full text-center rounded-lg px-4 py-3.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                     Get Started
                   </button>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
