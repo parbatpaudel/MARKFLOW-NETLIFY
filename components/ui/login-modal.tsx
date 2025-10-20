@@ -22,7 +22,12 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
     try {
       setLoading(true)
       const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}/` : undefined
-      await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } })
+      const { error } = await supabase.auth.signInWithOAuth({ 
+        provider: 'google', 
+        options: { redirectTo } 
+      })
+      if (error) throw error
+      // Modal will close when user is redirected back
     } catch (e: any) {
       setError(e?.message || 'Google sign-in failed')
     } finally {
@@ -40,7 +45,14 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
       }
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
-      onClose()
+      
+      // Show success message
+      console.log('Login successful!')
+      
+      // Close modal after successful login
+      setTimeout(() => {
+        onClose()
+      }, 500)
     } catch (e: any) {
       setError(e?.message || 'Authentication failed')
     } finally {

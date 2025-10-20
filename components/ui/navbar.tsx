@@ -2,14 +2,17 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Menu, X, Play } from "lucide-react"
+import { Menu, X, Play, LogOut, User } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
 import LoginModal from "./login-modal"
+import { useSupabase, useUser } from "@/lib/supabase-context"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+  const supabase = useSupabase()
+  const user = useUser()
 
   // Prevent background scroll when overlays are open
   useEffect(() => {
@@ -24,6 +27,11 @@ const Navbar = () => {
   const toggleMenu = useCallback(() => {
     setIsOpen(prev => !prev)
   }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setIsOpen(false)
+  }
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -68,12 +76,31 @@ const Navbar = () => {
               <Play className="w-4 h-4" />
               <span className="hidden lg:inline">YouTube</span>
             </a>
-            <button
-              onClick={() => setLoginOpen(true)}
-              className="inline-flex items-center gap-2 rounded-lg px-4 lg:px-6 py-2 lg:py-2.5 text-sm lg:text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-md hover:shadow-lg transition-all"
-            >
-              Get Started
-            </button>
+            
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 border border-blue-200">
+                  <User className="w-4 h-4 text-blue-600" />
+                  <span className="text-sm font-semibold text-blue-900 max-w-[150px] truncate">
+                    {user.email?.split('@')[0]}
+                  </span>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold border-2 border-red-300 text-red-700 hover:border-red-400 hover:bg-red-50 transition-all"
+                >
+                  <LogOut className="w-4 h-4" />
+                  <span className="hidden lg:inline">Logout</span>
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => setLoginOpen(true)}
+                className="inline-flex items-center gap-2 rounded-lg px-4 lg:px-6 py-2 lg:py-2.5 text-sm lg:text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-md hover:shadow-lg transition-all"
+              >
+                Get Started
+              </button>
+            )}
           </div>
 
           {/* Mobile menu button - Modern */}
@@ -134,13 +161,33 @@ const Navbar = () => {
                   <Play className="w-4 h-4" />
                   <span>YouTube</span>
                 </a>
-                <button
-                  onClick={() => { setIsOpen(false); setLoginOpen(true) }}
-                  className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 active:from-blue-800 active:to-cyan-700 shadow-md hover:shadow-lg transition-all touch-manipulation"
-                  style={{ WebkitTapHighlightColor: 'transparent' }}
-                >
-                  Get Started
-                </button>
+                
+                {user ? (
+                  <>
+                    <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-blue-50 border-2 border-blue-200">
+                      <User className="w-5 h-5 text-blue-600" />
+                      <span className="text-base font-semibold text-blue-900 truncate">
+                        {user.email}
+                      </span>
+                    </div>
+                    <button
+                      onClick={handleLogout}
+                      className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-semibold border-2 border-red-300 text-red-700 hover:border-red-400 hover:bg-red-50 active:bg-red-100 transition-all touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    >
+                      <LogOut className="w-5 h-5" />
+                      <span>Logout</span>
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={() => { setIsOpen(false); setLoginOpen(true) }}
+                    className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 active:from-blue-800 active:to-cyan-700 shadow-md hover:shadow-lg transition-all touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
+                    Get Started
+                  </button>
+                )}
               </div>
             </div>
           </div>
