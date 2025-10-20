@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X, Play } from "lucide-react"
@@ -11,6 +11,16 @@ import LoginModal from "./login-modal"
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+
+  // Prevent background scroll when overlays are open
+  useEffect(() => {
+    const anyOverlay = isOpen || loginOpen
+    if (anyOverlay) {
+      const prev = document.body.style.overflow
+      document.body.style.overflow = 'hidden'
+      return () => { document.body.style.overflow = prev }
+    }
+  }, [isOpen, loginOpen])
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -95,19 +105,19 @@ const Navbar = () => {
                   <X className="w-5 h-5" />
                 </button>
               </div>
-              <div className="px-4 py-4 space-y-2">
+              <div className="px-4 py-5 space-y-3">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="block rounded-lg px-3 py-3 text-[15px] font-medium hover:bg-slate-800"
+                    className="block rounded-lg px-3 py-3.5 text-[15px] font-medium hover:bg-slate-800"
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
                   </Link>
                 ))}
                 <div className="pt-4 border-t border-slate-800 mt-2">
-                  <button onClick={() => { setIsOpen(false); setLoginOpen(true) }} className="block w-full text-center rounded-lg px-4 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                  <button onClick={() => { setIsOpen(false); setLoginOpen(true) }} className="block w-full text-center rounded-lg px-4 py-3.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                     Get Started
                   </button>
                 </div>
@@ -116,6 +126,8 @@ const Navbar = () => {
           </motion.div>
         )}
       </AnimatePresence>
+      {/* Login Modal */}
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </nav>
   )
 }
