@@ -45,6 +45,10 @@ export default function ChatWidget() {
       if (cur) {
         const storedMsgs = localStorage.getItem(MESSAGES_PREFIX + cur)
         if (storedMsgs) setMessages(JSON.parse(storedMsgs))
+      } else if (list.length === 0) {
+        // First-time visitor: auto-create a chat
+        const s = createSessionInternal("New chat")
+        setShowSessions(false)
       }
     } catch {}
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -146,7 +150,17 @@ export default function ChatWidget() {
       {/* Toggle Button */}
       <button
         aria-label={open ? "Close chat" : "Open chat"}
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => {
+          // Ensure a session exists when opening
+          if (!open) {
+            const hasSession = currentSessionId || sessions.length > 0
+            if (!hasSession) {
+              const s = createSessionInternal("New chat")
+              setCurrentSessionId(s.id)
+            }
+          }
+          setOpen((v) => !v)
+        }}
         className="fixed bottom-5 right-5 z-50 group"
       >
         <div className="relative">
@@ -162,22 +176,22 @@ export default function ChatWidget() {
 
       {/* Chat Panel */}
       {open && (
-        <div className="fixed z-50 bottom-3 left-3 right-3 md:right-6 md:left-auto md:w-[560px]">
-          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-xl h-[70vh] md:h-[500px] bg-slate-900 text-slate-100">
+        <div className="fixed z-50 inset-0 md:bottom-3 md:left-auto md:right-6 md:inset-auto md:w-[560px]">
+          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-none md:rounded-xl h-full md:h-[500px] bg-slate-900 text-slate-100">
             <div className="flex h-full">
               {/* No permanent left rail to keep size small; use overlay for chats */}
 
               {/* Right column */}
               <section className="flex-1 flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between px-3 md:px-4 py-3 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900">
+                <div className="flex items-center justify-between px-3 md:px-4 py-4 md:py-3 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white text-[11px] font-bold">AI</span>
                     <span className="text-sm font-semibold text-slate-100">marketflow Assistant</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-9 px-3 text-xs text-slate-100 hover:bg-slate-800">Chats</Button>
-                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-9 w-9 text-slate-100 hover:bg-slate-800">
+                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-10 md:h-9 px-3 text-xs text-slate-100 hover:bg-slate-800">Chats</Button>
+                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-10 w-10 md:h-9 md:w-9 text-slate-100 hover:bg-slate-800">
                       <X className="w-4 h-4" />
                     </Button>
                   </div>

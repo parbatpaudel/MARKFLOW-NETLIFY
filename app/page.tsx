@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react'
+import { motion } from 'framer-motion'
 import { useUser } from '@supabase/auth-helpers-react'
 import { useRouter } from 'next/navigation'
 import OnboardingModal from '@/components/ui/onboarding-modal'
@@ -129,18 +130,36 @@ export default function HomePage() {
 
             {/* Stats */}
             <div className="pt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
-              <div className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5 }}
+                className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
+              >
                 <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
                 <div className="text-sm text-slate-600 font-medium">Businesses</div>
-              </div>
-              <div className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
+              >
                 <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
                 <div className="text-sm text-slate-600 font-medium">Success Rate</div>
-              </div>
-              <div className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300">
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
+              >
                 <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
                 <div className="text-sm text-slate-600 font-medium">Support</div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -148,7 +167,7 @@ export default function HomePage() {
         {/* Floating skill icons in background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* AI Icon - Top Left */}
-          <div className="absolute top-32 left-16 animate-float" style={{animationDelay: '0s'}}>
+          <div className="absolute top-20 left-3 md:top-32 md:left-16 animate-float" style={{animationDelay: '0s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-600/20 shadow-lg">
@@ -160,7 +179,7 @@ export default function HomePage() {
           </div>
           
           {/* Creativity Icon - Top Right */}
-          <div className="absolute top-24 right-20 animate-float" style={{animationDelay: '1s'}}>
+          <div className="absolute top-16 right-3 md:top-24 md:right-20 animate-float" style={{animationDelay: '1s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-500/20 shadow-lg">
@@ -172,7 +191,7 @@ export default function HomePage() {
           </div>
           
           {/* Integration Icon - Middle Left */}
-          <div className="absolute top-1/2 left-12 animate-float" style={{animationDelay: '2s'}}>
+          <div className="absolute top-1/2 left-3 md:left-12 animate-float" style={{animationDelay: '2s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-3 border border-blue-600/20 shadow-lg">
@@ -184,7 +203,7 @@ export default function HomePage() {
           </div>
           
           {/* Analysis Icon - Middle Right */}
-          <div className="absolute top-1/2 right-16 animate-float" style={{animationDelay: '0.5s'}}>
+          <div className="absolute top-1/2 right-3 md:right-16 animate-float" style={{animationDelay: '0.5s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-500/20 shadow-lg">
@@ -196,7 +215,7 @@ export default function HomePage() {
           </div>
           
           {/* Expert Badge Icon - Bottom Right */}
-          <div className="absolute bottom-40 right-24 animate-float" style={{animationDelay: '1.5s'}}>
+          <div className="absolute bottom-20 right-3 md:bottom-40 md:right-24 animate-float" style={{animationDelay: '1.5s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-600/20 shadow-lg">

@@ -99,6 +99,17 @@ export default function ServicesPage() {
                     referrerPolicy="strict-origin-when-cross-origin"
                     allowFullScreen
                   />
+                  <div className="absolute bottom-3 left-3">
+                    <a
+                      href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:bg-white transition"
+                    >
+                      <Play className="h-4 w-4 text-slate-700" />
+                      <span className="text-xs font-medium text-slate-700">Watch on YouTube</span>
+                    </a>
+                  </div>
                 </div>
                 <p className="mt-2 text-xs text-slate-500">2024/09/06</p>
               </div>
