@@ -1,0 +1,27 @@
+You are my coding assistant for building a modern, advanced, multi-page website.
+
+Use the following stack and rules throughout the project:
+
+TECH STACK:
+- Framework: Next.js (App Router, TypeScript)
+- Styling: Tailwind CSS
+- Components/UI: shadcn/ui and lucide-react icons
+- Animations: Framer Motion
+- Fonts: Google Fonts
+- Responsive: Fully responsive across all devices
+- SEO: Include meta tags and semantic structure
+- Code Style: Clean, modular, reusable components
+
+STRUCTURE:
+- Use the Next.js app directory
+- Shared layout with Navbar and Footer in layout.tsx
+- Each page (home, about, services, contact, blog) inside the app/ folder
+- Reusable UI components inside components/
+- Public assets inside public/
+- Follow Next.js conventions for routing and file structure
+
+RULES:
+- Keep code production-ready and consistent
+- Use semantic HTML and accessible design
+- DRY (Don’t Repeat Yourself) principle
+- Always generate modern, efficient code compatible with the latest Next.js version
