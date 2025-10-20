@@ -1,327 +1,387 @@
 "use client"
 
-import { motion } from 'framer-motion'
-import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { 
-  Mail, 
-  Phone, 
-  Send,
-  MessageSquare,
-  Calendar
-} from 'lucide-react'
-import { useState } from 'react'
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
+import Script from "next/script"
 
-const ContactPage = () => {
+declare global {
+  interface Window {
+    Calendly?: {
+      initBadgeWidget: (options: {
+        url: string
+        text: string
+        color: string
+        textColor: string
+        branding: boolean
+      }) => void
+    }
+  }
+}
+
+export default function ContactPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    company: '',
-    subject: '',
-    message: ''
+    name: "",
+    email: "",
+    businessName: "",
+    industry: "",
+    company: "",
+    subject: "",
+    message: "",
   })
+  const [loading, setLoading] = useState(false)
+  const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
 
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitStatus, setSubmitStatus] = useState<{ success: boolean; message: string } | null>(null)
+  const industries = [
+    "Technology",
+    "E-commerce",
+    "Healthcare",
+    "Finance",
+    "Education",
+    "Retail",
+    "Manufacturing",
+    "Real Estate",
+    "Food & Beverage",
+    "Consulting",
+    "Other",
+  ]
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setSubmitStatus(null)
-    setIsSubmitting(true)
+    
+    // Validation
+    if (!formData.name || !formData.email || !formData.businessName || !formData.industry || !formData.message) {
+      setStatus({ type: "error", message: "Please fill in all required fields" })
+      return
+    }
+
+    setLoading(true)
+    setStatus(null)
+
     try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, recaptchaToken: 'bypass' })
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...formData,
+          recaptchaToken: "dev_bypass",
+        }),
       })
-      const data = await res.json().catch(() => ({}))
-      if (!res.ok) {
-        setSubmitStatus({ success: false, message: data?.error || 'Failed to send message. Please try again.' })
-        return
+
+      const data = await res.json()
+
+      if (res.ok) {
+        setStatus({ type: "success", message: "Thank you! We'll get back to you soon." })
+        setFormData({
+          name: "",
+          email: "",
+          businessName: "",
+          industry: "",
+          company: "",
+          subject: "",
+          message: "",
+        })
+      } else {
+        setStatus({ type: "error", message: data.error || "Something went wrong. Please try again." })
       }
-      setSubmitStatus({ success: true, message: 'Your message has been sent successfully.' })
-      setFormData({ name: '', email: '', company: '', subject: '', message: '' })
-    } catch (err) {
-      setSubmitStatus({ success: false, message: 'Something went wrong. Please try again.' })
+    } catch (error) {
+      setStatus({ type: "error", message: "Network error. Please check your connection." })
     } finally {
-      setIsSubmitting(false)
+      setLoading(false)
     }
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
-  }
-
-  const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email Us",
-      description: "Send us an email anytime",
-      contact: "hello@modernsite.com"
-    },
-    {
-      icon: Phone,
-      title: "Call Us",
-      description: "Speak with our team directly",
-      contact: "+1 (555) 123-4567"
-    },
-  ]
-
-  const faqs = [
-    {
-      question: "What makes your agency different from others?",
-      answer: "We combine AI precision with human creativity. Our process focuses on solving real business problems, not just running ads. Every strategy is data-backed and customized for your brand."
-    },
-    {
-      question: "Do you use AI to replace human marketers?",
-      answer: "No. AI helps us analyze, automate, and optimize faster — but real humans handle ideas, strategy, and storytelling. We use technology to enhance human thinking, not remove it."
-    },
-    {
-      question: "Can AI really help my small business grow?",
-      answer: "Yes. AI helps small businesses compete with bigger brands by making marketing smarter, faster, and more affordable. You get insights and automation that used to cost thousands."
-    },
-    {
-      question: "How much does it cost to work with you?",
-      answer: "We start with free consultations to understand your business. After that, pricing depends on your goals and project size. You only pay for solutions that bring measurable value."
-    },
-    {
-      question: "What kind of results can I expect, and how soon?",
-      answer: "Most clients see improvements in leads, engagement, or sales within the first few weeks. Long-term growth happens as we keep testing, refining, and applying what works best for your brand."
-    },
-  ]
-
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
-            >
-              Get In{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
-                Touch
-              </span>
-            </motion.h1>
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-xl text-gray-600 leading-relaxed"
-            >
-              Ready to start your next project? Have questions about our services? 
-              We'd love to hear from you and help bring your ideas to life.
-            </motion.p>
-          </div>
-        </div>
-      </section>
+    <>
+      {/* Calendly Widget Scripts */}
+      <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
+      <Script
+        src="https://assets.calendly.com/assets/external/widget.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          if (window.Calendly) {
+            window.Calendly.initBadgeWidget({
+              url: 'https://calendly.com/proboscisparasite/30min',
+              text: 'Schedule time with me',
+              color: '#0069ff',
+              textColor: '#ffffff',
+              branding: true
+            })
+          }
+        }}
+      />
 
-      {/* Contact Form & Info */}
-      <section className="py-20 bg-white">
+      <div className="min-h-screen py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-            {/* Contact Form */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="lg:col-span-2"
-            >
-              <Card className="border-0 shadow-lg">
-                <CardContent className="p-8">
-                  <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                    Send us a Message
-                  </h2>
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                          Full Name *
-                        </label>
-                        <Input
-                          id="name"
-                          name="name"
-                          type="text"
-                          required
-                          value={formData.name}
-                          onChange={handleChange}
-                          placeholder="John Doe"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                          Email Address *
-                        </label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="john@example.com"
-                        />
-                      </div>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                          Company
-                        </label>
-                        <Input
-                          id="company"
-                          name="company"
-                          type="text"
-                          value={formData.company}
-                          onChange={handleChange}
-                          placeholder="Your Company"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                          Subject *
-                        </label>
-                        <Input
-                          id="subject"
-                          name="subject"
-                          type="text"
-                          required
-                          value={formData.subject}
-                          onChange={handleChange}
-                          placeholder="Project Inquiry"
-                        />
-                      </div>
+          {/* Header */}
+          <div className="text-center mb-12 md:mb-16">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8]">
+              Get in Touch
+            </h1>
+            <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+              Ready to transform your business? Let's discuss how we can help you achieve your goals.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12">
+            {/* Contact Information */}
+            <div className="lg:col-span-1 space-y-6">
+              <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-8">
+                <h2 className="text-2xl font-bold mb-6 text-gray-900">Contact Information</h2>
+                
+                <div className="space-y-5">
+                  <div className="flex items-start gap-4 group">
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-[#003459] to-[#007ea7] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Mail className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                        Message *
-                      </label>
-                      <Textarea
-                        id="message"
-                        name="message"
-                        required
-                        rows={6}
-                        value={formData.message}
-                        onChange={handleChange}
-                        placeholder="Tell us about your project..."
-                      />
+                      <p className="text-sm font-semibold text-gray-500 mb-1">Email</p>
+                      <a href="mailto:contact@marketflow.com" className="text-gray-900 hover:text-[#007ea7] font-medium transition-colors">
+                        contact@marketflow.com
+                      </a>
                     </div>
-                    <Button type="submit" size="lg" className="w-full md:w-auto" disabled={isSubmitting}>
-                      <Send className="mr-2 w-5 h-5" />
-                      {isSubmitting ? 'Sending…' : 'Send Message'}
-                    </Button>
-                    {submitStatus && (
-                      <p className={`text-sm ${submitStatus.success ? 'text-green-600' : 'text-red-600'}`}>
-                        {submitStatus.message}
+                  </div>
+
+                  <div className="flex items-start gap-4 group">
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-[#007ea7] to-[#00a8e8] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <Phone className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-500 mb-1">Phone</p>
+                      <a href="tel:+1234567890" className="text-gray-900 hover:text-[#007ea7] font-medium transition-colors">
+                        +1 (234) 567-890
+                      </a>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-4 group">
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-[#00a8e8] to-[#003459] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <MapPin className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-500 mb-1">Location</p>
+                      <p className="text-gray-900 font-medium">
+                        123 Business Street<br />
+                        New York, NY 10001
                       </p>
-                    )}
-                  </form>
-                </CardContent>
-              </Card>
-            </motion.div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            {/* Contact Info */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              {contactInfo.map((info, index) => {
-                const Icon = info.icon
-                return (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
+              {/* Business Hours */}
+              <div className="bg-gradient-to-br from-[#003459] to-[#007ea7] rounded-2xl shadow-xl p-6 md:p-8 text-white">
+                <h3 className="text-xl font-bold mb-4">Business Hours</h3>
+                <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="font-medium">Monday - Friday</span>
+                    <span>9:00 AM - 6:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Saturday</span>
+                    <span>10:00 AM - 4:00 PM</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium">Sunday</span>
+                    <span>Closed</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Contact Form */}
+            <div className="lg:col-span-2">
+              <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-10">
+                <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-gray-900">Send us a Message</h2>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+                  {/* Name */}
+                  <div className="space-y-2">
+                    <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="John Doe"
+                      required
+                      className="h-12 px-4 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    />
+                  </div>
+
+                  {/* Email */}
+                  <div className="space-y-2">
+                    <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="john@example.com"
+                      required
+                      className="h-12 px-4 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    />
+                  </div>
+
+                  {/* Business Name */}
+                  <div className="space-y-2">
+                    <label htmlFor="businessName" className="block text-sm font-semibold text-gray-700">
+                      Business Name <span className="text-red-500">*</span>
+                    </label>
+                    <Input
+                      id="businessName"
+                      name="businessName"
+                      type="text"
+                      value={formData.businessName}
+                      onChange={handleChange}
+                      placeholder="Your Company Name"
+                      required
+                      className="h-12 px-4 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    />
+                  </div>
+
+                  {/* Industry */}
+                  <div className="space-y-2">
+                    <label htmlFor="industry" className="block text-sm font-semibold text-gray-700">
+                      Industry <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      id="industry"
+                      name="industry"
+                      value={formData.industry}
+                      onChange={handleChange}
+                      required
+                      className="w-full h-12 px-4 text-base border border-gray-300 rounded-md focus:border-[#007ea7] focus:ring-2 focus:ring-[#007ea7] focus:outline-none bg-white touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    >
+                      <option value="">Select your industry</option>
+                      {industries.map((industry) => (
+                        <option key={industry} value={industry}>
+                          {industry}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Company (Optional) */}
+                  <div className="space-y-2">
+                    <label htmlFor="company" className="block text-sm font-semibold text-gray-700">
+                      Company Website
+                    </label>
+                    <Input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder="www.example.com (optional)"
+                      className="h-12 px-4 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    />
+                  </div>
+
+                  {/* Subject */}
+                  <div className="space-y-2">
+                    <label htmlFor="subject" className="block text-sm font-semibold text-gray-700">
+                      Subject
+                    </label>
+                    <Input
+                      id="subject"
+                      name="subject"
+                      type="text"
+                      value={formData.subject}
+                      onChange={handleChange}
+                      placeholder="How can we help? (optional)"
+                      className="h-12 px-4 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] touch-manipulation"
+                      style={{ WebkitTapHighlightColor: 'transparent' }}
+                    />
+                  </div>
+                </div>
+
+                {/* Message */}
+                <div className="mt-5 md:mt-6 space-y-2">
+                  <label htmlFor="message" className="block text-sm font-semibold text-gray-700">
+                    Message <span className="text-red-500">*</span>
+                  </label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us about your business needs..."
+                    required
+                    rows={6}
+                    className="px-4 py-3 text-base border-gray-300 focus:border-[#007ea7] focus:ring-[#007ea7] resize-none touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  />
+                </div>
+
+                {/* Status Message */}
+                {status && (
+                  <div
+                    className={`mt-6 p-4 rounded-xl flex items-start gap-3 ${
+                      status.type === "success"
+                        ? "bg-green-50 border border-green-200 text-green-800"
+                        : "bg-red-50 border border-red-200 text-red-800"
+                    }`}
                   >
-                    <Card className="border-0 shadow-md hover:shadow-lg transition-shadow">
-                      <CardContent className="p-6">
-                        <div className="flex items-start space-x-4">
-                          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0">
-                            <Icon className="w-6 h-6 text-primary" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-1">
-                              {info.title}
-                            </h3>
-                            <p className="text-gray-600 text-sm mb-2">
-                              {info.description}
-                            </p>
-                            <p className="text-primary font-medium">
-                              {info.contact}
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                )
-              })}
-            </motion.div>
+                    {status.type === "success" ? (
+                      <CheckCircle2 className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    )}
+                    <p className="text-sm font-medium">{status.message}</p>
+                  </div>
+                )}
+
+                {/* Submit Button */}
+                <div className="mt-8">
+                  <Button
+                    type="submit"
+                    disabled={loading}
+                    className="w-full h-14 text-base font-bold bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] hover:from-[#002742] hover:via-[#006a8f] hover:to-[#0095ce] text-white shadow-lg hover:shadow-xl transition-all touch-manipulation disabled:opacity-50 disabled:cursor-not-allowed"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
+                    {loading ? (
+                      <span className="flex items-center justify-center gap-2">
+                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Sending...
+                      </span>
+                    ) : (
+                      <span className="flex items-center justify-center gap-2">
+                        <Send className="w-5 h-5" />
+                        Send Message
+                      </span>
+                    )}
+                  </Button>
+                </div>
+
+                <p className="mt-4 text-sm text-gray-500 text-center">
+                  We typically respond within 24 hours during business days.
+                </p>
+              </form>
+            </div>
           </div>
         </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-              Frequently Asked Questions
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Here are some common questions we receive. Can't find what you're looking for? 
-              Feel free to contact us directly.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {faqs.map((faq, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                <Card className="h-full border-0 shadow-md">
-                  <CardContent className="p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                      {faq.question}
-                    </h3>
-                    <p className="text-gray-600 leading-relaxed">
-                      {faq.answer}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-    </div>
+      </div>
+    </>
   )
 }
-
-export default ContactPage

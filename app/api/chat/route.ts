@@ -9,11 +9,72 @@ interface ChatMessage {
 interface ChatRequestBody {
   messages: ChatMessage[]
   sessionId?: string
+  contactFormData?: {
+    name: string
+    email: string
+    businessName: string
+    industry: string
+    message: string
+  }
 }
 
 export async function POST(req: Request) {
   try {
-    const { messages, sessionId }: ChatRequestBody = await req.json()
+    const { messages, sessionId, contactFormData }: ChatRequestBody = await req.json()
+
+    // Handle contact form submission through chat
+    if (contactFormData) {
+      try {
+        // Import Supabase client
+        const { createSupabaseServer } = await import('@/lib/supabaseClient')
+        const supabase = createSupabaseServer()
+        
+        // Store to database
+        const { error } = await supabase.from('contacts').insert({
+          name: contactFormData.name,
+          email: contactFormData.email,
+          business_name: contactFormData.businessName,
+          industry: contactFormData.industry,
+          message: contactFormData.message,
+          source: 'chat',
+        })
+        
+        if (error) {
+          console.error('Contact form submission error:', error)
+          return NextResponse.json({ 
+            reply: "I apologize, but there was an error submitting your contact information. Please try using our contact page or try again later.",
+            contactSubmitted: false,
+            error: error.message 
+          })
+        }
+        
+        // Send email notification (non-blocking)
+        fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-notification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: contactFormData.name,
+            email: contactFormData.email,
+            businessName: contactFormData.businessName,
+            industry: contactFormData.industry,
+            message: contactFormData.message,
+            source: 'chat'
+          })
+        }).catch(err => console.error('Chat notification error:', err))
+        
+        return NextResponse.json({ 
+          reply: `Thank you, ${contactFormData.name}! I've successfully submitted your contact information to our team. Someone from marketflow will reach out to you at ${contactFormData.email} within 24 hours to discuss how we can help your business in the ${contactFormData.industry} industry. Is there anything else I can help you with?`,
+          contactSubmitted: true 
+        })
+      } catch (e) {
+        console.error('Contact form processing error:', e)
+        return NextResponse.json({ 
+          reply: "There was an issue processing your contact request. Please use our contact page as an alternative.",
+          contactSubmitted: false,
+          error: String(e) 
+        })
+      }
+    }
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: 'messages array is required' }, { status: 400 })
@@ -41,10 +102,17 @@ export async function POST(req: Request) {
           '- AI + Human Expertise: AI handles data and speed; humans handle creativity and communication.',
           '- Result-Driven: Every move is measurable and linked to business growth.',
           '',
+          'CONTACT FORM CAPABILITY:',
+          'When a user expresses interest in getting in touch, scheduling a consultation, or wants to be contacted, you can help them submit their information directly through the chat.',
+          'Ask for: Full Name, Email, Business Name, Industry (from: Technology, E-commerce, Healthcare, Finance, Education, Retail, Manufacturing, Real Estate, Food & Beverage, Consulting, Other), and a brief message about their needs.',
+          'Once you have all required information, tell them you\'ll submit it to the team and they\'ll be contacted within 24 hours.',
+          'Format your collection naturally in conversation - don\'t make it feel like a rigid form.',
+          '',
           'Tone & Style:',
           '- Speak clearly and confidently.',
           '- Explain that we don\'t sell "packages" — we design strategies around the client\'s business.',
           '- Suggest a free consultation to create a personalized plan when appropriate.',
+          '- When collecting contact info, be conversational and friendly.',
           '- Avoid technical jargon unless the user asks for it.',
           '',
           'Answer concisely. Use helpful markdown formatting (short paragraphs, bullets). If pricing is asked, clarify that costs depend on goals and scope, and propose a free consultation.',

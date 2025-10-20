@@ -3,7 +3,7 @@ import { createSupabaseServer } from '@/lib/supabaseClient'
 
 export async function POST(request: Request) {
   try {
-    const { name, email, company, subject, message, recaptchaToken } = await request.json()
+    const { name, email, businessName, industry, company, subject, message, recaptchaToken } = await request.json()
 
     const isProd = process.env.NODE_ENV === 'production'
     if (!recaptchaToken && isProd) {
@@ -33,6 +33,8 @@ export async function POST(request: Request) {
     const { error } = await supabase.from('contacts').insert({
       name,
       email,
+      business_name: businessName,
+      industry,
       company,
       subject,
       message,
@@ -41,6 +43,20 @@ export async function POST(request: Request) {
       console.error('Supabase insert error (contacts):', error)
       return NextResponse.json({ error: error.message }, { status: 500 })
     }
+
+    // Send email notification (non-blocking)
+    fetch(`${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/send-notification`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name,
+        email,
+        businessName,
+        industry,
+        message,
+        source: 'contact_form'
+      })
+    }).catch(err => console.error('Notification error:', err))
 
     return NextResponse.json({ success: true, message: 'Message received successfully' })
   } catch (err) {
