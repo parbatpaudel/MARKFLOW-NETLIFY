@@ -29,7 +29,7 @@ const Navbar = () => {
               alt="MarketFlaw Logo"
               width={40}
               height={40}
-              className="w-10 h-10"
+              className="w-8 h-8 sm:w-10 sm:h-10"
             />
           </Link>
 
@@ -85,38 +85,53 @@ const Navbar = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-t border-gray-200"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="md:hidden fixed inset-0 z-50"
           >
-            <div className="px-4 py-4 space-y-4">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="block text-gray-700 hover:text-blue-600 transition-colors font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-              <div className="pt-4 border-t border-gray-200 space-y-2">
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-                  onClick={() => console.log('Mobile Sign In')}
-                >
-                  Sign In
-                </Button>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => console.log('Mobile Sign Up')}
-                >
-                  Sign Up
-                </Button>
+            {/* Backdrop */}
+            <div
+              className="absolute inset-0 bg-black/40"
+              onClick={() => setIsOpen(false)}
+              aria-hidden
+            />
+            {/* Sheet */}
+            <div className="absolute top-0 right-0 bottom-0 w-full max-w-xs bg-slate-900 text-white shadow-2xl border-l border-slate-800">
+              <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800">
+                <span className="text-base font-semibold">Menu</span>
+                <button className="p-2 rounded-md hover:bg-slate-800" onClick={() => setIsOpen(false)}>
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="px-4 py-4 space-y-2">
+                {navigation.map((item) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    className="block rounded-lg px-3 py-3 text-[15px] font-medium hover:bg-slate-800"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+                <div className="pt-4 border-t border-slate-800 space-y-2 mt-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full border-slate-700 text-white hover:bg-slate-800"
+                    onClick={() => console.log('Mobile Sign In')}
+                  >
+                    Sign In
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    className="w-full bg-blue-600 hover:bg-blue-700"
+                    onClick={() => console.log('Mobile Sign Up')}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
               </div>
             </div>
           </motion.div>
