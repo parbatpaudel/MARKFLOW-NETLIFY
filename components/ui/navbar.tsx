@@ -65,7 +65,7 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA (desktop) */}
+          {/* CTA (desktop only) */}
           <div className="hidden md:flex items-center gap-2 lg:gap-3">
             <a
               href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -103,7 +103,7 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile menu button - Modern */}
+          {/* Mobile menu button - No login on mobile */}
           <button
             onClick={toggleMenu}
             className="md:hidden p-2.5 rounded-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all touch-manipulation"
@@ -149,7 +149,7 @@ const Navbar = () => {
                 ))}
               </div>
               
-              {/* CTA Buttons */}
+              {/* CTA Buttons - No login on mobile */}
               <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-gray-200">
                 <a
                   href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
@@ -161,33 +161,6 @@ const Navbar = () => {
                   <Play className="w-4 h-4" />
                   <span>YouTube</span>
                 </a>
-                
-                {user ? (
-                  <>
-                    <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-blue-50 border-2 border-blue-200">
-                      <User className="w-5 h-5 text-blue-600" />
-                      <span className="text-base font-semibold text-blue-900 truncate">
-                        {user.email}
-                      </span>
-                    </div>
-                    <button
-                      onClick={handleLogout}
-                      className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-semibold border-2 border-red-300 text-red-700 hover:border-red-400 hover:bg-red-50 active:bg-red-100 transition-all touch-manipulation"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
-                    >
-                      <LogOut className="w-5 h-5" />
-                      <span>Logout</span>
-                    </button>
-                  </>
-                ) : (
-                  <button
-                    onClick={() => { setIsOpen(false); setLoginOpen(true) }}
-                    className="inline-flex items-center justify-center gap-2 rounded-lg px-4 py-3 text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 active:from-blue-800 active:to-cyan-700 shadow-md hover:shadow-lg transition-all touch-manipulation"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  >
-                    Get Started
-                  </button>
-                )}
               </div>
             </div>
           </div>

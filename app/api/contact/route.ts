@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createSupabaseServer } from '@/lib/supabaseClient'
+import { sql } from '@/lib/neon'
 
 export async function POST(request: Request) {
   try {
@@ -28,20 +28,16 @@ export async function POST(request: Request) {
 
     console.log('Contact submission', { name, email, company, subject, message, ts: new Date().toISOString() })
 
-    // Store to Supabase
-    const supabase = createSupabaseServer()
-    const { error } = await supabase.from('contacts').insert({
-      name,
-      email,
-      business_name: businessName,
-      industry,
-      company,
-      subject,
-      message,
-    })
-    if (error) {
-      console.error('Supabase insert error (contacts):', error)
-      return NextResponse.json({ error: error.message }, { status: 500 })
+    // Store to Neon Database
+    try {
+      await sql`
+        INSERT INTO contacts (name, email, business_name, industry, company, subject, message)
+        VALUES (${name}, ${email}, ${businessName}, ${industry}, ${company || null}, ${subject || null}, ${message})
+      `
+      console.log('✅ Contact saved to Neon database')
+    } catch (dbError: any) {
+      console.error('❌ Neon database error:', dbError)
+      return NextResponse.json({ error: 'Database error: ' + dbError.message }, { status: 500 })
     }
 
     // Send email notification (non-blocking)
