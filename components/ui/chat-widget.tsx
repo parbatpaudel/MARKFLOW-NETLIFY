@@ -182,36 +182,36 @@ export default function ChatWidget() {
         </div>
       </button>
 
-      {/* Chat Panel */}
+      {/* Chat Panel - Smaller on Mobile */}
       {open && (
-        <div className="fixed z-50 inset-0 md:bottom-3 md:left-auto md:right-6 md:inset-auto md:w-[560px]">
-          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-none md:rounded-xl h-full md:h-[500px] bg-slate-900 text-slate-100">
+        <div className="fixed z-50 bottom-0 right-0 left-0 md:bottom-5 md:left-auto md:right-6 md:w-[420px] lg:w-[480px]">
+          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-t-3xl md:rounded-2xl h-[70vh] md:h-[min(600px,80vh)] bg-slate-900 text-slate-100">
             <div className="flex h-full">
               {/* No permanent left rail to keep size small; use overlay for chats */}
 
               {/* Right column */}
               <section className="flex-1 flex flex-col">
-                {/* Header */}
-                <div className="flex items-center justify-between px-4 py-4 border-b border-slate-600 bg-slate-800">
+                {/* Header - Compact */}
+                <div className="flex items-center justify-between px-3 md:px-4 py-3 border-b border-slate-600 bg-slate-800 shrink-0">
                   <div className="flex items-center gap-2">
-                    <span className="inline-flex h-7 w-7 items-center justify-center rounded-md bg-blue-600 text-white text-xs font-bold shadow-sm">AI</span>
-                    <span className="text-sm md:text-base font-bold text-white">marketflow Assistant</span>
+                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white text-xs font-black shadow-md">AI</span>
+                    <span className="text-sm md:text-base font-bold text-white">marketflow</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setShowSessions(s => !s)} 
-                      className="h-11 px-4 text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-lg shadow-md touch-manipulation"
+                      className="h-9 md:h-10 px-3 md:px-4 text-xs md:text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-lg shadow-md touch-manipulation transition-all"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
                       Chats
                     </button>
                     <button 
                       onClick={() => setOpen(false)} 
-                      className="h-11 w-11 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-xl border-2 border-white/20 touch-manipulation"
+                      className="h-9 md:h-10 w-9 md:w-10 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-xl border-2 border-white/20 touch-manipulation transition-all"
                       aria-label="Close chat"
                       style={{ WebkitTapHighlightColor: 'transparent' }}
                     >
-                      <X className="w-7 h-7" strokeWidth={3.5} />
+                      <X className="w-5 md:w-6 h-5 md:h-6" strokeWidth={3} />
                     </button>
                   </div>
                 </div>
@@ -311,18 +311,24 @@ You can share all this information in your next message, and I'll make sure it g
                   )}
                 </div>
 
-                {/* Composer */}
-                <div className="border-t border-slate-700 p-2.5 md:p-3 flex gap-2 bg-slate-900">
+                {/* Composer - Compact */}
+                <div className="border-t border-slate-700 p-2 md:p-2.5 flex gap-2 bg-slate-900 shrink-0">
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={onKeyDown}
                     placeholder="Send a message..."
-                    className="text-sm flex-1 rounded-full border border-slate-700 bg-slate-800 text-slate-100 px-4 py-3 md:py-2 outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+                    className="text-sm flex-1 rounded-full border border-slate-700 bg-slate-800 text-slate-100 px-4 py-2.5 md:py-2 outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
                   />
-                  <Button onClick={send} disabled={loading || !input.trim() || !currentSessionId} className="inline-flex gap-1 rounded-full px-5 h-11 md:h-9">
+                  <Button 
+                    onClick={send} 
+                    disabled={loading || !input.trim() || !currentSessionId} 
+                    className="inline-flex gap-1 rounded-full px-4 md:px-5 h-10 md:h-9 bg-blue-600 hover:bg-blue-500 touch-manipulation"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
                     <Send className="w-4 h-4" />
-                    Send
+                    <span className="hidden md:inline">Send</span>
                   </Button>
                 </div>
                 {!currentSessionId && (

@@ -99,7 +99,7 @@ export default function ContactPage() {
 
   return (
     <>
-      {/* Calendly Widget Scripts */}
+      {/* Calendly Widget Scripts - Smaller, Left Positioned */}
       <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" />
       <Script
         src="https://assets.calendly.com/assets/external/widget.js"
@@ -108,7 +108,7 @@ export default function ContactPage() {
           if (window.Calendly) {
             window.Calendly.initBadgeWidget({
               url: 'https://calendly.com/proboscisparasite/30min',
-              text: 'Schedule time with me',
+              text: '📅 Schedule',
               color: '#0069ff',
               textColor: '#ffffff',
               branding: true
@@ -116,6 +116,26 @@ export default function ContactPage() {
           }
         }}
       />
+      <style jsx global>{`
+        .calendly-badge-widget {
+          bottom: 15px !important;
+          left: 15px !important;
+          right: auto !important;
+        }
+        .calendly-badge-content {
+          padding: 8px 14px !important;
+          font-size: 13px !important;
+          font-weight: 600 !important;
+          border-radius: 12px !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+        @media (max-width: 768px) {
+          .calendly-badge-content {
+            padding: 7px 12px !important;
+            font-size: 12px !important;
+          }
+        }
+      `}</style>
 
       <div className="min-h-screen py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

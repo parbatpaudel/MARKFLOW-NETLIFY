@@ -33,124 +33,158 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100]">
+    <nav className="bg-white/98 backdrop-blur-lg border-b border-gray-200/80 sticky top-0 z-[100] shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo (text-based) */}
-          <Link href="/" className="flex items-center">
-            <span className="text-xl sm:text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
+        <div className="flex justify-between items-center h-16 md:h-20">
+          {/* Logo */}
+          <Link href="/" className="flex items-center group">
+            <span className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 via-cyan-500 to-blue-600 group-hover:from-blue-700 group-hover:via-cyan-600 group-hover:to-blue-700 transition-all">
               marketflow
             </span>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-6">
+          {/* Desktop Navigation - Modern Design */}
+          <div className="hidden md:flex items-center space-x-1 lg:space-x-2">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-blue-600 font-medium text-sm py-2 px-3 block"
+                className="relative text-gray-700 hover:text-blue-600 font-semibold text-sm lg:text-base py-2 px-4 lg:px-5 rounded-lg hover:bg-blue-50/80 transition-all group"
               >
                 {item.name}
+                <span className="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-cyan-500 group-hover:w-3/4 transition-all duration-300" />
               </Link>
             ))}
           </div>
 
           {/* CTA (desktop) */}
-          <div className="hidden md:flex items-center gap-3 mt-2">
+          <div className="hidden md:flex items-center gap-2 lg:gap-3">
             <a
               href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg px-3 lg:px-4 py-2 lg:py-2.5 text-sm font-semibold border-2 border-gray-300 text-gray-700 hover:border-gray-400 hover:bg-gray-50 transition-all"
             >
               <Play className="w-4 h-4" />
-              YouTube
+              <span className="hidden lg:inline">YouTube</span>
             </a>
             <button
               onClick={() => setLoginOpen(true)}
-              className="inline-flex items-center rounded-lg px-4 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+              className="inline-flex items-center gap-2 rounded-lg px-4 lg:px-6 py-2 lg:py-2.5 text-sm lg:text-base font-bold text-white bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 shadow-md hover:shadow-lg transition-all"
             >
               Get Started
             </button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu button - Modern */}
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2.5 rounded-xl text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all touch-manipulation"
             aria-label="Toggle menu"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
           >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {isOpen ? <X className="w-6 h-6" strokeWidth={2.5} /> : <Menu className="w-6 h-6" strokeWidth={2.5} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
+      {/* Modern Mobile Navigation */}
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop with blur */}
           <div
-            className="fixed inset-0 bg-black/60 z-[90] md:hidden"
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[90] md:hidden"
             onClick={toggleMenu}
             style={{ touchAction: 'none' }}
           />
-          {/* Mobile Menu Sheet */}
+          
+          {/* Modern Slide-in Menu */}
           <div 
-            className="fixed top-0 right-0 h-full w-[300px] max-w-[85vw] bg-gradient-to-br from-white via-blue-50/30 to-white shadow-2xl z-[95] md:hidden flex flex-col border-l-4 border-blue-600"
+            className="fixed top-0 right-0 h-full w-[min(85vw,340px)] bg-white shadow-2xl z-[95] md:hidden flex flex-col"
             style={{ transform: 'translateZ(0)', WebkitOverflowScrolling: 'touch' }}
           >
-            {/* Header with Gradient */}
-            <div className="flex items-center justify-between px-5 py-5 border-b-2 border-blue-100 bg-gradient-to-r from-blue-600 to-cyan-500 shrink-0">
-              <span className="text-xl font-extrabold text-white drop-shadow-sm">Menu</span>
+            {/* Modern Header */}
+            <div className="flex items-center justify-between px-6 py-5 border-b border-gray-100 shrink-0">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-lg">
+                  <span className="text-white font-black text-lg">M</span>
+                </div>
+                <span className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">Menu</span>
+              </div>
               <button 
                 onClick={toggleMenu}
-                className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 active:bg-white/40 backdrop-blur-sm touch-manipulation transition-all"
+                className="p-2 rounded-xl hover:bg-gray-100 active:bg-gray-200 touch-manipulation transition-all"
                 aria-label="Close menu"
                 style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                <X className="w-6 h-6 text-white" strokeWidth={3} />
+                <X className="w-6 h-6 text-gray-600" strokeWidth={2.5} />
               </button>
             </div>
             
-            {/* Navigation Links - Scrollable with Better Design */}
-            <div className="flex-1 overflow-y-auto bg-gradient-to-b from-transparent to-blue-50/20" style={{ WebkitOverflowScrolling: 'touch' }}>
-              <nav className="px-4 py-6">
-                <div className="space-y-3">
-                  {navigation.map((item, index) => (
-                    <Link
-                      key={item.name}
-                      href={item.href}
-                      onClick={toggleMenu}
-                      className="group block px-5 py-4 text-base font-bold text-gray-900 rounded-xl bg-white hover:bg-blue-50 active:bg-blue-100 border-2 border-gray-200 hover:border-blue-400 shadow-sm hover:shadow-md transition-all touch-manipulation"
-                      style={{ 
-                        WebkitTapHighlightColor: 'transparent',
-                        animationDelay: `${index * 50}ms`
-                      }}
-                    >
-                      <div className="flex items-center justify-between">
-                        <span>{item.name}</span>
-                        <svg className="w-5 h-5 text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </nav>
+            {/* Navigation Links - Modern Cards */}
+            <div className="flex-1 overflow-y-auto px-4 py-6" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="space-y-2">
+                {navigation.map((item, index) => (
+                  <Link
+                    key={item.name}
+                    href={item.href}
+                    onClick={toggleMenu}
+                    className="group flex items-center justify-between px-5 py-4 text-base font-bold text-gray-800 rounded-2xl hover:bg-gradient-to-r hover:from-blue-50 hover:to-cyan-50 active:from-blue-100 active:to-cyan-100 transition-all touch-manipulation"
+                    style={{ 
+                      WebkitTapHighlightColor: 'transparent',
+                      animation: `slideIn 0.3s ease-out ${index * 0.05}s both`
+                    }}
+                  >
+                    <span className="group-hover:text-blue-600 transition-colors">{item.name}</span>
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600/10 to-cyan-500/10 group-hover:from-blue-600/20 group-hover:to-cyan-500/20 flex items-center justify-center transition-all">
+                      <svg className="w-4 h-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+              
+              {/* Quick Actions */}
+              <div className="mt-8 pt-6 border-t border-gray-100">
+                <a
+                  href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 px-5 py-3 rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all touch-manipulation"
+                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                >
+                  <Play className="w-5 h-5 text-gray-600" />
+                  <span className="text-sm font-semibold text-gray-700">Watch on YouTube</span>
+                </a>
+              </div>
             </div>
               
-            {/* Bottom CTA with Gradient */}
-            <div className="px-4 py-5 border-t-2 border-blue-100 bg-gradient-to-r from-blue-50 to-cyan-50 shrink-0">
+            {/* Modern Bottom CTA */}
+            <div className="px-4 py-5 border-t border-gray-100 shrink-0 bg-gradient-to-br from-gray-50 to-blue-50/30">
               <button 
                 onClick={() => { setIsOpen(false); setLoginOpen(true) }} 
-                className="w-full px-5 py-4 text-base font-extrabold text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-xl hover:from-blue-700 hover:to-cyan-600 active:from-blue-800 active:to-cyan-700 shadow-lg hover:shadow-xl touch-manipulation transition-all"
+                className="w-full px-6 py-4 text-base font-black text-white bg-gradient-to-r from-blue-600 to-cyan-500 rounded-2xl hover:from-blue-700 hover:to-cyan-600 active:scale-[0.98] shadow-lg hover:shadow-xl touch-manipulation transition-all"
                 style={{ WebkitTapHighlightColor: 'transparent' }}
               >
-                Get Started
+                🚀 Get Started
               </button>
+              <p className="text-center text-xs text-gray-500 mt-3">Join thousands of businesses</p>
             </div>
           </div>
+          
+          <style jsx>{`
+            @keyframes slideIn {
+              from {
+                opacity: 0;
+                transform: translateX(20px);
+              }
+              to {
+                opacity: 1;
+                transform: translateX(0);
+              }
+            }
+          `}</style>
         </>
       )}
       {/* Login Modal */}
