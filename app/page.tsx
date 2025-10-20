@@ -129,16 +129,18 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="relative pt-16">
-              {/* Decorative geometric shapes around stats */}
-              <div className="absolute -top-8 left-0 w-20 h-20 border-2 border-[#003459]/20 rounded-lg rotate-12"></div>
-              <div className="absolute top-0 right-4 w-16 h-16 border-2 border-[#007ea7]/20 rounded-full"></div>
-              <div className="absolute -bottom-4 left-1/4 w-12 h-12 border-2 border-[#00a8e8]/15 rounded-md -rotate-45"></div>
-              <div className="absolute top-1/2 right-8 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[20px] border-l-transparent border-r-transparent border-b-[#003459]/15 rotate-12"></div>
-              <div className="absolute bottom-0 right-1/3 w-14 h-14 bg-[#007ea7]/5 rounded-2xl rotate-45"></div>
-              <div className="absolute top-4 left-1/3 w-10 h-10 bg-[#00a8e8]/10" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
-              <div className="absolute -bottom-8 right-12 w-6 h-1 bg-[#003459]/20 rotate-45"></div>
-              <div className="absolute top-8 left-12 w-8 h-1 bg-[#007ea7]/20 -rotate-45"></div>
+            <div className="relative pt-16 pb-8">
+              {/* Decorative geometric shapes around stats - with pointer-events-none */}
+              <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute -top-12 left-4 md:left-12 w-16 h-16 border-2 border-[#003459]/15 rounded-lg rotate-12"></div>
+                <div className="absolute -top-8 right-8 md:right-20 w-14 h-14 border-2 border-[#007ea7]/15 rounded-full"></div>
+                <div className="absolute bottom-0 left-1/4 w-10 h-10 border-2 border-[#00a8e8]/10 rounded-md -rotate-45"></div>
+                <div className="absolute top-1/2 right-12 md:right-24 w-0 h-0 border-l-[10px] border-r-[10px] border-b-[17px] border-l-transparent border-r-transparent border-b-[#003459]/10 rotate-12"></div>
+                <div className="absolute -bottom-6 right-1/3 w-12 h-12 bg-[#007ea7]/5 rounded-2xl rotate-45"></div>
+                <div className="absolute top-8 left-1/3 w-8 h-8 bg-[#00a8e8]/8" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
+                <div className="absolute -bottom-10 right-16 w-6 h-0.5 bg-[#003459]/15 rotate-45"></div>
+                <div className="absolute top-4 left-16 w-8 h-0.5 bg-[#007ea7]/15 -rotate-45"></div>
+              </div>
               
               <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
                 <motion.div

@@ -88,41 +88,53 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <>
+        <div className="md:hidden">
           {/* Backdrop */}
           <div
-            className="md:hidden fixed inset-0 bg-black/40 z-[90]"
+            className="fixed inset-0 bg-black/40 z-[90]"
             onClick={toggleMenu}
-            aria-hidden
           />
           {/* Sheet */}
-          <div className="md:hidden fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-[95]"
-          >
-              <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 sticky top-0 bg-white">
-                <span className="text-base font-semibold">Menu</span>
-                <button className="p-2 rounded-md hover:bg-gray-100" onClick={toggleMenu}>
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="px-4 py-5 space-y-3">
+          <div className="fixed top-0 right-0 bottom-0 w-[75%] max-w-xs bg-white shadow-2xl z-[95] flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between px-4 py-4 border-b border-gray-200 bg-white">
+              <span className="text-base font-semibold text-gray-900">Menu</span>
+              <button 
+                className="p-2 rounded-md hover:bg-gray-100 transition-colors" 
+                onClick={toggleMenu}
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5 text-gray-700" />
+              </button>
+            </div>
+            
+            {/* Navigation Links */}
+            <div className="flex-1 overflow-y-auto px-4 py-6">
+              <div className="space-y-1">
                 {navigation.map((item) => (
                   <Link
                     key={item.name}
                     href={item.href}
-                    className="block rounded-lg px-3 py-3.5 text-[15px] font-medium text-slate-900 hover:bg-gray-100"
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-gray-900 hover:bg-gray-100 transition-colors"
                     onClick={toggleMenu}
                   >
                     {item.name}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-gray-200 mt-2">
-                  <button onClick={() => { setIsOpen(false); setLoginOpen(true) }} className="block w-full text-center rounded-lg px-4 py-3.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
-                    Get Started
-                  </button>
-                </div>
+              </div>
+              
+              {/* CTA Button */}
+              <div className="mt-6 pt-6 border-t border-gray-200">
+                <button 
+                  onClick={() => { setIsOpen(false); setLoginOpen(true) }} 
+                  className="w-full rounded-lg px-4 py-3 text-base font-semibold text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+                >
+                  Get Started
+                </button>
               </div>
             </div>
-        </>
+          </div>
+        </div>
         )}
       {/* Login Modal */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
