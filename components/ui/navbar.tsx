@@ -33,7 +33,7 @@ const Navbar = () => {
   ]
 
   return (
-    <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[60]">
+    <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-[100]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo (text-based) */}
@@ -88,7 +88,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 z-[70]">
+        <div className="md:hidden fixed inset-0 z-[100] top-16">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40"
@@ -96,14 +96,8 @@ const Navbar = () => {
             aria-hidden
           />
           {/* Sheet */}
-          <div className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-[80]"
+          <div className="fixed top-16 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-[110]"
           >
-              <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 sticky top-0 bg-white z-10">
-                <span className="text-base font-semibold">Menu</span>
-                <button className="p-2 rounded-md hover:bg-gray-100" onClick={toggleMenu}>
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
               <div className="px-4 py-5 space-y-3">
                 {navigation.map((item) => (
                   <Link
