@@ -162,22 +162,22 @@ export default function ChatWidget() {
 
       {/* Chat Panel */}
       {open && (
-        <div className="fixed bottom-6 right-6 z-50 w-[92vw] md:w-[560px]">
-          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-xl h-[500px] bg-slate-900 text-slate-100">
+        <div className="fixed z-50 bottom-3 left-3 right-3 md:right-6 md:left-auto md:w-[560px]">
+          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-xl h-[70vh] md:h-[500px] bg-slate-900 text-slate-100">
             <div className="flex h-full">
               {/* No permanent left rail to keep size small; use overlay for chats */}
 
               {/* Right column */}
               <section className="flex-1 flex flex-col">
                 {/* Header */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900">
+                <div className="flex items-center justify-between px-3 md:px-4 py-3 border-b border-slate-700 bg-gradient-to-r from-slate-800 to-slate-900">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-white text-[11px] font-bold">AI</span>
                     <span className="text-sm font-semibold text-slate-100">marketflow Assistant</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-8 px-2 text-xs text-slate-100 hover:bg-slate-800">Chats</Button>
-                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-8 w-8 text-slate-100 hover:bg-slate-800">
+                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-9 px-3 text-xs text-slate-100 hover:bg-slate-800">Chats</Button>
+                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-9 w-9 text-slate-100 hover:bg-slate-800">
                       <X className="w-4 h-4" />
                     </Button>
                   </div>
@@ -211,7 +211,7 @@ export default function ChatWidget() {
                 )}
 
                 {/* Messages */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto px-4 py-4 space-y-3 bg-slate-900">
+                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-4 py-3 md:py-4 space-y-3 bg-slate-900">
                   {messages.map((m, i) => (
                     <div key={i} className={`flex items-start gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                       {m.role === 'assistant' && (
@@ -219,7 +219,7 @@ export default function ChatWidget() {
                           <Bot className="w-4 h-4" />
                         </div>
                       )}
-                      <div className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed border shadow-sm ${m.role === 'user' ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-slate-800 text-slate-100 border-slate-700'}`}>
+                      <div className={`max-w-[86%] md:max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed border shadow-sm ${m.role === 'user' ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-slate-800 text-slate-100 border-slate-700'}`}>
                         {m.content}
                       </div>
                     </div>
@@ -228,15 +228,15 @@ export default function ChatWidget() {
                 </div>
 
                 {/* Composer */}
-                <div className="border-t border-slate-700 p-3 flex gap-2 bg-slate-900">
+                <div className="border-t border-slate-700 p-2.5 md:p-3 flex gap-2 bg-slate-900">
                   <input
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyDown={onKeyDown}
                     placeholder="Send a message..."
-                    className="text-sm flex-1 rounded-full border border-slate-700 bg-slate-800 text-slate-100 px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
+                    className="text-sm flex-1 rounded-full border border-slate-700 bg-slate-800 text-slate-100 px-4 py-3 md:py-2 outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400"
                   />
-                  <Button onClick={send} disabled={loading || !input.trim() || !currentSessionId} className="inline-flex gap-1 rounded-full px-5">
+                  <Button onClick={send} disabled={loading || !input.trim() || !currentSessionId} className="inline-flex gap-1 rounded-full px-5 h-11 md:h-9">
                     <Send className="w-4 h-4" />
                     Send
                   </Button>
