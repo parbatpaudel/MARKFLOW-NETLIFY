@@ -1,14 +1,8 @@
 'use client'
 
-import { ReactNode, useMemo } from 'react'
-import { createSupabaseBrowser } from '@/lib/supabaseClient'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
+import { ReactNode } from 'react'
+import { SupabaseProvider as Provider } from '@/lib/supabase-context'
 
 export default function SupabaseProvider({ children }: { children: ReactNode }) {
-  const supabase = useMemo(() => createSupabaseBrowser(), [])
-  return (
-    <SessionContextProvider supabaseClient={supabase}>
-      {children}
-    </SessionContextProvider>
-  )
+  return <Provider>{children}</Provider>
 }

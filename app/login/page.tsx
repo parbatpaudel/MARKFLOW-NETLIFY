@@ -1,9 +1,9 @@
 'use client'
 
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSupabase } from '@/lib/supabase-context'
 
 export default function LoginPage() {
-  const supabase = useSupabaseClient()
+  const supabase = useSupabase()
   const onGoogle = () => {
     const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}/` : undefined
     supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo } })

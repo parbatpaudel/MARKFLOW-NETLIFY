@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useUser } from '@/lib/supabase-context'
 import UserMenu from '@/components/ui/user-menu'
 import NavCTA from '@/components/ui/nav-cta'
 

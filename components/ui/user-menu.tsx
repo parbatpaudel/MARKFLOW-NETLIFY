@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { useUser, useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useUser, useSupabase } from '@/lib/supabase-context'
 import Image from 'next/image'
 
 export default function UserMenu() {
   const user = useUser()
-  const supabase = useSupabaseClient()
+  const supabase = useSupabase()
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 

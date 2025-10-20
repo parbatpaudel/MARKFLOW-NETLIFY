@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useUser } from '@/lib/supabase-context'
 import { useRouter } from 'next/navigation'
 import OnboardingModal from '@/components/ui/onboarding-modal'
 

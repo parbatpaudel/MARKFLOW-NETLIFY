@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { useSupabase } from '@/lib/supabase-context'
 import { X, Mail, Lock, Play } from 'lucide-react'
 import { Button } from './button'
 
@@ -12,7 +12,7 @@ interface LoginModalProps {
 }
 
 export default function LoginModal({ open, onClose }: LoginModalProps) {
-  const supabase = useSupabaseClient()
+  const supabase = useSupabase()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [mode, setMode] = useState<'signin' | 'signup'>('signin')

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useUser } from '@supabase/auth-helpers-react'
+import { useUser } from '@/lib/supabase-context'
 import Link from 'next/link'
 
 export default function PostLoginPrompt() {
