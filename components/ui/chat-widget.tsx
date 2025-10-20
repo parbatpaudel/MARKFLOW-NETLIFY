@@ -196,9 +196,9 @@ export default function ChatWidget() {
                     <span className="text-sm font-semibold text-slate-100">marketflow Assistant</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-10 md:h-9 px-3 text-xs text-slate-100 hover:bg-slate-800">Chats</Button>
-                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-10 w-10 md:h-9 md:w-9 text-slate-100 hover:bg-slate-800">
-                      <X className="w-4 h-4" />
+                    <Button variant="ghost" onClick={() => setShowSessions(s => !s)} className="h-10 md:h-9 px-3 text-xs text-slate-100 hover:bg-slate-800 hover:text-white">Chats</Button>
+                    <Button variant="ghost" size="icon" onClick={() => setOpen(false)} className="h-10 w-10 md:h-9 md:w-9 text-slate-100 hover:bg-slate-800 hover:text-white">
+                      <X className="w-5 h-5" />
                     </Button>
                   </div>
                 </div>

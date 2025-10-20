@@ -129,37 +129,49 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="pt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.5 }}
-                className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
-                <div className="text-sm text-slate-600 font-medium">Businesses</div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
-                <div className="text-sm text-slate-600 font-medium">Success Rate</div>
-              </motion.div>
-              <motion.div
-                initial={{ opacity: 0, y: 12 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.6 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
-                <div className="text-sm text-slate-600 font-medium">Support</div>
-              </motion.div>
+            <div className="relative pt-16">
+              {/* Decorative geometric shapes around stats */}
+              <div className="absolute -top-8 left-0 w-20 h-20 border-2 border-[#003459]/20 rounded-lg rotate-12"></div>
+              <div className="absolute top-0 right-4 w-16 h-16 border-2 border-[#007ea7]/20 rounded-full"></div>
+              <div className="absolute -bottom-4 left-1/4 w-12 h-12 border-2 border-[#00a8e8]/15 rounded-md -rotate-45"></div>
+              <div className="absolute top-1/2 right-8 w-0 h-0 border-l-[12px] border-r-[12px] border-b-[20px] border-l-transparent border-r-transparent border-b-[#003459]/15 rotate-12"></div>
+              <div className="absolute bottom-0 right-1/3 w-14 h-14 bg-[#007ea7]/5 rounded-2xl rotate-45"></div>
+              <div className="absolute top-4 left-1/3 w-10 h-10 bg-[#00a8e8]/10" style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}}></div>
+              <div className="absolute -bottom-8 right-12 w-6 h-1 bg-[#003459]/20 rotate-45"></div>
+              <div className="absolute top-8 left-12 w-8 h-1 bg-[#007ea7]/20 -rotate-45"></div>
+              
+              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.5 }}
+                  className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
+                  <div className="text-sm text-slate-600 font-medium">Businesses</div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
+                  <div className="text-sm text-slate-600 font-medium">Success Rate</div>
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.6 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
+                >
+                  <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                  <div className="text-sm text-slate-600 font-medium">Support</div>
+                </motion.div>
+              </div>
             </div>
           </div>
         </div>
