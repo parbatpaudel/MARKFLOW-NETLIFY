@@ -167,7 +167,7 @@ export default function HomePage() {
         {/* Floating skill icons in background */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {/* AI Icon - Top Left */}
-          <div className="absolute top-20 left-3 md:top-32 md:left-16 animate-float" style={{animationDelay: '0s'}}>
+          <div className="absolute top-28 left-3 md:top-32 md:left-16 animate-float" style={{animationDelay: '0s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-600/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-600/20 shadow-lg">
@@ -179,7 +179,7 @@ export default function HomePage() {
           </div>
           
           {/* Creativity Icon - Top Right */}
-          <div className="absolute top-16 right-3 md:top-24 md:right-20 animate-float" style={{animationDelay: '1s'}}>
+          <div className="absolute top-24 right-3 md:top-24 md:right-20 animate-float" style={{animationDelay: '1s'}}>
             <div className="relative">
               <div className="absolute inset-0 bg-blue-500/20 blur-2xl rounded-full"></div>
               <div className="relative bg-white/40 backdrop-blur-sm rounded-2xl p-2 sm:p-4 border border-blue-500/20 shadow-lg">

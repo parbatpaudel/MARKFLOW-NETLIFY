@@ -88,7 +88,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden fixed inset-0 z-[60]">
+        <div className="md:hidden fixed inset-0 z-[70]">
           {/* Backdrop */}
           <div
             className="absolute inset-0 bg-black/40"
@@ -96,7 +96,7 @@ const Navbar = () => {
             aria-hidden
           />
           {/* Sheet */}
-          <div className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-50"
+          <div className="fixed top-0 right-0 bottom-0 w-[80%] max-w-xs bg-white text-slate-900 shadow-2xl border-l border-gray-200 overflow-y-auto z-[80]"
           >
               <div className="flex items-center justify-between px-4 h-16 border-b border-gray-200 sticky top-0 bg-white z-10">
                 <span className="text-base font-semibold">Menu</span>
