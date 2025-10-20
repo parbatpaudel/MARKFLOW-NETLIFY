@@ -129,50 +129,37 @@ export default function HomePage() {
             </div>
 
             {/* Stats */}
-            <div className="relative pt-16 pb-8">
-              {/* Simple decorative shapes - only squares and circles */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden -z-10">
-                {/* Squares */}
-                <div className="absolute -top-8 left-8 w-12 h-12 border-2 border-[#003459]/10 rounded-lg rotate-12"></div>
-                <div className="absolute bottom-4 right-16 w-10 h-10 border border-[#007ea7]/10 rounded-md -rotate-45"></div>
-                
-                {/* Circles */}
-                <div className="absolute top-4 right-12 w-14 h-14 border-2 border-[#007ea7]/10 rounded-full"></div>
-                <div className="absolute -bottom-4 left-20 w-16 h-16 border border-[#00a8e8]/8 rounded-full"></div>
-              </div>
-              
-              <div className="relative z-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 0.5 }}
-                  className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
-                  <div className="text-sm text-slate-600 font-medium">Businesses</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
-                  <div className="text-sm text-slate-600 font-medium">Success Rate</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.6 }}
-                  transition={{ duration: 0.5, delay: 0.2 }}
-                  className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
-                  <div className="text-sm text-slate-600 font-medium">Support</div>
-                </motion.div>
-              </div>
+            <div className="pt-16 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-2xl mx-auto">
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5 }}
+                className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
+              >
+                <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
+                <div className="text-sm text-slate-600 font-medium">Businesses</div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+                className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
+              >
+                <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
+                <div className="text-sm text-slate-600 font-medium">Success Rate</div>
+              </motion.div>
+              <motion.div
+                initial={{ opacity: 0, y: 12 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.6 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+                className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
+              >
+                <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
+                <div className="text-sm text-slate-600 font-medium">Support</div>
+              </motion.div>
             </div>
           </div>
         </div>
