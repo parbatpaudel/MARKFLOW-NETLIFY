@@ -90,13 +90,15 @@ export default function ServicesPage() {
             <div className="grid md:grid-cols-5">
               {/* Video/Thumbnail side */}
               <div className="relative md:col-span-2 p-4">
-                <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-slate-200 bg-gradient-to-br from-slate-100 to-slate-50">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button className="group inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 border border-slate-200 shadow-sm hover:shadow transition shadow-slate-200">
-                      <Play className="h-4 w-4 text-slate-700 group-hover:scale-110 transition-transform" />
-                      <span className="text-sm font-medium text-slate-700">Play video</span>
-                    </button>
-                  </div>
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-slate-200 bg-black">
+                  <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="Case Study Video"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
                 </div>
                 <p className="mt-2 text-xs text-slate-500">2024/09/06</p>
               </div>

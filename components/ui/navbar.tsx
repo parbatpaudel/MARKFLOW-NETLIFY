@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
 import { Menu, X } from "lucide-react"
 import { Button } from "./button"
@@ -22,15 +21,11 @@ const Navbar = () => {
     <nav className="bg-white/95 backdrop-blur-md border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image
-              src="/marketflaw-logo.png"
-              alt="MarketFlaw Logo"
-              width={40}
-              height={40}
-              className="w-8 h-8 sm:w-10 sm:h-10"
-            />
+          {/* Logo (text-based) */}
+          <Link href="/" className="flex items-center">
+            <span className="text-xl sm:text-2xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-cyan-500">
+              marketflow
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -46,29 +41,11 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button 
-              variant="outline" 
-              size="sm" 
-              className="border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white"
-              onClick={() => {
-                // Will be replaced with Firebase sign in
-                console.log('Sign in clicked');
-              }}
-            >
-              Sign In
-            </Button>
-            <Button 
-              size="sm" 
-              className="bg-blue-600 hover:bg-blue-700"
-              onClick={() => {
-                // Will be replaced with Firebase sign up
-                console.log('Sign up clicked');
-              }}
-            >
-              Sign Up
-            </Button>
+          {/* CTA */}
+          <div className="hidden md:flex items-center">
+            <Link href="/login" className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+              Get Started
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -115,22 +92,10 @@ const Navbar = () => {
                     {item.name}
                   </Link>
                 ))}
-                <div className="pt-4 border-t border-slate-800 space-y-2 mt-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    className="w-full border-slate-700 text-white hover:bg-slate-800"
-                    onClick={() => console.log('Mobile Sign In')}
-                  >
-                    Sign In
-                  </Button>
-                  <Button 
-                    size="sm" 
-                    className="w-full bg-blue-600 hover:bg-blue-700"
-                    onClick={() => console.log('Mobile Sign Up')}
-                  >
-                    Sign Up
-                  </Button>
+                <div className="pt-4 border-t border-slate-800 mt-2">
+                  <Link href="/login" className="block w-full text-center rounded-lg px-4 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                    Get Started
+                  </Link>
                 </div>
               </div>
             </div>
