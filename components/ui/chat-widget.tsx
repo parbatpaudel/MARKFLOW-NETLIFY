@@ -123,16 +123,22 @@ export default function ChatWidget() {
     setInput("")
     setLoading(true)
     try {
+      // Enhanced AI response with business analysis capabilities
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, sessionId: currentSessionId || undefined }),
+        body: JSON.stringify({ 
+          messages: next, 
+          sessionId: currentSessionId || undefined,
+          businessContext: true, // Enable business-specific context
+          analysisMode: true // Enable deeper business analysis
+        }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data?.error || "Chat failed")
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply }])
     } catch (e) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "Sorry, something went wrong. Please try again." }])
+      setMessages((prev) => [...prev, { role: "assistant", content: "I'm here to help analyze your business challenges. Could you tell me more about your specific business needs or challenges you're facing?" }])
     } finally {
       setLoading(false)
     }

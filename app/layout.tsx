@@ -9,10 +9,46 @@ const ChatWidget = dynamic(() => import('@/components/ui/chat-widget').then(m =>
 
 export const metadata = {
   title: {
-    default: 'marketflow - Solve Your Business Flaw',
-    template: '%s | marketflow'
+    default: 'marketflow - Solve Your Business Flaw | Business Consulting Solutions',
+    template: '%s | marketflow - Business Consulting Experts'
   },
-  description: 'We analyze your business, spot gaps, and provide actionable solutions through simple, guided steps. Let us help your business flow.',
+  description: 'We analyze your business, spot gaps, and provide actionable AI-powered solutions through simple, guided steps. Let us help your business flow with expert consulting services.',
+  keywords: 'business consulting, AI business solutions, business analysis, business optimization, marketflow, business consulting services, business strategy',
+  openGraph: {
+    title: 'marketflow - Solve Your Business Flaw | AI-Powered Business Solutions',
+    description: 'Transform your business with our AI-powered analysis and actionable solutions. Expert consulting for businesses of all sizes.',
+    url: 'https://marketflow.com',
+    siteName: 'marketflow',
+    images: [
+      {
+        url: '/marketflow-symbol.png',
+        width: 800,
+        height: 600,
+        alt: 'marketflow logo',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'marketflow - AI-Powered Business Solutions',
+    description: 'Transform your business with our AI-powered analysis and actionable solutions.',
+    images: ['/marketflow-symbol.png'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  alternates: {
+    canonical: 'https://marketflow.com',
+  },
 }
 
 export default function RootLayout({
