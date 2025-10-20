@@ -3,12 +3,14 @@
 import { useState } from "react"
 import Link from "next/link"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X } from "lucide-react"
+import { Menu, X, Play } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
+import LoginModal from "./login-modal"
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
 
   const navigation = [
     { name: "Home", href: "/" },
@@ -41,11 +43,23 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* CTA */}
-          <div className="hidden md:flex items-center">
-            <Link href="/login" className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors">
+          {/* CTA (desktop) */}
+          <div className="hidden md:flex items-center gap-3">
+            <a
+              href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
+            >
+              <Play className="w-4 h-4" />
+              YouTube
+            </a>
+            <button
+              onClick={() => setLoginOpen(true)}
+              className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 transition-colors"
+            >
               Get Started
-            </Link>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -93,9 +107,9 @@ const Navbar = () => {
                   </Link>
                 ))}
                 <div className="pt-4 border-t border-slate-800 mt-2">
-                  <Link href="/login" className="block w-full text-center rounded-lg px-4 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
+                  <button onClick={() => { setIsOpen(false); setLoginOpen(true) }} className="block w-full text-center rounded-lg px-4 py-3 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700">
                     Get Started
-                  </Link>
+                  </button>
                 </div>
               </div>
             </div>
