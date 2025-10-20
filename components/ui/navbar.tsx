@@ -98,8 +98,8 @@ const Navbar = () => {
               aria-hidden
             />
             {/* Sheet */}
-            <div className="absolute top-0 right-0 bottom-0 w-full max-w-xs bg-slate-900 text-white shadow-2xl border-l border-slate-800">
-              <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800">
+            <div className="absolute top-0 right-0 bottom-0 w-[80%] max-w-xs bg-slate-900 text-white shadow-2xl border-l border-slate-800 overflow-y-auto">
+              <div className="flex items-center justify-between px-4 h-16 border-b border-slate-800 sticky top-0 bg-slate-900 z-10">
                 <span className="text-base font-semibold">Menu</span>
                 <button className="p-2 rounded-md hover:bg-slate-800" onClick={() => setIsOpen(false)}>
                   <X className="w-5 h-5" />
