@@ -62,21 +62,21 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
           {/* Backdrop */}
           <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
-          {/* Panel - Fully Responsive */}
+          {/* Panel - Centered, No Glass Effect on Mobile */}
           <motion.div
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 12, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-1/2 top-1/2 w-[min(90vw,440px)] max-h-[90vh] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white/98 backdrop-blur-lg shadow-2xl overflow-hidden flex flex-col"
+            className="absolute left-1/2 top-1/2 w-[min(92vw,440px)] max-h-[90vh] -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-slate-200 bg-white shadow-2xl overflow-hidden flex flex-col"
           >
-            {/* Header */}
-            <div className="flex items-center justify-between px-4 sm:px-6 py-4 border-b border-slate-200 shrink-0">
+            {/* Header - Hidden on Mobile */}
+            <div className="hidden sm:flex items-center justify-between px-6 py-4 border-b border-slate-200 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 flex items-center justify-center shadow-md">
                   <span className="text-white font-black text-base">M</span>
                 </div>
-                <span className="text-base sm:text-lg font-bold text-slate-900">Get Started</span>
+                <span className="text-lg font-bold text-slate-900">Get Started</span>
               </div>
               <button 
                 onClick={onClose} 
@@ -87,9 +87,19 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
               </button>
             </div>
 
-            {/* Body - Scrollable, Centered on Mobile */}
-            <div className="px-4 sm:px-6 py-5 space-y-4 overflow-y-auto flex-1 flex flex-col items-center justify-center" style={{ WebkitOverflowScrolling: 'touch' }}>
-              <div className="w-full max-w-md space-y-4">
+            {/* Close button for mobile - top right corner */}
+            <button 
+              onClick={onClose} 
+              className="sm:hidden absolute top-4 right-4 z-10 p-2.5 rounded-xl bg-white shadow-lg hover:bg-slate-50 active:bg-slate-100 transition-all touch-manipulation"
+              aria-label="Close"
+              style={{ WebkitTapHighlightColor: 'transparent' }}
+            >
+              <X className="w-6 h-6 text-slate-600" strokeWidth={2.5} />
+            </button>
+
+            {/* Body - Perfectly Centered */}
+            <div className="px-6 sm:px-8 py-8 sm:py-6 overflow-y-auto flex-1 flex items-center justify-center" style={{ WebkitOverflowScrolling: 'touch' }}>
+              <div className="w-full max-w-sm space-y-5">
               {/* Google */}
               <Button 
                 onClick={onGoogle} 
