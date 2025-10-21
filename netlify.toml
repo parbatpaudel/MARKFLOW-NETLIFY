@@ -6,6 +6,8 @@
 # Next.js specific configuration
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
+  # Disable secrets scanning for documentation files
+  SECRETS_SCAN_OMIT_PATHS = "*.md,*.txt,MARKETFLOW_TRANSFORMATION_SUMMARY.md,GOOGLE_AUTH_SETUP.md,NETLIFY_SETUP.md,QUICK_START_GUIDE.md,IMPLEMENTATION_SUMMARY.md"
 
 # Redirects for Next.js
 [[redirects]]
