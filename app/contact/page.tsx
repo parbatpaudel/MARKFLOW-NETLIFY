@@ -4,8 +4,9 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
+import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle, Calendar } from "lucide-react"
 import Script from "next/script"
+import CalendlyModal from "@/components/ui/calendly-modal"
 
 // Declare grecaptcha for TypeScript
 declare global {
@@ -30,6 +31,7 @@ export default function ContactPage() {
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false)
 
   const industries = [
     "Technology",
@@ -87,7 +89,9 @@ export default function ContactPage() {
       const data = await res.json()
 
       if (res.ok) {
-        setStatus({ type: "success", message: "Thank you! We'll get back to you soon." })
+        setStatus({ type: "success", message: "Thank you! Your message has been sent. You can schedule a call below." })
+        // Show Calendly modal after successful submission
+        setShowCalendlyModal(true)
         setFormData({
           name: "",
           email: "",
@@ -171,6 +175,24 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
+              {/* Quick Schedule Button */}
+              <div className="mb-6 p-4 bg-gradient-to-r from-[#003459]/5 via-[#007ea7]/5 to-[#00a8e8]/5 border border-[#007ea7]/20 rounded-xl">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-center sm:text-left">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-1">Need to schedule a call right away?</h3>
+                    <p className="text-sm text-gray-600">Skip the form and book your consultation instantly</p>
+                  </div>
+                  <button
+                    onClick={() => setShowCalendlyModal(true)}
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] hover:from-[#002742] hover:via-[#006a8f] hover:to-[#0095ce] shadow-lg hover:shadow-xl transition-all font-semibold touch-manipulation whitespace-nowrap"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
+                    <Calendar className="w-5 h-5" />
+                    Schedule Now
+                  </button>
+                </div>
+              </div>
+
               <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-10">
                 <h2 className="text-2xl md:text-3xl font-bold mb-6 md:mb-8 text-gray-900">Send us a Message</h2>
 
@@ -356,6 +378,13 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+
+      {/* Calendly Modal */}
+      <CalendlyModal 
+        isOpen={showCalendlyModal} 
+        onClose={() => setShowCalendlyModal(false)}
+        url="https://calendly.com/proboscisparasite/30min"
+      />
     </>
   )
 }

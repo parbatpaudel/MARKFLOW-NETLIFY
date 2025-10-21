@@ -5,20 +5,36 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Send, CheckCircle2, AlertCircle, Calendar } from 'lucide-react'
+import CalendlyModal from '@/components/ui/calendly-modal'
 
 export default function BookConsultationPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     businessName: '',
+    industry: '',
     phone: '',
     message: '',
   })
-  const [enableCalendly, setEnableCalendly] = useState(false)
+  const [showCalendlyModal, setShowCalendlyModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const industries = [
+    'Technology',
+    'E-commerce',
+    'Healthcare',
+    'Finance',
+    'Education',
+    'Retail',
+    'Manufacturing',
+    'Real Estate',
+    'Food & Beverage',
+    'Consulting',
+    'Other',
+  ]
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
@@ -26,7 +42,7 @@ export default function BookConsultationPage() {
     e.preventDefault()
 
     // Validation
-    if (!formData.name || !formData.email || !formData.businessName || !formData.message) {
+    if (!formData.name || !formData.email || !formData.businessName || !formData.industry || !formData.message) {
       setStatus({ type: 'error', message: 'Please fill in all required fields' })
       return
     }
@@ -41,18 +57,20 @@ export default function BookConsultationPage() {
         body: JSON.stringify({
           ...formData,
           subject: 'Consultation Booking Request',
-          calendlyEnabled: enableCalendly,
         }),
       })
 
       const data = await res.json()
 
       if (res.ok) {
-        setStatus({ type: 'success', message: "Thank you! We'll contact you within 24 hours to schedule your consultation." })
+        setStatus({ type: 'success', message: "Thank you! Your consultation request has been submitted. You can now schedule a time below." })
+        // Show Calendly modal after successful submission
+        setShowCalendlyModal(true)
         setFormData({
           name: '',
           email: '',
           businessName: '',
+          industry: '',
           phone: '',
           message: '',
         })
@@ -80,6 +98,25 @@ export default function BookConsultationPage() {
         </div>
 
         {/* Main Form */}
+        <div className="space-y-6">
+          {/* Quick Schedule Button */}
+          <div className="p-4 bg-gradient-to-r from-[#003459]/5 via-[#007ea7]/5 to-[#00a8e8]/5 border border-[#007ea7]/20 rounded-xl">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="text-center sm:text-left">
+                <h3 className="text-lg font-semibold text-gray-900 mb-1">Skip the form?</h3>
+                <p className="text-sm text-gray-600">Book your consultation time directly if you prefer</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowCalendlyModal(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-white bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] hover:from-[#002742] hover:via-[#006a8f] hover:to-[#0095ce] shadow-lg hover:shadow-xl transition-all font-semibold whitespace-nowrap"
+              >
+                <Calendar className="w-5 h-5" />
+                Schedule Directly
+              </button>
+            </div>
+          </div>
+
         <form onSubmit={handleSubmit} className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-gray-200/50 p-6 md:p-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Name */}
@@ -133,6 +170,28 @@ export default function BookConsultationPage() {
               />
             </div>
 
+            {/* Industry */}
+            <div className="space-y-2">
+              <label htmlFor="industry" className="block text-sm font-semibold text-gray-700">
+                Industry <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="industry"
+                name="industry"
+                value={formData.industry}
+                onChange={handleChange}
+                required
+                className="w-full h-12 px-4 text-base border border-gray-300 rounded-md focus:border-[#007ea7] focus:ring-2 focus:ring-[#007ea7] focus:outline-none bg-white"
+              >
+                <option value="">Select your industry</option>
+                {industries.map((industry) => (
+                  <option key={industry} value={industry}>
+                    {industry}
+                  </option>
+                ))}
+              </select>
+            </div>
+
             {/* Phone */}
             <div className="space-y-2">
               <label htmlFor="phone" className="block text-sm font-semibold text-gray-700">
@@ -167,42 +226,19 @@ export default function BookConsultationPage() {
             />
           </div>
 
-          {/* Calendly Toggle */}
+          {/* Info Box */}
           <div className="mt-6 p-6 bg-blue-50/50 border border-blue-200/50 rounded-xl">
             <div className="flex items-start gap-4">
-              <div className="flex items-center h-6">
-                <input
-                  type="checkbox"
-                  id="enableCalendly"
-                  checked={enableCalendly}
-                  onChange={(e) => setEnableCalendly(e.target.checked)}
-                  className="w-5 h-5 text-[#007ea7] border-gray-300 rounded focus:ring-[#007ea7]"
-                />
+              <div className="flex-shrink-0">
+                <Calendar className="w-6 h-6 text-[#007ea7]" />
               </div>
               <div className="flex-1">
-                <label htmlFor="enableCalendly" className="text-sm font-semibold text-gray-900 cursor-pointer flex items-center gap-2">
-                  <Calendar className="w-4 h-4" />
-                  Schedule immediately with Calendly
-                </label>
-                <p className="text-sm text-gray-600 mt-1">
-                  Check this box to schedule your consultation instantly using our calendar. Otherwise, we'll email you within 24 hours to arrange a time.
+                <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                  What happens next?
+                </h3>
+                <p className="text-sm text-gray-600">
+                  After submitting, you'll be able to schedule your consultation time instantly using our calendar. We'll also send you a confirmation email.
                 </p>
-                {enableCalendly && (
-                  <div className="mt-4">
-                    <a
-                      href="https://calendly.com/proboscisparasite/30min"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 px-6 py-3 rounded-lg text-white bg-[#007ea7] hover:bg-[#006a8f] transition-all font-semibold shadow-md hover:shadow-lg"
-                    >
-                      <Calendar className="w-5 h-5" />
-                      Book Your 30-Minute Session
-                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </a>
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -253,6 +289,14 @@ export default function BookConsultationPage() {
             Our team will review your request and get back to you within 24 business hours.
           </p>
         </form>
+        </div>
+
+        {/* Calendly Modal */}
+        <CalendlyModal 
+          isOpen={showCalendlyModal} 
+          onClose={() => setShowCalendlyModal(false)}
+          url="https://calendly.com/proboscisparasite/30min"
+        />
 
         {/* Contact Info */}
         <div className="mt-8 text-center">
