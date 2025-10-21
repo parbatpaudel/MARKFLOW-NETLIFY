@@ -8,6 +8,8 @@
   NEXT_TELEMETRY_DISABLED = "1"
   # Disable secrets scanning for documentation files
   SECRETS_SCAN_OMIT_PATHS = "*.md,*.txt,MARKETFLOW_TRANSFORMATION_SUMMARY.md,GOOGLE_AUTH_SETUP.md,NETLIFY_SETUP.md,QUICK_START_GUIDE.md,IMPLEMENTATION_SUMMARY.md"
+  # Exempt public keys from secrets scanning (NEXT_PUBLIC_ vars are meant to be exposed)
+  SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_FIREBASE_API_KEY"
 
 # Redirects for Next.js
 [[redirects]]
