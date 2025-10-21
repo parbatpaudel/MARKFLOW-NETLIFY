@@ -94,32 +94,6 @@ const FeaturesSection = () => {
             )
           })}
         </div>
-
-        {/* Trust Indicators */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-16 text-center"
-        >
-          <div className="inline-flex items-center gap-8 px-8 py-6 bg-white/80 backdrop-blur rounded-2xl shadow-lg border border-gray-100">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#003459] mb-1">500+</div>
-              <div className="text-sm text-gray-600">Active Clients</div>
-            </div>
-            <div className="w-px h-12 bg-gray-200"></div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#007ea7] mb-1">98%</div>
-              <div className="text-sm text-gray-600">Success Rate</div>
-            </div>
-            <div className="w-px h-12 bg-gray-200"></div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-[#00a8e8] mb-1">$50M+</div>
-              <div className="text-sm text-gray-600">Revenue Generated</div>
-            </div>
-          </div>
-        </motion.div>
       </div>
     </section>
   )
