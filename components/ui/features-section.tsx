@@ -8,38 +8,38 @@ const FeaturesSection = () => {
   const features = [
     {
       icon: Target,
-      title: "Precision Targeting",
-      description: "AI-powered targeting finds your ideal customers and maximizes every marketing dollar spent.",
+      title: "Intelligent Lead Targeting",
+      description: "AI-powered prospecting identifies your ideal buyers and scores them by conversion probability—eliminating guesswork from your pipeline.",
       gradient: "from-blue-500 to-cyan-500"
     },
     {
       icon: TrendingUp,
-      title: "Revenue Growth",
-      description: "Data-driven strategies proven to accelerate sales cycles and increase average deal sizes.",
+      title: "Revenue Acceleration",
+      description: "Data-driven sales strategies proven to shorten cycles, increase deal sizes, and compound monthly recurring revenue.",
       gradient: "from-emerald-500 to-green-500"
     },
     {
       icon: Zap,
-      title: "Lightning Fast Implementation",
-      description: "Get results quickly with our streamlined processes and automation-first approach.",
+      title: "Instant Implementation",
+      description: "See qualified leads flowing within 30 days with our streamlined AI deployment and automation-first methodology.",
       gradient: "from-amber-500 to-orange-500"
     },
     {
       icon: Shield,
-      title: "Risk-Free Consulting",
-      description: "Free strategy sessions with no obligation. We only succeed when you do.",
+      title: "Risk-Free Revenue Audit",
+      description: "Free pipeline analysis with no obligation. We only win when you close more deals.",
       gradient: "from-purple-500 to-pink-500"
     },
     {
       icon: BarChart3,
-      title: "Real-Time Analytics",
-      description: "Track every metric that matters with comprehensive dashboards and actionable insights.",
+      title: "Real-Time Sales Analytics",
+      description: "Track conversion rates, deal velocity, and revenue metrics with AI-powered dashboards and predictive insights.",
       gradient: "from-cyan-500 to-blue-500"
     },
     {
       icon: Sparkles,
-      title: "AI-First Innovation",
-      description: "Stay ahead of competition with cutting-edge AI tools and marketing automation.",
+      title: "AI Sales Intelligence",
+      description: "Stay ahead with cutting-edge AI tools for prospecting, qualification, outreach, and deal intelligence.",
       gradient: "from-indigo-500 to-purple-500"
     },
   ]
@@ -55,11 +55,11 @@ const FeaturesSection = () => {
           className="text-center mb-16"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] mb-6">
-            Why Leading Brands Choose Us
+            Why Top Sales Teams Choose Us
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            We combine cutting-edge AI technology with proven sales strategies to deliver 
-            exceptional ROI and sustainable growth.
+            We combine cutting-edge AI sales technology with proven revenue strategies to deliver 
+            exceptional pipeline growth and predictable deal flow.
           </p>
         </motion.div>
 

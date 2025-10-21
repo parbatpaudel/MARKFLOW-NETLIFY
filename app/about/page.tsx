@@ -12,41 +12,41 @@ const AboutPage = () => {
   const values = [
     {
       icon: Target,
-      title: "Mission-Driven",
-      description: "We're committed to delivering exceptional digital experiences that drive real business results and help our clients achieve their goals."
+      title: "Revenue-Driven",
+      description: "We're obsessed with one metric: your revenue growth. Every AI tool and sales strategy we deploy is measured against its impact on your bottom line."
     },
     {
       icon: Users,
-      title: "Client-Focused",
-      description: "Our clients are at the heart of everything we do. We build lasting partnerships through transparency, communication, and exceptional service."
+      title: "Partnership-Focused",
+      description: "Your success is our success. We build long-term partnerships through transparency, direct communication, and delivering measurable ROI every quarter."
     },
     {
       icon: Award,
-      title: "Excellence",
-      description: "We maintain the highest standards in everything we create, from code quality to user experience, ensuring exceptional results every time."
+      title: "Sales Excellence",
+      description: "We combine cutting-edge AI with proven sales methodologies, ensuring every touchpoint in your pipeline is optimized for conversion and growth."
     },
     {
       icon: Heart,
-      title: "Innovation",
-      description: "We stay at the forefront of technology, constantly exploring new tools and methodologies to deliver cutting-edge solutions."
+      title: "AI Innovation",
+      description: "We stay ahead of the curve in sales AI technology, constantly testing and implementing new tools that give you a competitive edge in your market."
     },
   ]
 
   const testimonials = [
     {
-      quote: "marketflow helped us replace scattered tools with a focused, automated funnel. We closed more deals in 60 days than the previous 6 months.",
+      quote: "marketflow's AI prospecting cut our research time by 70% and tripled our qualified pipeline. We're closing deals we would've never found manually.",
       name: "Priyanka S.",
-      role: "Founder, CraftNest",
+      role: "VP Sales, CraftNest SaaS",
     },
     {
-      quote: "They blend AI with brand strategy exactly how it should be done — clean, human, and effective.",
+      quote: "Their AI qualification bot handles initial conversations 24/7. We wake up to hot leads every morning, and our reps focus only on closing.",
       name: "Rahul K.",
-      role: "CMO, Finovate",
+      role: "Head of Revenue, Finovate",
     },
     {
-      quote: "Custom plan. Clear numbers. Real growth. That simple.",
+      quote: "Custom AI sales system. Clear ROI tracking. Revenue up 240% in 6 months. Best investment we've made.",
       name: "Emily R.",
-      role: "Operations Lead, Atlas Fitness",
+      role: "Founder, Atlas Growth Partners",
     },
   ]
 
@@ -59,36 +59,36 @@ const AboutPage = () => {
 
   const faqs = [
     {
-      question: "What makes MarketFlow different from other marketing agencies?",
-      answer: "We don't sell packages. Every strategy is custom-built around your business needs. We combine AI-powered automation with human expertise to deliver measurable results, not just reports."
+      question: "What makes MarketFlow different from other sales automation agencies?",
+      answer: "We don't sell pre-packaged tools. Every AI sales system is custom-built around your specific pipeline, customer profile, and revenue goals. We combine advanced AI with human sales expertise to deliver measurable growth, not just technology."
     },
     {
-      question: "How do you use AI in your marketing and sales strategies?",
-      answer: "We integrate AI tools for lead generation, qualification, content creation, ad optimization, and analytics. But AI supports our strategy—it doesn't replace the human understanding of your brand and market."
+      question: "How do you use AI in your sales strategies?",
+      answer: "We deploy AI across the entire sales cycle: intelligent prospecting to find high-value leads, conversational AI for 24/7 qualification, hyper-personalized outreach at scale, call analysis for performance insights, and automated workflows to free your reps for selling. AI amplifies what works—it doesn't replace human relationships."
     },
     {
       question: "Do you offer free consultations?",
-      answer: "Yes! We provide complimentary strategy sessions to analyze your business, identify growth opportunities, and recommend tailored solutions. No obligation, no fixed packages."
+      answer: "Yes! We provide complimentary revenue audits to analyze your current sales process, identify bottlenecks, and show exactly how AI can accelerate your pipeline. No obligation, no cookie-cutter pitches."
     },
     {
       question: "What types of businesses do you work with?",
-      answer: "We work with D2C brands, SaaS companies, e-commerce stores, B2B services, and growing businesses across industries. If you need to scale sales or improve marketing ROI, we can help."
+      answer: "We specialize in B2B SaaS, high-ticket D2C, professional services, and growth-stage companies with complex sales cycles. If you have a sales team and want to scale revenue faster, we can help."
     },
     {
       question: "How long does it take to see results?",
-      answer: "Most clients see measurable improvements within 60-90 days. However, timelines vary based on your goals, industry, and current marketing maturity. We focus on sustainable, long-term growth."
+      answer: "Most clients see increased qualified lead flow within 30-45 days and measurable revenue impact within 60-90 days. Timelines depend on your sales cycle length and current process maturity. We focus on sustainable, compounding growth."
     },
     {
       question: "What services do you offer?",
-      answer: "Our core services include AI-powered lead generation, sales automation, ad campaign optimization, content strategy, CRM integration, marketing analytics, and custom growth consulting."
+      answer: "Our core solutions include AI-powered prospecting, conversational lead qualification, automated personalized outreach, revenue intelligence & call analysis, CRM workflow automation, dynamic sales pitch creation, competitor tracking, strategic account planning, AI ad optimization, and content automation."
     },
     {
       question: "Do you require long-term contracts?",
-      answer: "No. We believe in earning your trust through results. While we recommend longer engagements for best results, we offer flexible arrangements based on your needs and goals."
+      answer: "No. We believe in earning your business through results. While we recommend 6-12 month engagements for maximum ROI, we offer flexible agreements based on your needs and budget."
     },
     {
-      question: "Can you help with both sales and marketing?",
-      answer: "Absolutely. We specialize in aligning sales and marketing efforts to create seamless customer journeys, from first touch to closed deal. This integration is key to maximizing revenue."
+      question: "Can you integrate with our existing CRM and tools?",
+      answer: "Absolutely. We integrate seamlessly with Salesforce, HubSpot, Pipedrive, and most major CRMs. Our AI tools enhance your existing stack—we don't force you to rip and replace."
     }
   ]
 
@@ -138,9 +138,9 @@ const AboutPage = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-xl text-gray-600 leading-relaxed"
             >
-              We're a passionate team of marketers, technologists, and strategists 
-              dedicated to creating exceptional digital experiences that drive 
-              business growth and user satisfaction.
+              We're a team of AI specialists, sales strategists, and automation experts 
+              dedicated to transforming how businesses generate revenue, qualify leads, 
+              and close deals with intelligent technology.
             </motion.p>
           </div>
         </div>
@@ -161,16 +161,16 @@ const AboutPage = () => {
               </h2>
               <div className="space-y-6 text-gray-600 leading-relaxed text-lg">
                 <p className="text-xl font-medium text-gray-800">
-                  We don't sell packages. We design strategies around your business.
+                  We don't sell cookie-cutter packages. We build custom AI sales systems around your business.
                 </p>
                 <p>
-                  Founded by Paras Paudel in 2023, marketflow was born from a simple belief: automation should support human strategy, not replace it. Every brand is different, so we start by understanding your business and crafting custom solutions.
+                  Founded in 2023, marketflow was born from a simple insight: AI should amplify your sales team's effectiveness, not replace the human touch. Every business has unique sales challenges, so we start by understanding your pipeline, ideal customer, and revenue goals.
                 </p>
                 <p>
-                  We analyze your brand, marketing systems, and growth barriers. Then we build strategies using the right mix of AI tools and marketing methods — from sales automation to content strategy — based on what your business needs most.
+                  We analyze your sales process, lead quality, and conversion barriers. Then we deploy the right mix of AI tools and proven methodologies—from intelligent prospecting to automated qualification—based on what will move the needle for your revenue.
                 </p>
                 <p className="font-medium text-gray-800">
-                  Our edge? Custom solutions. AI + human expertise. Result-driven approach.
+                  Our advantage? Custom AI solutions. Human strategy + machine intelligence. Revenue-obsessed approach.
                 </p>
               </div>
             </motion.div>
@@ -187,11 +187,11 @@ const AboutPage = () => {
                   <div className="h-full flex flex-col justify-center space-y-8">
                     <div className="text-center">
                       <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2">500+</div>
-                      <div className="text-lg text-gray-700 font-medium">Businesses Served</div>
+                      <div className="text-lg text-gray-700 font-medium">Sales Teams Empowered</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2">98%</div>
-                      <div className="text-lg text-gray-700 font-medium">Success Rate</div>
+                      <div className="text-6xl font-bold bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent mb-2">3x</div>
+                      <div className="text-lg text-gray-700 font-medium">Average Revenue Growth</div>
                     </div>
                   </div>
                 </div>
@@ -264,8 +264,8 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Clients Say</h2>
-            <p className="text-xl text-gray-600">Real results from brands we've worked with</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">What Sales Leaders Say</h2>
+            <p className="text-xl text-gray-600">Real revenue growth from teams we've empowered with AI</p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -309,7 +309,7 @@ const AboutPage = () => {
             viewport={{ once: true }}
             className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-600">Everything you need to know about working with MarketFlow</p>
+            <p className="text-xl text-gray-600">Everything you need to know about scaling revenue with AI</p>
           </motion.div>
 
           <div className="space-y-4">

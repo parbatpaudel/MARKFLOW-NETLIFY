@@ -100,7 +100,7 @@ export default function HomePage() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00a8e8] opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-[#003459]"></span>
               </span>
-              <span className="text-sm font-semibold text-[#003459]">Trusted by 500+ businesses worldwide</span>
+              <span className="text-sm font-semibold text-[#003459]">Powering 500+ sales teams worldwide</span>
             </div>
 
             {/* Main Headline */}
@@ -131,9 +131,9 @@ export default function HomePage() {
 
             {/* Slogan/Subtitle */}
             <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal">
-              Boost revenue, automate processes, and close more deals with
-              <span className="font-semibold text-slate-800"> intelligent automation </span>
-              that drives real results.
+              Close more deals, automate your pipeline, and scale revenue with
+              <span className="font-semibold text-slate-800"> AI-powered sales intelligence </span>
+              that works 24/7.
             </p>
 
             {/* CTA Buttons */}
@@ -173,7 +173,7 @@ export default function HomePage() {
                 className="group text-center p-6 rounded-xl hover:bg-[#003459]/5 transition-all duration-300"
               >
                 <div className="text-3xl md:text-4xl font-bold text-[#003459] mb-1 group-hover:scale-110 transition-transform duration-300">500+</div>
-                <div className="text-sm text-slate-600 font-medium">Businesses</div>
+                <div className="text-sm text-slate-600 font-medium">Sales Teams</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
@@ -182,8 +182,8 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: 0.1 }}
                 className="group text-center p-6 rounded-xl border-x border-slate-200 hover:bg-[#007ea7]/5 transition-all duration-300"
               >
-                <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">98%</div>
-                <div className="text-sm text-slate-600 font-medium">Success Rate</div>
+                <div className="text-3xl md:text-4xl font-bold text-[#007ea7] mb-1 group-hover:scale-110 transition-transform duration-300">3x</div>
+                <div className="text-sm text-slate-600 font-medium">Revenue Growth</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 12 }}
@@ -192,8 +192,8 @@ export default function HomePage() {
                 transition={{ duration: 0.5, delay: 0.2 }}
                 className="group text-center p-6 rounded-xl hover:bg-[#00a8e8]/5 transition-all duration-300"
               >
-                <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">24/7</div>
-                <div className="text-sm text-slate-600 font-medium">Support</div>
+                <div className="text-3xl md:text-4xl font-bold text-[#00a8e8] mb-1 group-hover:scale-110 transition-transform duration-300">70%</div>
+                <div className="text-sm text-slate-600 font-medium">Time Saved</div>
               </motion.div>
             </div>
 
@@ -273,10 +273,10 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] mb-4">
-              Real Results, Real Growth
+              AI Sales in Action
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-              See how AI-powered ad creation helped businesses scale their revenue
+              See how AI-powered sales automation transformed business pipelines
             </p>
           </div>
 
@@ -306,24 +306,24 @@ export default function HomePage() {
               <div className="md:col-span-3 p-6">
                 <div className="flex items-center gap-2 text-[#007ea7] mb-2">
                   <Building2 className="h-4 w-4" />
-                  <span className="text-xs font-medium tracking-wide uppercase">E-commerce Fashion Brand</span>
+                  <span className="text-xs font-medium tracking-wide uppercase">SaaS B2B Company</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Smart Ads Campaign Optimization</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">AI-Driven Sales Automation Success</h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  Deployed AI-optimized ad campaigns across multiple channels with intelligent targeting and real-time budget allocation, driving exceptional ROI.
+                  Implemented AI-powered prospecting, automated qualification, and intelligent outreach—resulting in record-breaking pipeline growth and faster deal cycles.
                 </p>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center">
-                    <div className="text-xl font-bold text-emerald-700">+210%</div>
-                    <div className="text-xs text-emerald-800">ROAS</div>
+                    <div className="text-xl font-bold text-emerald-700">+185%</div>
+                    <div className="text-xs text-emerald-800">Qualified Leads</div>
                   </div>
                   <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-center">
-                    <div className="text-xl font-bold text-blue-700">+67%</div>
-                    <div className="text-xs text-blue-800">CTR</div>
+                    <div className="text-xl font-bold text-blue-700">+92%</div>
+                    <div className="text-xs text-blue-800">Close Rate</div>
                   </div>
                   <div className="rounded-lg border border-purple-200 bg-purple-50 p-3 text-center">
-                    <div className="text-xl font-bold text-purple-700">-38%</div>
-                    <div className="text-xs text-purple-800">CPC</div>
+                    <div className="text-xl font-bold text-purple-700">-65%</div>
+                    <div className="text-xs text-purple-800">Sales Cycle</div>
                   </div>
                 </div>
               </div>
