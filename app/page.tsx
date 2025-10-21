@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import { useUser } from '@/lib/supabase-context'
 import { useRouter } from 'next/navigation'
 import OnboardingModal from '@/components/ui/onboarding-modal'
+import CaseStudiesSection from '@/components/ui/case-studies-section'
+import FeaturesSection from '@/components/ui/features-section'
 
 export default function HomePage() {
   const user = useUser()
@@ -18,9 +20,20 @@ export default function HomePage() {
       try {
         const saved = localStorage.getItem('marketflow_onboarding')
         const parsed = saved ? JSON.parse(saved) : null
-        if (!parsed?.done) setShowOnboarding(true)
+        // Only show onboarding if not done AND no previous session exists
+        if (!parsed?.done && !localStorage.getItem('marketflow_visited')) {
+          setShowOnboarding(true)
+        }
+        // Mark as visited for future sessions
+        if (!localStorage.getItem('marketflow_visited')) {
+          localStorage.setItem('marketflow_visited', 'true')
+        }
       } catch {
-        setShowOnboarding(true)
+        // First time visitor - show onboarding
+        if (!localStorage.getItem('marketflow_visited')) {
+          setShowOnboarding(true)
+          localStorage.setItem('marketflow_visited', 'true')
+        }
       }
     }, 900)
     return () => clearTimeout(t)
@@ -104,29 +117,26 @@ export default function HomePage() {
               {/* Primary Button */}
               <button
                 onClick={() => router.push(isAuthed ? '/services' : '/services')}
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-[#003459] to-[#007ea7] hover:from-[#00171f] hover:to-[#003459] shadow-lg shadow-[#003459]/25 hover:shadow-xl hover:shadow-[#003459]/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden touch-manipulation"
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-white bg-gradient-to-r from-[#003459] to-[#007ea7] hover:from-[#00171f] hover:to-[#003459] shadow-lg shadow-[#003459]/25 hover:shadow-xl hover:shadow-[#003459]/40 hover:-translate-y-0.5 transition-all duration-200 overflow-hidden touch-manipulation animate-pulse-glow"
                 style={{ WebkitTapHighlightColor: 'transparent' }}
               >
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(0,168,232,0.2),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <span className="relative z-10">Our Services</span>
+                <span className="relative z-10">Explore Our Services</span>
                 <svg className="relative z-10 w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </button>
 
-              {/* Secondary Button -> WhatsApp */}
-              <a
-                href="https://wa.me/?text=Hi%20I%20want%20to%20discuss%20services%20and%20book%20a%20consultation"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-white bg-green-500 hover:bg-green-600 hover:-translate-y-0.5 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
+              {/* Secondary Button -> Book Consultation */}
+              <button
+                onClick={() => router.push('/book-consultation')}
+                className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 text-lg font-semibold rounded-xl text-[#003459] bg-white border-2 border-[#003459]/20 hover:border-[#003459] hover:bg-[#003459] hover:text-white hover:-translate-y-0.5 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
               >
-                <svg className="relative z-10 w-5 h-5" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-                  <path d="M19.11 17.49c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.48-.88-.78-1.48-1.74-1.65-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.05 1.03-1.05 2.51 0 1.48 1.08 2.92 1.23 3.12.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.72.64.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="#fff"/>
-                  <path d="M16.01 3.2C9.2 3.2 3.76 8.64 3.76 15.46c0 2.21.58 4.28 1.59 6.07L3 29l7.67-2c1.73.95 3.72 1.49 5.84 1.49 6.81 0 12.25-5.44 12.25-12.25S22.82 3.2 16.01 3.2zm0 22.2c-1.94 0-3.74-.57-5.24-1.55l-.38-.24-4.55 1.19 1.22-4.43-.25-.41a10.28 10.28 0 01-1.56-5.3c0-5.68 4.6-10.28 10.28-10.28 5.68 0 10.28 4.6 10.28 10.28 0 5.68-4.6 10.28-10.28 10.28z" fill="#E6F5EA"/>
+                <span className="relative z-10">Book Free Consultation</span>
+                <svg className="relative z-10 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <span className="relative z-10">WhatsApp Us</span>
-              </a>
+              </button>
             </div>
 
             {/* Stats */}
@@ -228,6 +238,12 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Features Section */}
+      <FeaturesSection />
+
+      {/* Case Studies Section */}
+      <CaseStudiesSection />
 
       {/* Onboarding Modal */}
       <OnboardingModal isOpen={showOnboarding && !loading} onClose={() => setShowOnboarding(false)} />

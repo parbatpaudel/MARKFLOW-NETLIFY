@@ -1,92 +1,135 @@
-import { TrendingUp, Users, Megaphone, MessagesSquare, Sparkles, Workflow, Bot, FileText, BarChart3, Newspaper, LayoutGrid, UserPlus, Briefcase, ShoppingBag, Database, Plus, Play, Building2 } from 'lucide-react'
+import { TrendingUp, Target, BarChart3, Send, Calendar, Megaphone, FileText, Lightbulb, Share2, SearchCheck, Plus, Play, Building2 } from 'lucide-react'
 
 export default function ServicesPage() {
-  const services = [
-    { title: 'Sales Management', desc: 'Build predictable pipelines and accelerate closed‑won with data‑driven rigor.', Icon: TrendingUp },
-    { title: 'Customer Relationship (CRM)', desc: 'Design CRM workflows that drive adoption, retention, and revenue.', Icon: Users },
-    { title: 'Marketing & Advertising', desc: 'Full‑funnel campaigns across paid, owned, and earned channels.', Icon: Megaphone },
-    { title: 'Social Media Management', desc: 'Always‑on content, community, and performance across platforms.', Icon: MessagesSquare },
-    { title: 'Brand Strategy & Development', desc: 'Clarify positioning, narrative, and identity that converts.', Icon: Sparkles },
-    { title: 'Automation & AI Systems', desc: 'Automate ops and decisions with AI agents and smart workflows.', Icon: Bot },
-    { title: 'Content & Creative Strategy', desc: 'Insight‑led content that educates, ranks, and sells.', Icon: FileText },
-    { title: 'Market Research & Analytics', desc: 'Customer, competitor, and category insights for sharper bets.', Icon: BarChart3 },
-    { title: 'Performance Marketing', desc: 'Acquisition with ruthless CAC and ROAS discipline.', Icon: Workflow },
-    { title: 'Public Relations & Communication', desc: 'Earned media and thought leadership that builds trust.', Icon: Newspaper },
-    { title: 'Customer Experience (CX) Design', desc: 'Map journeys and remove friction to lift LTV.', Icon: LayoutGrid },
-    { title: 'Lead Generation & Nurturing', desc: 'Capture, score, and nurture leads to sales readiness.', Icon: UserPlus },
-    { title: 'Business Growth Consulting', desc: 'Tailored growth roadmaps aligned to business goals.', Icon: Briefcase },
-    { title: 'E‑Commerce & Funnel Optimization', desc: 'Boost AOV and conversion with CRO across the funnel.', Icon: ShoppingBag },
-    { title: 'Data Intelligence & Reporting', desc: 'Unified dashboards and attribution for real‑time clarity.', Icon: Database },
+  const salesServices = [
+    { title: 'Prospect Pro', desc: 'AI finds the best leads so your team can focus on closing deals.', Icon: Target },
+    { title: 'Qualify Assist', desc: 'Automatically filter and qualify leads to connect only with serious prospects.', Icon: SearchCheck },
+    { title: 'Revenue Reports', desc: 'Track sales performance with AI insights to see what drives revenue growth.', Icon: BarChart3 },
+    { title: 'Campaign Flow', desc: 'Send personalized, automated messages and emails that convert.', Icon: Send },
+    { title: 'Admin Automate', desc: 'Let AI manage scheduling and routine tasks, freeing your team for high-value work.', Icon: Calendar },
+  ]
+
+  const marketingServices = [
+    { title: 'Smart Ads', desc: 'AI optimizes ad campaigns to reach the right audience and maximize ROI.', Icon: Megaphone },
+    { title: 'Content Creator', desc: 'Generate blogs, social posts, and ideas that engage your audience effortlessly.', Icon: FileText },
+    { title: 'Market Edge', desc: 'AI analyzes data to create smarter marketing strategies tailored to your goals.', Icon: Lightbulb },
+    { title: 'Social Spark', desc: 'Plan, post, and manage social content that grabs attention and builds your brand.', Icon: Share2 },
+    { title: 'Marketing Audit', desc: 'AI evaluates your marketing efforts and highlights areas to improve performance.', Icon: TrendingUp },
   ]
 
   return (
     <div className="min-h-screen pt-24 px-4">
       <section className="max-w-6xl mx-auto pb-16">
         {/* Intro */}
-        <div className="text-center max-w-3xl mx-auto mb-6">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-4">Next‑Generation Marketing Services</h1>
+        <div className="text-center max-w-3xl mx-auto mb-12">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] mb-4">
+            AI-Powered Sales & Marketing Solutions
+          </h1>
           <p className="text-gray-700 text-lg leading-relaxed">
-            We integrate AI into marketing, sales, and growth strategies. We don’t offer fixed packages — every engagement is custom‑built to your goals. We also provide free consulting to identify the most effective growth strategies for your brand.
+            We deliver tailored, AI-driven strategies that accelerate growth, optimize performance, and drive measurable results for your business.
           </p>
-          <div className="mt-5 flex items-center justify-center gap-3 flex-wrap">
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-50 text-amber-700 border border-amber-200 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-              No fixed packages
-            </span>
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-              Tailored solutions
-            </span>
-            <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-medium">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-              Free consulting
-            </span>
+        </div>
+
+        {/* Sales Services Section */}
+        <div className="mb-16">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-[#003459] mb-3 flex items-center gap-3">
+              <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#003459] to-[#007ea7] flex items-center justify-center text-white">
+                <TrendingUp className="w-6 h-6" />
+              </span>
+              Sales Services
+            </h2>
+            <p className="text-gray-600 ml-15">Accelerate your sales pipeline with intelligent automation and data-driven insights.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {salesServices.map(({ title, desc, Icon }) => (
+              <article key={title} className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 hover:border-[#007ea7]/50">
+                <div className="p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-blue-200/40 blur-xl group-hover:bg-blue-300/60 transition-colors"></div>
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 border border-blue-200 text-blue-700 group-hover:scale-110 transition-transform">
+                        <Icon className="h-6 w-6" />
+                      </div>
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                  </div>
+                  <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
+                </div>
+              </article>
+            ))}
           </div>
         </div>
 
-        {/* Services Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
-          {services.map(({ title, desc, Icon }) => (
-            <article key={title} className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm transition-all hover:shadow-md hover:-translate-y-0.5 hover:ring-2 hover:ring-cyan-200">
-              <div className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="relative">
-                    <div className="absolute inset-0 rounded-full bg-green-200/40 blur-xl group-hover:bg-green-300/40 transition-colors"></div>
-                    <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-green-50 border border-green-200 text-green-700 group-hover:scale-105 transition-transform">
-                      <Icon className="h-6 w-6" />
+        {/* Marketing Services Section */}
+        <div className="mb-16">
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-[#007ea7] mb-3 flex items-center gap-3">
+              <span className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#007ea7] to-[#00a8e8] flex items-center justify-center text-white">
+                <Megaphone className="w-6 h-6" />
+              </span>
+              Marketing Services
+            </h2>
+            <p className="text-gray-600 ml-15">Build brand authority and reach your ideal audience with smart, AI-optimized campaigns.</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {marketingServices.map(({ title, desc, Icon }) => (
+              <article key={title} className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm transition-all hover:shadow-lg hover:-translate-y-1 hover:border-[#00a8e8]/50">
+                <div className="p-6">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="relative">
+                      <div className="absolute inset-0 rounded-full bg-cyan-200/40 blur-xl group-hover:bg-cyan-300/60 transition-colors"></div>
+                      <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 group-hover:scale-110 transition-transform">
+                        <Icon className="h-6 w-6" />
+                      </div>
                     </div>
+                    <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
                 </div>
-                <p className="text-sm text-gray-600 leading-relaxed">{desc}</p>
-              </div>
-            </article>
-          ))}
-          {/* Connected Add Service Card */}
-          <a href="/contact" className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 backdrop-blur-sm shadow-sm transition-all hover:border-slate-400 hover:-translate-y-0.5 flex items-center justify-center p-6">
+              </article>
+            ))}
+          </div>
+        </div>
+
+        {/* Custom Service Card */}
+        <div className="mb-16">
+          <a href="/book-consultation" className="group relative overflow-hidden rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 backdrop-blur-sm shadow-sm transition-all hover:border-[#007ea7] hover:-translate-y-1 hover:shadow-md flex items-center justify-center p-8">
             <div className="absolute -inset-px rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-[#00a86b]/20 via-[#00b8d9]/20 to-[#007ea7]/20 blur"></div>
+              <div className="absolute -inset-px rounded-2xl bg-gradient-to-r from-[#003459]/20 via-[#007ea7]/20 to-[#00a8e8]/20 blur"></div>
             </div>
             <div className="relative flex flex-col items-center text-center">
-              <div className="mb-3 relative">
-                <div className="absolute inset-0 rounded-full bg-cyan-200/40 blur-xl group-hover:bg-cyan-300/40 transition-colors"></div>
-                <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-700 group-hover:scale-105 transition-transform">
-                  <Plus className="h-6 w-6" />
+              <div className="mb-4 relative">
+                <div className="absolute inset-0 rounded-full bg-cyan-200/40 blur-xl group-hover:bg-cyan-300/60 transition-colors"></div>
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-xl bg-gradient-to-br from-[#007ea7] to-[#00a8e8] text-white group-hover:scale-110 transition-transform shadow-lg">
+                  <Plus className="h-8 w-8" />
                 </div>
               </div>
-              <div className="text-base font-semibold text-gray-900">Add Another Service</div>
-              <div className="text-sm text-gray-600">Tell us exactly what you need — we tailor everything. No fixed packages.</div>
+              <div className="text-xl font-bold text-gray-900 mb-2">Need Something Custom?</div>
+              <div className="text-base text-gray-600 max-w-md">Every business is unique. Tell us your specific needs and we'll create a tailored solution just for you.</div>
+              <div className="mt-4 inline-flex items-center gap-2 text-[#007ea7] font-semibold group-hover:gap-3 transition-all">
+                Book Free Consultation
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </div>
             </div>
           </a>
         </div>
 
         {/* Case Study Section */}
-        <div className="mt-12">
-          <div className="mb-6 text-center">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Featured Case Study</h2>
-            <p className="text-gray-600 mt-2">A quick look at how tailored, AI‑enabled strategy unlocked measurable growth.</p>
+        <div className="mt-12" id="case-studies">
+          <div className="mb-8 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] mb-3">
+              Client Success Stories
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              Real results from businesses that partnered with us to transform their sales and marketing
+            </p>
           </div>
-          <article className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm">
+          
+          {/* Featured Case Study */}
+          <article className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm mb-8">
             <div className="grid md:grid-cols-5">
               {/* Video/Thumbnail side */}
               <div className="relative md:col-span-2 p-4">
@@ -119,7 +162,7 @@ export default function ServicesPage() {
                   <Building2 className="h-4 w-4" />
                   <span className="text-xs font-medium tracking-wide uppercase">D2C Retail Brand</span>
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">Scaling Revenue With AI‑Driven Lifecycle Marketing</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Scaling Revenue With AI-Driven Lifecycle Marketing</h3>
                 <p className="text-sm text-gray-600 mb-4">We mapped customer journeys, integrated CRM with AI automations, and launched performance creatives to lift conversion and LTV.</p>
                 <div className="grid grid-cols-3 gap-3">
                   <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center">
@@ -138,6 +181,76 @@ export default function ServicesPage() {
               </div>
             </div>
           </article>
+
+          {/* Additional Case Studies Grid */}
+          <div className="grid md:grid-cols-2 gap-6 mb-8">
+            <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all">
+              <div className="p-6">
+                <div className="flex items-center gap-2 text-[#007ea7] mb-3">
+                  <Building2 className="w-4 h-4" />
+                  <span className="text-xs font-semibold tracking-wide uppercase">SaaS Technology Company</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">AI-Powered Lead Generation Revolution</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Implemented AI-driven prospecting and automated qualification system that dramatically increased qualified lead flow and sales efficiency.
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-center">
+                    <div className="text-base font-bold text-emerald-700">+125%</div>
+                    <div className="text-xs text-emerald-800">Leads</div>
+                  </div>
+                  <div className="rounded-lg border border-blue-200 bg-blue-50 p-2 text-center">
+                    <div className="text-base font-bold text-blue-700">+85%</div>
+                    <div className="text-xs text-blue-800">Qualified</div>
+                  </div>
+                  <div className="rounded-lg border border-amber-200 bg-amber-50 p-2 text-center">
+                    <div className="text-base font-bold text-amber-700">-42%</div>
+                    <div className="text-xs text-amber-800">Cost/Lead</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <article className="group relative overflow-hidden rounded-2xl border border-slate-200 bg-white/70 backdrop-blur-sm shadow-sm hover:shadow-lg transition-all">
+              <div className="p-6">
+                <div className="flex items-center gap-2 text-[#007ea7] mb-3">
+                  <Building2 className="w-4 h-4" />
+                  <span className="text-xs font-semibold tracking-wide uppercase">E-commerce Fashion Brand</span>
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">Smart Ads Campaign Optimization</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Deployed AI-optimized ad campaigns across multiple channels with intelligent targeting and real-time budget allocation.
+                </p>
+                <div className="grid grid-cols-3 gap-2">
+                  <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-center">
+                    <div className="text-base font-bold text-emerald-700">+210%</div>
+                    <div className="text-xs text-emerald-800">ROAS</div>
+                  </div>
+                  <div className="rounded-lg border border-blue-200 bg-blue-50 p-2 text-center">
+                    <div className="text-base font-bold text-blue-700">+67%</div>
+                    <div className="text-xs text-blue-800">CTR</div>
+                  </div>
+                  <div className="rounded-lg border border-purple-200 bg-purple-50 p-2 text-center">
+                    <div className="text-base font-bold text-purple-700">-38%</div>
+                    <div className="text-xs text-purple-800">CPC</div>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <a
+              href="/book-consultation"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] hover:from-[#002742] hover:via-[#006a8f] hover:to-[#0095ce] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all font-semibold"
+            >
+              Get Your Free Strategy Session
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+          </div>
         </div>
       </section>
     </div>

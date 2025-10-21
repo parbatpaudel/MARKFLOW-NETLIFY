@@ -10,9 +10,7 @@ export default function NavLinksDynamic() {
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/services', label: 'Services' },
-    authed
-      ? { href: '/book-consultation', label: 'Book Consultation' }
-      : { href: '/contact', label: 'Contact' },
+    { href: '/book-consultation', label: 'Book Consultation' },
   ]
   return (
     <>

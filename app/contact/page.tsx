@@ -145,20 +145,23 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-gray-500 mb-1">Email</p>
-                      <a href="mailto:contact@marketflow.com" className="text-gray-900 hover:text-[#007ea7] font-medium transition-colors">
-                        contact@marketflow.com
+                      <a href="mailto:marketingflow-details@outlook.com" className="text-gray-900 hover:text-[#007ea7] font-medium transition-colors">
+                        marketingflow-details@outlook.com
                       </a>
                     </div>
                   </div>
 
                   <div className="flex items-start gap-4 group">
-                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-[#007ea7] to-[#00a8e8] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                      <Phone className="w-5 h-5 text-white" />
+                    <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-green-500 to-green-600 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                      <svg className="w-5 h-5 text-white" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                        <path d="M19.11 17.49c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.95 1.17-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.48-.88-.78-1.48-1.74-1.65-2.04-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51-.17-.01-.37-.01-.57-.01-.2 0-.52.07-.8.37-.27.3-1.05 1.03-1.05 2.51 0 1.48 1.08 2.92 1.23 3.12.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.72.64.72.23 1.37.2 1.89.12.58-.09 1.76-.72 2.01-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35z" fill="currentColor"/>
+                        <path d="M16.01 3.2C9.2 3.2 3.76 8.64 3.76 15.46c0 2.21.58 4.28 1.59 6.07L3 29l7.67-2c1.73.95 3.72 1.49 5.84 1.49 6.81 0 12.25-5.44 12.25-12.25S22.82 3.2 16.01 3.2zm0 22.2c-1.94 0-3.74-.57-5.24-1.55l-.38-.24-4.55 1.19 1.22-4.43-.25-.41a10.28 10.28 0 01-1.56-5.3c0-5.68 4.6-10.28 10.28-10.28 5.68 0 10.28 4.6 10.28 10.28 0 5.68-4.6 10.28-10.28 10.28z" fill="currentColor"/>
+                      </svg>
                     </div>
                     <div>
-                      <p className="text-sm font-semibold text-gray-500 mb-1">Phone</p>
-                      <a href="tel:+1234567890" className="text-gray-900 hover:text-[#007ea7] font-medium transition-colors">
-                        +1 (234) 567-890
+                      <p className="text-sm font-semibold text-gray-500 mb-1">WhatsApp</p>
+                      <a href="https://wa.me/9779763200956" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:text-green-600 font-medium transition-colors">
+                        +977 9763200956
                       </a>
                     </div>
                   </div>
