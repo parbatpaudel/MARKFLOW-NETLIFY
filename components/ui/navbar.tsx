@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Menu, X, Play, LogOut, User, Settings, Calendar } from "lucide-react"
+import { Menu, X, Play, LogOut, User } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
 import LoginModal from "./login-modal"
@@ -12,7 +12,6 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
   const [profileOpen, setProfileOpen] = useState(false)
-  const [consultationOpen, setConsultationOpen] = useState(false)
   const supabase = useSupabase()
   const user = useUser()
 
@@ -123,20 +122,49 @@ const Navbar = () => {
 
                       {/* Menu Items */}
                       <div className="py-2">
-                        <button
-                          onClick={() => {
-                            setProfileOpen(false)
-                            setConsultationOpen(true)
-                          }}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-blue-50 transition-all text-left"
-                        >
-                          <Calendar className="w-5 h-5 text-blue-600" />
-                          <span className="text-sm font-medium text-gray-700">Book Consultation</span>
-                        </button>
+                        {/* User ID */}
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">User ID</p>
+                          <p className="text-sm font-mono text-gray-700 truncate">{user.id}</p>
+                        </div>
+
+                        {/* Email */}
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Email</p>
+                          <p className="text-sm text-gray-700 truncate">{user.email}</p>
+                        </div>
+
+                        {/* Name */}
+                        {user.user_metadata?.full_name && (
+                          <div className="px-4 py-2 border-b border-gray-100">
+                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Full Name</p>
+                            <p className="text-sm text-gray-700">{user.user_metadata.full_name}</p>
+                          </div>
+                        )}
+
+                        {/* Provider */}
+                        {user.app_metadata?.provider && (
+                          <div className="px-4 py-2 border-b border-gray-100">
+                            <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Sign-in Method</p>
+                            <p className="text-sm text-gray-700 capitalize">{user.app_metadata.provider}</p>
+                          </div>
+                        )}
+
+                        {/* Created At */}
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Member Since</p>
+                          <p className="text-sm text-gray-700">
+                            {new Date(user.created_at).toLocaleDateString('en-US', { 
+                              year: 'numeric', 
+                              month: 'long', 
+                              day: 'numeric' 
+                            })}
+                          </p>
+                        </div>
                         
                         <button
                           onClick={handleLogout}
-                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-red-50 transition-all text-left border-t border-gray-100"
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-red-50 transition-all text-left mt-2"
                         >
                           <LogOut className="w-5 h-5 text-red-600" />
                           <span className="text-sm font-medium text-red-700">Logout</span>
@@ -234,60 +262,6 @@ const Navbar = () => {
       )}
       {/* Login Modal */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
-      
-      {/* Consultation Popup */}
-      {consultationOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
-            onClick={() => setConsultationOpen(false)}
-          />
-          
-          {/* Modal */}
-          <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 z-10">
-            <button
-              onClick={() => setConsultationOpen(false)}
-              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 transition-all"
-            >
-              <X className="w-5 h-5 text-gray-600" />
-            </button>
-            
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
-                <Calendar className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-2">Book a Consultation</h2>
-              <p className="text-gray-600 mb-6">
-                Let's discuss how we can help grow your business!
-              </p>
-              
-              {/* Contact Options */}
-              <div className="space-y-3">
-                <a
-                  href="mailto:contact@marketflow.com?subject=Consultation Request"
-                  className="block w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-600 transition-all"
-                >
-                  Email Us
-                </a>
-                <a
-                  href="tel:+1234567890"
-                  className="block w-full px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all"
-                >
-                  Call Us
-                </a>
-                <Link
-                  href="/contact"
-                  onClick={() => setConsultationOpen(false)}
-                  className="block w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all"
-                >
-                  Contact Form
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </nav>
   )
 }
