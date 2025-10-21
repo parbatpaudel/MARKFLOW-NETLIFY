@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import Link from "next/link"
-import { Menu, X, Play, LogOut, User } from "lucide-react"
+import { Menu, X, Play, LogOut, User, Settings, Calendar } from "lucide-react"
 import { Button } from "./button"
 import { cn } from "@/lib/utils"
 import LoginModal from "./login-modal"
@@ -11,6 +11,8 @@ import { useSupabase, useUser } from "@/lib/supabase-context"
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false)
+  const [consultationOpen, setConsultationOpen] = useState(false)
   const supabase = useSupabase()
   const user = useUser()
 
@@ -31,6 +33,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     await supabase.auth.signOut()
     setIsOpen(false)
+    setProfileOpen(false)
   }
 
   const navigation = [
@@ -78,20 +81,70 @@ const Navbar = () => {
             </a>
             
             {user ? (
-              <div className="flex items-center gap-2">
-                <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 border border-blue-200">
+              <div className="relative flex items-center gap-2">
+                {/* Profile Icon Button */}
+                <button
+                  onClick={() => setProfileOpen(!profileOpen)}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg bg-blue-50 border border-blue-200 hover:bg-blue-100 transition-all"
+                >
                   <User className="w-4 h-4 text-blue-600" />
                   <span className="text-sm font-semibold text-blue-900 max-w-[150px] truncate">
                     {user.email?.split('@')[0]}
                   </span>
-                </div>
-                <button
-                  onClick={handleLogout}
-                  className="inline-flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold border-2 border-red-300 text-red-700 hover:border-red-400 hover:bg-red-50 transition-all"
-                >
-                  <LogOut className="w-4 h-4" />
-                  <span className="hidden lg:inline">Logout</span>
                 </button>
+
+                {/* Profile Dropdown */}
+                {profileOpen && (
+                  <>
+                    {/* Backdrop */}
+                    <div 
+                      className="fixed inset-0 z-[60]" 
+                      onClick={() => setProfileOpen(false)}
+                    />
+                    
+                    {/* Dropdown Menu */}
+                    <div className="absolute top-full right-0 mt-2 w-72 bg-white rounded-xl shadow-2xl border border-gray-200 z-[70] overflow-hidden">
+                      {/* User Info Header */}
+                      <div className="px-4 py-4 bg-gradient-to-r from-blue-600 to-cyan-500">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+                            <User className="w-6 h-6 text-white" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-white truncate">
+                              {user.user_metadata?.full_name || user.email?.split('@')[0]}
+                            </p>
+                            <p className="text-xs text-blue-100 truncate">
+                              {user.email}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Menu Items */}
+                      <div className="py-2">
+                        <button
+                          onClick={() => {
+                            setProfileOpen(false)
+                            setConsultationOpen(true)
+                          }}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-blue-50 transition-all text-left"
+                        >
+                          <Calendar className="w-5 h-5 text-blue-600" />
+                          <span className="text-sm font-medium text-gray-700">Book Consultation</span>
+                        </button>
+                        
+                        <button
+                          onClick={handleLogout}
+                          className="w-full px-4 py-3 flex items-center gap-3 hover:bg-red-50 transition-all text-left border-t border-gray-100"
+                        >
+                          <LogOut className="w-5 h-5 text-red-600" />
+                          <span className="text-sm font-medium text-red-700">Logout</span>
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             ) : (
               <button
@@ -181,6 +234,60 @@ const Navbar = () => {
       )}
       {/* Login Modal */}
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      
+      {/* Consultation Popup */}
+      {consultationOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
+            onClick={() => setConsultationOpen(false)}
+          />
+          
+          {/* Modal */}
+          <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 z-10">
+            <button
+              onClick={() => setConsultationOpen(false)}
+              className="absolute top-4 right-4 p-2 rounded-lg hover:bg-gray-100 transition-all"
+            >
+              <X className="w-5 h-5 text-gray-600" />
+            </button>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center">
+                <Calendar className="w-8 h-8 text-white" />
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Book a Consultation</h2>
+              <p className="text-gray-600 mb-6">
+                Let's discuss how we can help grow your business!
+              </p>
+              
+              {/* Contact Options */}
+              <div className="space-y-3">
+                <a
+                  href="mailto:contact@marketflow.com?subject=Consultation Request"
+                  className="block w-full px-6 py-3 bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-cyan-600 transition-all"
+                >
+                  Email Us
+                </a>
+                <a
+                  href="tel:+1234567890"
+                  className="block w-full px-6 py-3 border-2 border-blue-600 text-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-all"
+                >
+                  Call Us
+                </a>
+                <Link
+                  href="/contact"
+                  onClick={() => setConsultationOpen(false)}
+                  className="block w-full px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-all"
+                >
+                  Contact Form
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   )
 }

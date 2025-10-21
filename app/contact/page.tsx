@@ -1,11 +1,21 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Send, CheckCircle2, AlertCircle } from "lucide-react"
 import Script from "next/script"
+
+// Declare grecaptcha for TypeScript
+declare global {
+  interface Window {
+    grecaptcha: {
+      ready: (callback: () => void) => void
+      execute: (siteKey: string, options: { action: string }) => Promise<string>
+    }
+  }
+}
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -19,6 +29,7 @@ export default function ContactPage() {
   })
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState<{ type: "success" | "error"; message: string } | null>(null)
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false)
 
   const industries = [
     "Technology",
@@ -51,12 +62,25 @@ export default function ContactPage() {
     setStatus(null)
 
     try {
+      // Get reCAPTCHA token
+      let recaptchaToken = ''
+      if (recaptchaLoaded && window.grecaptcha) {
+        try {
+          recaptchaToken = await window.grecaptcha.execute(
+            process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || '',
+            { action: 'submit_contact_form' }
+          )
+        } catch (error) {
+          console.warn('reCAPTCHA execution failed:', error)
+        }
+      }
+
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           ...formData,
-          recaptchaToken: "dev_bypass",
+          recaptchaToken,
         }),
       })
 
@@ -84,7 +108,19 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="min-h-screen py-12 md:py-20">
+    <>
+      {/* reCAPTCHA v3 Script */}
+      <Script
+        src={`https://www.google.com/recaptcha/api.js?render=${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+        strategy="afterInteractive"
+        onLoad={() => {
+          window.grecaptcha?.ready(() => {
+            setRecaptchaLoaded(true)
+          })
+        }}
+      />
+
+      <div className="min-h-screen py-12 md:py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="text-center mb-12 md:mb-16">
@@ -317,5 +353,6 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+    </>
   )
 }

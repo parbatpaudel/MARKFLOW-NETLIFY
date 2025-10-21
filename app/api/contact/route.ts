@@ -5,24 +5,38 @@ export async function POST(request: Request) {
   try {
     const { name, email, businessName, industry, company, subject, message, recaptchaToken } = await request.json()
 
+    // Validation
+    if (!name || !email || !businessName || !industry || !message) {
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+    }
+
+    // reCAPTCHA v3 verification (score-based)
     const isProd = process.env.NODE_ENV === 'production'
-    if (!recaptchaToken && isProd) {
-      return NextResponse.json({ error: 'reCAPTCHA token is required' }, { status: 400 })
-    }
-
-    const secret = process.env.RECAPTCHA_SECRET_KEY
-    if (!secret && isProd) {
-      return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
-    }
-
-    if (isProd) {
-      const verifyRes = await fetch(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
-        { method: 'POST' }
-      )
-      const verifyData = await verifyRes.json()
-      if (!verifyData.success) {
-        return NextResponse.json({ error: 'reCAPTCHA verification failed' }, { status: 400 })
+    if (recaptchaToken) {
+      const secret = process.env.RECAPTCHA_SECRET_KEY
+      if (!secret) {
+        console.warn('reCAPTCHA secret key not configured')
+      } else {
+        try {
+          const verifyRes = await fetch(
+            `https://www.google.com/recaptcha/api/siteverify?secret=${secret}&response=${recaptchaToken}`,
+            { method: 'POST' }
+          )
+          const verifyData = await verifyRes.json()
+          
+          // reCAPTCHA v3 uses score (0.0 - 1.0). Higher is more likely human.
+          // Lower threshold to 0.3 for better acceptance rate
+          if (!verifyData.success || (verifyData.score && verifyData.score < 0.3)) {
+            console.log('reCAPTCHA score:', verifyData.score)
+            return NextResponse.json({ 
+              error: 'Suspicious activity detected. Please try again.' 
+            }, { status: 400 })
+          }
+          console.log('✅ reCAPTCHA passed with score:', verifyData.score)
+        } catch (error) {
+          console.error('reCAPTCHA verification error:', error)
+          // Continue even if reCAPTCHA fails (graceful degradation)
+        }
       }
     }
 
