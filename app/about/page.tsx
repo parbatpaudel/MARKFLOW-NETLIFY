@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Users, Target, Award, Heart, Star, Quote, Twitter, Linkedin, Youtube, Facebook, Instagram } from 'lucide-react'
+import { Users, Target, Award, Heart, Star, Quote, Linkedin, Youtube, Facebook, Instagram, ChevronDown } from 'lucide-react'
 
 const AboutPage = () => {
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
+
   const values = [
     {
       icon: Target,
@@ -48,11 +51,45 @@ const AboutPage = () => {
   ]
 
   const socials = [
-    { name: 'X (Twitter)', href: 'https://twitter.com/', icon: Twitter },
     { name: 'Facebook', href: 'https://facebook.com/', icon: Facebook },
     { name: 'Instagram', href: 'https://instagram.com/', icon: Instagram },
     { name: 'LinkedIn', href: 'https://www.linkedin.com/', icon: Linkedin },
     { name: 'YouTube', href: 'https://www.youtube.com/@SIMPLE_ANALYSIS-K24', icon: Youtube },
+  ]
+
+  const faqs = [
+    {
+      question: "What makes MarketFlow different from other marketing agencies?",
+      answer: "We don't sell packages. Every strategy is custom-built around your business needs. We combine AI-powered automation with human expertise to deliver measurable results, not just reports."
+    },
+    {
+      question: "How do you use AI in your marketing and sales strategies?",
+      answer: "We integrate AI tools for lead generation, qualification, content creation, ad optimization, and analytics. But AI supports our strategy—it doesn't replace the human understanding of your brand and market."
+    },
+    {
+      question: "Do you offer free consultations?",
+      answer: "Yes! We provide complimentary strategy sessions to analyze your business, identify growth opportunities, and recommend tailored solutions. No obligation, no fixed packages."
+    },
+    {
+      question: "What types of businesses do you work with?",
+      answer: "We work with D2C brands, SaaS companies, e-commerce stores, B2B services, and growing businesses across industries. If you need to scale sales or improve marketing ROI, we can help."
+    },
+    {
+      question: "How long does it take to see results?",
+      answer: "Most clients see measurable improvements within 60-90 days. However, timelines vary based on your goals, industry, and current marketing maturity. We focus on sustainable, long-term growth."
+    },
+    {
+      question: "What services do you offer?",
+      answer: "Our core services include AI-powered lead generation, sales automation, ad campaign optimization, content strategy, CRM integration, marketing analytics, and custom growth consulting."
+    },
+    {
+      question: "Do you require long-term contracts?",
+      answer: "No. We believe in earning your trust through results. While we recommend longer engagements for best results, we offer flexible arrangements based on your needs and goals."
+    },
+    {
+      question: "Can you help with both sales and marketing?",
+      answer: "Absolutely. We specialize in aligning sales and marketing efforts to create seamless customer journeys, from first touch to closed deal. This integration is key to maximizing revenue."
+    }
   ]
 
   const team = [
@@ -258,6 +295,72 @@ const AboutPage = () => {
                 </Card>
               </motion.div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-white">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-600">Everything you need to know about working with MarketFlow</p>
+          </motion.div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                viewport={{ once: true }}
+                className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full px-6 py-5 flex items-center justify-between text-left bg-white hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-semibold text-gray-900 text-lg pr-4">{faq.question}</span>
+                  <ChevronDown
+                    className={`w-5 h-5 text-gray-500 flex-shrink-0 transition-transform duration-300 ${
+                      openFaq === index ? 'rotate-180' : ''
+                    }`}
+                  />
+                </button>
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: openFaq === index ? 'auto' : 0,
+                    opacity: openFaq === index ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3 }}
+                  className="overflow-hidden"
+                >
+                  <div className="px-6 pb-5 pt-2 text-gray-600 leading-relaxed bg-gray-50">
+                    {faq.answer}
+                  </div>
+                </motion.div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <p className="text-gray-600 mb-4">Still have questions?</p>
+            <a
+              href="/book-consultation"
+              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl text-white bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] hover:from-[#002742] hover:via-[#006a8f] hover:to-[#0095ce] shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all font-semibold"
+            >
+              Book Free Consultation
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>

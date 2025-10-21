@@ -1,11 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { useUser } from '@/lib/supabase-context'
 import { useRouter } from 'next/navigation'
 import OnboardingModal from '@/components/ui/onboarding-modal'
-import CaseStudiesSection from '@/components/ui/case-studies-section'
 import FeaturesSection from '@/components/ui/features-section'
+import { Play, X, Building2 } from 'lucide-react'
 
 export default function HomePage() {
   const user = useUser()
@@ -13,6 +13,8 @@ export default function HomePage() {
   const isAuthed = !!user
   const [loading, setLoading] = useState(true)
   const [showOnboarding, setShowOnboarding] = useState(false)
+  const [showCaseStudy, setShowCaseStudy] = useState(false)
+  const [caseStudyVideoId, setCaseStudyVideoId] = useState('dQw4w9WgXcQ')
 
   useEffect(() => {
     const t = setTimeout(() => {
@@ -38,6 +40,30 @@ export default function HomePage() {
     }, 900)
     return () => clearTimeout(t)
   }, [])
+
+  const handleOnboardingClose = () => {
+    setShowOnboarding(false)
+    // Show latest case study popup after onboarding
+    setTimeout(() => {
+      const viewedStudies = localStorage.getItem('marketflow_viewed_studies')
+      const viewed = viewedStudies ? JSON.parse(viewedStudies) : []
+      
+      // Determine which case study to show (id-1, id-2, id-3 in sequence)
+      if (!viewed.includes('id-1')) {
+        setCaseStudyVideoId('dQw4w9WgXcQ') // ID-1 video
+        setShowCaseStudy(true)
+        localStorage.setItem('marketflow_viewed_studies', JSON.stringify([...viewed, 'id-1']))
+      } else if (!viewed.includes('id-2')) {
+        setCaseStudyVideoId('dQw4w9WgXcQ') // ID-2 video
+        setShowCaseStudy(true)
+        localStorage.setItem('marketflow_viewed_studies', JSON.stringify([...viewed, 'id-2']))
+      } else if (!viewed.includes('id-3')) {
+        setCaseStudyVideoId('dQw4w9WgXcQ') // ID-3 video
+        setShowCaseStudy(true)
+        localStorage.setItem('marketflow_viewed_studies', JSON.stringify([...viewed, 'id-3']))
+      }
+    }, 1000)
+  }
   return (
     <main className="relative">
       {/* Loading Overlay */}
@@ -80,24 +106,22 @@ export default function HomePage() {
             {/* Main Headline */}
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold mb-6 leading-tight tracking-tight">
               <span className="block text-slate-800 mb-4">
-                Let's Solve Your Business{" "}
+                Transform Your Business With{" "}
               </span>
               <span className="block mb-4">
                 <span className="relative inline-block group">
-                  <span className="relative z-10 text-[#003459] font-extrabold">Flaw</span>
+                  <span className="relative z-10 text-[#003459] font-extrabold">AI-Powered</span>
                   <span className="absolute -inset-3 bg-[#003459]/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></span>
-                  <span className="absolute -inset-1 bg-gradient-to-r from-[#003459]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></span>
                   <svg className="absolute -bottom-4 left-0 w-full opacity-80" viewBox="0 0 200 16" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 10 Q50 4, 100 10 T200 10" stroke="#003459" strokeWidth="5" fill="none" strokeLinecap="round"/>
                   </svg>
                 </span>
               </span>
               <span className="block">
-                <span className="text-slate-800">To Make It{" "}</span>
+                <span className="text-slate-800">Sales & Marketing{" "}</span>
                 <span className="relative inline-block group">
-                  <span className="relative z-10 bg-gradient-to-r from-[#007ea7] to-[#00a8e8] bg-clip-text text-transparent font-extrabold">Flow</span>
+                  <span className="relative z-10 bg-gradient-to-r from-[#007ea7] to-[#00a8e8] bg-clip-text text-transparent font-extrabold">Solutions</span>
                   <span className="absolute -inset-3 bg-gradient-to-r from-[#007ea7]/10 via-[#00a8e8]/10 to-[#007ea7]/10 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl"></span>
-                  <span className="absolute -inset-1 bg-gradient-to-r from-transparent via-[#00a8e8]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></span>
                   <svg className="absolute -bottom-4 left-0 w-full opacity-80" viewBox="0 0 200 16" xmlns="http://www.w3.org/2000/svg">
                     <path d="M0 10 Q50 4, 100 10 T200 10" stroke="#00a8e8" strokeWidth="5" fill="none" strokeLinecap="round"/>
                   </svg>
@@ -107,9 +131,9 @@ export default function HomePage() {
 
             {/* Slogan/Subtitle */}
             <p className="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-normal">
-              We analyze your business, identify gaps, and deliver
-              <span className="font-semibold text-slate-800"> actionable solutions </span>
-              through guided steps.
+              Boost revenue, automate processes, and close more deals with
+              <span className="font-semibold text-slate-800"> intelligent automation </span>
+              that drives real results.
             </p>
 
             {/* CTA Buttons */}
@@ -242,11 +266,123 @@ export default function HomePage() {
       {/* Features Section */}
       <FeaturesSection />
 
-      {/* Case Studies Section */}
-      <CaseStudiesSection />
+      {/* Single Case Study - Ad Creation */}
+      <section className="py-16 px-4 bg-gradient-to-b from-white to-gray-50">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-[#003459] via-[#007ea7] to-[#00a8e8] mb-4">
+              Real Results, Real Growth
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              See how AI-powered ad creation helped businesses scale their revenue
+            </p>
+          </div>
+
+          <motion.article
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="relative overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl"
+          >
+            <div className="grid md:grid-cols-5">
+              {/* Video Side */}
+              <div className="relative md:col-span-2 p-4">
+                <div className="relative aspect-video w-full overflow-hidden rounded-xl border border-slate-200 bg-black">
+                  <iframe
+                    className="absolute inset-0 h-full w-full"
+                    src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+                    title="AI-Powered Ad Creation Case Study"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+                <p className="mt-2 text-xs text-slate-500">2024/09/06</p>
+              </div>
+              {/* Content Side */}
+              <div className="md:col-span-3 p-6">
+                <div className="flex items-center gap-2 text-[#007ea7] mb-2">
+                  <Building2 className="h-4 w-4" />
+                  <span className="text-xs font-medium tracking-wide uppercase">E-commerce Fashion Brand</span>
+                </div>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">Smart Ads Campaign Optimization</h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  Deployed AI-optimized ad campaigns across multiple channels with intelligent targeting and real-time budget allocation, driving exceptional ROI.
+                </p>
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-center">
+                    <div className="text-xl font-bold text-emerald-700">+210%</div>
+                    <div className="text-xs text-emerald-800">ROAS</div>
+                  </div>
+                  <div className="rounded-lg border border-blue-200 bg-blue-50 p-3 text-center">
+                    <div className="text-xl font-bold text-blue-700">+67%</div>
+                    <div className="text-xs text-blue-800">CTR</div>
+                  </div>
+                  <div className="rounded-lg border border-purple-200 bg-purple-50 p-3 text-center">
+                    <div className="text-xl font-bold text-purple-700">-38%</div>
+                    <div className="text-xs text-purple-800">CPC</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.article>
+
+          <div className="text-center mt-8">
+            <a
+              href="/services#case-studies"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-[#007ea7] border-2 border-[#007ea7] hover:bg-[#007ea7] hover:text-white transition-all font-semibold"
+            >
+              View All Case Studies
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Case Study Popup Modal (shown after onboarding) */}
+      <AnimatePresence>
+        {showCaseStudy && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+            onClick={() => setShowCaseStudy(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-5xl aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setShowCaseStudy(false)}
+                className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-white/10 backdrop-blur hover:bg-white/20 flex items-center justify-center transition-all group"
+              >
+                <X className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+              </button>
+
+              {/* YouTube Iframe */}
+              <iframe
+                className="w-full h-full"
+                src={`https://www.youtube.com/embed/${caseStudyVideoId}?autoplay=1`}
+                title="Latest Case Study"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Onboarding Modal */}
-      <OnboardingModal isOpen={showOnboarding && !loading} onClose={() => setShowOnboarding(false)} />
+      <OnboardingModal isOpen={showOnboarding && !loading} onClose={handleOnboardingClose} />
     </main>
   )
 }
