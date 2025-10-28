@@ -347,7 +347,7 @@ Status: Up to date
 
 2. **Contact Page:**
    - Fix backend server issue
-   - Add reCAPTCHA protection
+ 
    - Implement form auto-save
 
 3. **Mobile Navbar:**

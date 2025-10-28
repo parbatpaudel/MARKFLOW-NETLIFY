@@ -4,36 +4,37 @@ import FooterController from '@/components/ui/FooterController'
 import SupabaseProvider from '@/components/providers/supabase-provider'
 import PostLoginPrompt from '@/components/ui/post-login-prompt'
 import Navbar from '@/components/ui/navbar'
+import { organizationStructuredData, websiteStructuredData } from './structured-data'
 
 const ChatWidget = dynamic(() => import('@/components/ui/chat-widget').then(m => m.default), { ssr: false })
 
 export const metadata = {
   title: {
-    default: 'marketflow - Solve Your Business Flaw | Business Consulting Solutions',
-    template: '%s | marketflow - Business Consulting Experts'
+    default: 'MarketFlow - AI-Powered Business Solutions in Nepal | Digital Transformation',
+    template: '%s | MarketFlow Nepal - Business Consulting & AI Solutions'
   },
-  description: 'We analyze your business, spot gaps, and provide actionable AI-powered solutions through simple, guided steps. Let us help your business flow with expert consulting services.',
-  keywords: 'business consulting, AI business solutions, business analysis, business optimization, marketflow, business consulting services, business strategy',
+  description: 'Leading AI-powered business consulting firm in Nepal. We help Nepali businesses transform with cutting-edge AI solutions, sales automation, and digital strategies. Serving Kathmandu, Pokhara, and across Nepal.',
+  keywords: 'AI business solutions Nepal, business consulting Nepal, sales automation Nepal, digital transformation Nepal, AI consulting Kathmandu, business strategy Nepal, marketflow Nepal, AI solutions Pokhara, business automation Nepal, digital marketing Nepal',
   openGraph: {
-    title: 'marketflow - Solve Your Business Flaw | AI-Powered Business Solutions',
-    description: 'Transform your business with our AI-powered analysis and actionable solutions. Expert consulting for businesses of all sizes.',
+    title: 'MarketFlow Nepal - AI-Powered Business Solutions & Digital Transformation',
+    description: 'Transform your Nepal-based business with our AI-powered solutions. Expert consulting services for companies in Kathmandu, Pokhara, and across Nepal.',
     url: 'https://marketflow.com',
-    siteName: 'marketflow',
+    siteName: 'MarketFlow Nepal',
     images: [
       {
         url: '/marketflow-symbol.png',
         width: 800,
         height: 600,
-        alt: 'marketflow logo',
+        alt: 'MarketFlow Nepal - AI Business Solutions',
       },
     ],
-    locale: 'en_US',
+    locale: 'en_NP',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'marketflow - AI-Powered Business Solutions',
-    description: 'Transform your business with our AI-powered analysis and actionable solutions.',
+    title: 'MarketFlow Nepal - AI-Powered Business Solutions',
+    description: 'Leading AI business consulting firm serving businesses across Nepal with digital transformation and sales automation.',
     images: ['/marketflow-symbol.png'],
   },
   robots: {
@@ -60,13 +61,28 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
-
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="geo.region" content="NP" />
+        <meta name="geo.placename" content="Kathmandu, Nepal" />
+        <meta name="geo.position" content="27.7172;85.324" />
+        <meta name="ICBM" content="27.7172, 85.324" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="alternate icon" href="/favicon.ico" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationStructuredData),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteStructuredData),
+          }}
+        />
       </head>
       <body className="antialiased font-sans relative overflow-x-hidden">
         <SupabaseProvider>
@@ -104,23 +120,6 @@ export default function RootLayout({
           </main>
           {/* Floating chat widget */}
           <ChatWidget />
-          <FooterController>
-          <footer className="bg-gray-900 text-white">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-              <div className="text-center">
-                <div className="flex items-center justify-center mb-4">
-                  <span className="text-xl font-bold">marketflow</span>
-                </div>
-                <p className="text-gray-300 mb-6 max-w-md mx-auto">
-                  Building modern, scalable marketing solutions with cutting-edge technology.
-                </p>
-                <p className="text-gray-400 text-sm">
-                  © 2025 marketflow. All rights reserved.
-                </p>
-              </div>
-            </div>
-          </footer>
-          </FooterController>
           <PostLoginPrompt />
         </div>
         </SupabaseProvider>

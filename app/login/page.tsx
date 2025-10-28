@@ -10,13 +10,18 @@ export default function LoginPage() {
   }
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Announcement Bar */}
+      <div className="absolute top-0 left-0 right-0 bg-[#6A00FF] text-white py-1 text-center text-lg font-medium z-20">
+        🎯 Now Free Consultation
+      </div>
+      
       {/* Animated gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0b1220]" />
       <div className="absolute -top-32 -left-32 h-80 w-80 rounded-full bg-blue-500/20 blur-3xl animate-pulse" />
       <div className="absolute -bottom-32 -right-32 h-80 w-80 rounded-full bg-cyan-500/20 blur-3xl animate-pulse" style={{ animationDelay: '0.8s' }} />
       <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #ffffff 1px, transparent 0)', backgroundSize: '24px 24px' }} />
 
-      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl shadow-2xl bg-white/95 backdrop-blur-md border border-slate-200">
+      <div className="relative z-10 w-full max-w-md p-8 rounded-2xl shadow-2xl bg-white/95 backdrop-blur-md border border-slate-200 mt-12">
         <div className="text-center mb-6">
           <div className="inline-flex items-center justify-center h-10 w-10 rounded-xl bg-blue-600 text-white shadow-sm mb-3">
             <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11c0-3.866 3.582-7 8-7-3.866 0-7 3.134-7 7s3.134 7 7 7c-4.418 0-8-3.134-8-7z"/></svg>

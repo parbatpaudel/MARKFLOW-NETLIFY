@@ -47,10 +47,6 @@ The following files are automatically ignored by Git:
 - `GOOGLE_CLIENT_ID` - From Google Cloud Console
 - `GOOGLE_CLIENT_SECRET` - From Google Cloud Console
 
-### reCAPTCHA (Optional)
-- `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` - reCAPTCHA v2 site key
-- `RECAPTCHA_SECRET_KEY` - reCAPTCHA v2 secret key
-
 ## 🚫 Netlify Secrets Scanning
 
 If Netlify detects secrets in your build:

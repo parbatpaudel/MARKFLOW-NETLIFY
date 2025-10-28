@@ -4,81 +4,22 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 17 24% 9%;
-    --card: 0 0% 100%;
-    --card-foreground: 17 24% 9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 17 24% 9%;
-    --primary: 213 94% 68%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 17 24% 9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 17 24% 9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 213 94% 68%;
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground font-sans;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-rendering: optimizeLegibility;
-    font-kerning: normal;
-  }
-}
-
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100;
+  background-color: #e5e7eb;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 rounded-full;
+  background-color: rgba(106, 0, 255, 0.3);
+  border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400;
+  background-color: rgba(106, 0, 255, 0.5);
 }
 
 /* Smooth scrolling */
@@ -86,13 +27,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
-/* Slightly bolder small text for readability site-wide */
-.text-xs,
-.text-sm {
-  font-weight: 500;
+/* Base styles */
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
 }
 
+/* Custom animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -108,7 +52,6 @@ html {
   animation: fadeInUp 0.6s ease-out;
 }
 
-/* Blob animation for AI fiesta background */
 @keyframes blob {
   0% {
     transform: translate(0px, 0px) scale(1);
@@ -128,7 +71,6 @@ html {
   animation: blob 7s infinite;
 }
 
-/* Shimmer animation for buttons */
 @keyframes shimmer {
   0% {
     background-position: -200% 0;
@@ -142,7 +84,6 @@ html {
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* Floating animation for skill icons */
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -156,7 +97,6 @@ html {
   animation: float 6s ease-in-out infinite;
 }
 
-/* Slower float for shapes */
 @keyframes float-slow {
   0%, 100% {
     transform: translateY(0px) rotate(0deg);
@@ -182,13 +122,12 @@ html {
   animation-delay: 6s;
 }
 
-/* Pulse glow animation */
 @keyframes pulse-glow {
   0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 168, 232, 0.4);
+    box-shadow: 0 0 20px rgba(106, 0, 255, 0.4);
   }
   50% {
-    box-shadow: 0 0 40px rgba(0, 168, 232, 0.6);
+    box-shadow: 0 0 40px rgba(106, 0, 255, 0.6);
   }
 }
 
@@ -196,7 +135,6 @@ html {
   animation: pulse-glow 3s ease-in-out infinite;
 }
 
-/* Scale on hover */
 .hover-scale {
   transition: transform 0.3s ease;
 }
@@ -205,7 +143,6 @@ html {
   transform: scale(1.05);
 }
 
-/* Gradient shift animation */
 @keyframes gradient-shift {
   0% {
     background-position: 0% 50%;
@@ -223,7 +160,6 @@ html {
   animation: gradient-shift 8s ease infinite;
 }
 
-/* Slide up animation */
 @keyframes slide-up {
   from {
     opacity: 0;
@@ -239,7 +175,6 @@ html {
   animation: slide-up 0.6s ease-out;
 }
 
-/* Bounce subtle */
 @keyframes bounce-subtle {
   0%, 100% {
     transform: translateY(0);
@@ -253,7 +188,6 @@ html {
   animation: bounce-subtle 2s ease-in-out infinite;
 }
 
-/* Rotate slow */
 @keyframes rotate-slow {
   from {
     transform: rotate(0deg);
@@ -267,7 +201,6 @@ html {
   animation: rotate-slow 20s linear infinite;
 }
 
-/* Fade in */
 @keyframes fade-in {
   from {
     opacity: 0;

@@ -1,10 +1,33 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Users, Target, Award, Heart, Star, Quote, Linkedin, Youtube, Facebook, Instagram, ChevronDown } from 'lucide-react'
+import { 
+  Sparkles,
+  Target,
+  TrendingUp,
+  Calendar,
+  CheckCircle,
+  Globe,
+  ArrowRight,
+  Star,
+  Award,
+  Zap,
+  Phone,
+  Mail,
+  MapPin,
+  Users,
+  Building2,
+  Lightbulb,
+  Heart,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Youtube,
+  Quote,
+  ChevronDown
+} from 'lucide-react'
 
 const AboutPage = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -117,8 +140,13 @@ const AboutPage = () => {
 
   return (
     <div className="min-h-screen">
+      {/* Announcement Bar */}
+      <div className="bg-[#6A00FF] text-white py-1 text-center text-lg font-medium">
+        🎯 Now Free Consultation
+      </div>
+      
       {/* Hero Section */}
-      <section className="pt-20 pb-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <section className="pt-0 pb-16 bg-gradient-to-br from-blue-50 via-white to-purple-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <motion.h1

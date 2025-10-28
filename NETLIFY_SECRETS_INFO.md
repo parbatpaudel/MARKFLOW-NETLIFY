@@ -5,13 +5,7 @@
 The following environment variables with `NEXT_PUBLIC_` prefix are INTENTIONALLY 
 exposed in the client-side bundle and are NOT sensitive:
 
-1. NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-   - This is Google reCAPTCHA's PUBLIC site key
-   - Designed to be visible in client-side JavaScript
-   - Not a security risk
-   - Reference: https://developers.google.com/recaptcha/docs/display
-
-2. NEXT_PUBLIC_SUPABASE_URL
+1. NEXT_PUBLIC_SUPABASE_URL
    - Public URL of your Supabase project
    - Not sensitive, needed for client connections
    - Protected by Row Level Security (RLS)
@@ -40,7 +34,6 @@ embedded in the client-side JavaScript bundle. These are:
 
 The following are TRUE secrets and should ONLY be in Netlify Environment Variables:
 
-- RECAPTCHA_SECRET_KEY (server-side only)
 - GOOGLE_CLIENT_SECRET (server-side only)
 - NEXTAUTH_SECRET (server-side only)
 - DATABASE_URL (server-side only)
@@ -52,7 +45,7 @@ These NEVER appear in client-side code and are not in the repository.
 
 In `netlify.toml`, we've configured:
 ```toml
-SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_RECAPTCHA_SITE_KEY,NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_FIREBASE_API_KEY"
+SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_SUPABASE_URL,NEXT_PUBLIC_SUPABASE_ANON_KEY,NEXT_PUBLIC_FIREBASE_API_KEY"
 ```
 
 This tells Netlify's secrets scanner to ignore these public variables.

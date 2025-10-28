@@ -1,14 +1,13 @@
 "use client"
-"use client"
 
 import { useEffect, useRef, useState } from "react"
-import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
-import { Bot, MessageSquare, Send, Trash2, X } from "lucide-react"
+import { Bot, MessageSquare, Send, X, User, CheckCheck } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
-type Msg = { role: "user" | "assistant"; content: string }
+type Msg = { role: "user" | "assistant"; content: string; timestamp: Date }
 type ChatSession = {
   id: string
   title: string
@@ -20,40 +19,47 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Msg[]>([])
   const [input, setInput] = useState("")
   const [loading, setLoading] = useState(false)
+  const [isTyping, setIsTyping] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
   const [sessions, setSessions] = useState<ChatSession[]>([])
   const [currentSessionId, setCurrentSessionId] = useState<string>("")
-  const [showSessions, setShowSessions] = useState(false)
-  const [showContactHelper, setShowContactHelper] = useState(false)
 
   // Helpers for localStorage keys
   const SESSIONS_KEY = "mf_chats"
   const CURRENT_KEY = "mf_current_chat"
   const MESSAGES_PREFIX = "mf_chat_msgs_"
 
+  // Scroll to bottom of chat
   useEffect(() => {
-    if (!open) return
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" })
-  }, [messages, open])
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight
+    }
+  }, [messages, isTyping])
 
   // Load sessions and current chat on mount
   useEffect(() => {
+    if (typeof window === 'undefined') return
+    
     try {
       const raw = localStorage.getItem(SESSIONS_KEY)
       const list: ChatSession[] = raw ? JSON.parse(raw) : []
       setSessions(list)
+      
       const cur = localStorage.getItem(CURRENT_KEY) || ""
       setCurrentSessionId(cur)
+      
       if (cur) {
         const storedMsgs = localStorage.getItem(MESSAGES_PREFIX + cur)
-        if (storedMsgs) setMessages(JSON.parse(storedMsgs))
+        if (storedMsgs) {
+          setMessages(JSON.parse(storedMsgs))
+        }
       } else if (list.length === 0) {
         // First-time visitor: auto-create a chat
-        const s = createSessionInternal("New chat")
-        setShowSessions(false)
+        createSessionInternal("New chat")
       }
-    } catch {}
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    } catch (error) {
+      console.error("Error loading chat sessions:", error)
+    }
   }, [])
 
   // Persist messages per session
@@ -79,69 +85,79 @@ export default function ChatWidget() {
     const s: ChatSession = { id: createId(), title, createdAt: Date.now() }
     const next = [s, ...sessions]
     setSessions(next)
-    try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(next)) } catch {}
-    try { localStorage.setItem(CURRENT_KEY, s.id) } catch {}
-    // start empty; user will initiate the conversation
-    const seed: Msg[] = []
-    try { localStorage.setItem(MESSAGES_PREFIX + s.id, JSON.stringify(seed)) } catch {}
-    setMessages(seed)
-    setCurrentSessionId(s.id)
+    
+    try { 
+      localStorage.setItem(SESSIONS_KEY, JSON.stringify(next))
+      localStorage.setItem(CURRENT_KEY, s.id)
+      
+      // Initialize empty messages for this session
+      const seed: Msg[] = []
+      localStorage.setItem(MESSAGES_PREFIX + s.id, JSON.stringify(seed))
+      setMessages(seed)
+      setCurrentSessionId(s.id)
+    } catch (error) {
+      console.error("Error initializing session:", error)
+    }
+    
     return s
   }
 
-  const newChat = () => {
-    createSessionInternal("New chat")
-  }
-
-  const switchChat = (id: string) => {
-    setCurrentSessionId(id)
-    try { localStorage.setItem(CURRENT_KEY, id) } catch {}
-    const raw = localStorage.getItem(MESSAGES_PREFIX + id)
-    setMessages(raw ? JSON.parse(raw) : [{ role: "assistant", content: "New chat. How can I help?" }])
-  }
-
-  const deleteChat = (id: string) => {
-    const next = sessions.filter(s => s.id !== id)
-    setSessions(next)
-    try { localStorage.setItem(SESSIONS_KEY, JSON.stringify(next)) } catch {}
-    try { localStorage.removeItem(MESSAGES_PREFIX + id) } catch {}
-    if (currentSessionId === id) {
-      if (next.length) {
-        switchChat(next[0].id)
-      } else {
-        const s = createSessionInternal("New chat")
-        switchChat(s.id)
-      }
-    }
-  }
-
-  // newChat is defined above via createSessionInternal; remove duplicate
-
   const send = async () => {
     if (!input.trim() || loading || !currentSessionId) return
-    const userMsg: Msg = { role: "user", content: input.trim() }
-    const next = [...messages, userMsg]
-    setMessages(next)
+    
+    const userMsg: Msg = { role: "user", content: input.trim(), timestamp: new Date() }
+    setMessages(prev => [...prev, userMsg])
     setInput("")
     setLoading(true)
+    setIsTyping(true)
+    
     try {
-      // Enhanced AI response with business analysis capabilities
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          messages: next, 
-          sessionId: currentSessionId || undefined,
-          businessContext: true, // Enable business-specific context
-          analysisMode: true // Enable deeper business analysis
+      // Call our Gemini API
+      const response = await fetch('/api/gemini', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: `You are a sales assistant for a business consulting company. Please provide a helpful, professional response to this customer inquiry: "${input.trim()}". 
+          Keep your response concise but informative, focusing on how our AI-powered sales automation services can help businesses. 
+          Use a friendly, approachable tone. Never mention that you're an AI or that you're waiting. Just provide helpful responses.
+          
+          Company Information:
+          - We specialize in AI-powered sales automation
+          - We help businesses increase conversions, speed up follow-ups, and scale revenue
+          - Our services include intelligent prospecting, conversational AI, hyper-personalized outreach, and automated sales workflows
+          - We work with B2B companies, SaaS businesses, and e-commerce brands`,
         }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data?.error || "Chat failed")
-      setMessages((prev) => [...prev, { role: "assistant", content: data.reply }])
-    } catch (e) {
-      setMessages((prev) => [...prev, { role: "assistant", content: "I'm here to help analyze your business challenges. Could you tell me more about your specific business needs or challenges you're facing?" }])
-    } finally {
+      
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`)
+      }
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setIsTyping(false)
+        const assistantMsg: Msg = { 
+          role: "assistant", 
+          content: data.response, 
+          timestamp: new Date() 
+        }
+        setMessages(prev => [...prev, assistantMsg])
+        setLoading(false)
+      } else {
+        throw new Error(data.error || 'Failed to get response')
+      }
+    } catch (error) {
+      console.error('Error getting AI response:', error)
+      setIsTyping(false)
+      const assistantMsg: Msg = { 
+        role: "assistant", 
+        content: "Thanks for your message! Our team will get back to you shortly. In the meantime, feel free to ask more questions about our services.", 
+        timestamp: new Date() 
+      }
+      setMessages(prev => [...prev, assistantMsg])
       setLoading(false)
     }
   }
@@ -153,192 +169,231 @@ export default function ChatWidget() {
     }
   }
 
+  // Format time for messages
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }
+
+  // Format date for separators
+  const formatDate = (date: Date) => {
+    const d = new Date(date)
+    const today = new Date()
+    const yesterday = new Date(today)
+    yesterday.setDate(yesterday.getDate() - 1)
+    
+    if (d.toDateString() === today.toDateString()) {
+      return "Today"
+    } else if (d.toDateString() === yesterday.toDateString()) {
+      return "Yesterday"
+    } else {
+      return d.toLocaleDateString([], { month: 'short', day: 'numeric' })
+    }
+  }
+
+  // Group messages by date
+  const groupMessagesByDate = () => {
+    const grouped: { [key: string]: Msg[] } = {}
+    messages.forEach(msg => {
+      const date = new Date(msg.timestamp)
+      const dateKey = date.toDateString()
+      if (!grouped[dateKey]) {
+        grouped[dateKey] = []
+      }
+      grouped[dateKey].push(msg)
+    })
+    return grouped
+  }
+
+  const groupedMessages = groupMessagesByDate()
+
   return (
     <>
-      {/* Toggle Button */}
-      <button
-        aria-label={open ? "Close chat" : "Open chat"}
-        onClick={() => {
-          // Ensure a session exists when opening
-          if (!open) {
-            const hasSession = currentSessionId || sessions.length > 0
-            if (!hasSession) {
-              const s = createSessionInternal("New chat")
-              setCurrentSessionId(s.id)
-            }
-          }
-          setOpen((v) => !v)
-        }}
-        className="fixed bottom-5 right-5 z-50 group"
-      >
-        <div className="relative">
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#003459] via-[#007ea7] to-[#00a8e8] shadow-2xl overflow-hidden flex items-center justify-center transition-all group-hover:scale-105 group-active:scale-95">
-            <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_20%,white,transparent_40%)]"></div>
-            <MessageSquare className="relative w-6 h-6 text-white" />
-          </div>
-          {!open && (
-            <span className="absolute -top-2 -left-2 text-xs bg-white/95 text-slate-800 rounded-full px-2 py-0.5 shadow">Chat</span>
-          )}
-        </div>
-      </button>
+      {/* Collapsed Chat Bubble */}
+      <AnimatePresence>
+        {!open && (
+          <motion.button
+            initial={{ scale: 0, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0, opacity: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 20 }}
+            aria-label="Open chat"
+            onClick={() => setOpen(true)}
+            className="fixed bottom-6 right-6 z-50 group"
+          >
+            <div className="relative">
+              <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#6A00FF] to-[#7B1FFF] shadow-2xl overflow-hidden flex items-center justify-center transition-all group-hover:scale-110 group-active:scale-95 hover:shadow-[0_0_20px_rgba(106,0,255,0.5)]">
+                <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_30%_20%,white,transparent_40%)]"></div>
+                <MessageSquare className="relative w-6 h-6 text-white" />
+              </div>
+            </div>
+          </motion.button>
+        )}
+      </AnimatePresence>
 
-      {/* Chat Panel - Smaller on Mobile */}
-      {open && (
-        <div className="fixed z-50 bottom-0 right-0 left-0 md:bottom-5 md:left-auto md:right-6 md:w-[420px] lg:w-[480px]">
-          <Card className="border border-slate-700 shadow-2xl overflow-hidden rounded-t-3xl md:rounded-2xl h-[70vh] md:h-[min(600px,80vh)] bg-slate-900 text-slate-100">
-            <div className="flex h-full">
-              {/* No permanent left rail to keep size small; use overlay for chats */}
-
-              {/* Right column */}
-              <section className="flex-1 flex flex-col">
-                {/* Header - Compact */}
-                <div className="flex items-center justify-between px-3 md:px-4 py-3 border-b border-slate-600 bg-slate-800 shrink-0">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white text-xs font-black shadow-md">AI</span>
-                    <span className="text-sm md:text-base font-bold text-white">marketflow</span>
+      {/* Expanded Chat Window */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="fixed z-50 bottom-0 right-0 left-0 md:bottom-6 md:left-auto md:right-6 w-full md:w-[320px] lg:w-[350px]"
+          >
+            <Card className="border border-gray-200 shadow-2xl overflow-hidden rounded-t-3xl md:rounded-2xl h-[70vh] md:h-[450px] bg-white text-gray-900 flex flex-col">
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-white shrink-0">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full bg-[#6A00FF] flex items-center justify-center text-white">
+                    <Bot className="w-4 h-4" />
                   </div>
-                  <div className="flex items-center gap-2">
-                    <button 
-                      onClick={() => setShowSessions(s => !s)} 
-                      className="h-9 md:h-10 px-3 md:px-4 text-xs md:text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 rounded-lg shadow-md touch-manipulation transition-all"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
-                    >
-                      Chats
-                    </button>
-                    <button 
-                      onClick={() => setOpen(false)} 
-                      className="h-9 md:h-10 w-9 md:w-10 flex items-center justify-center text-white bg-red-600 hover:bg-red-500 active:bg-red-700 rounded-lg shadow-xl border-2 border-white/20 touch-manipulation transition-all"
-                      aria-label="Close chat"
-                      style={{ WebkitTapHighlightColor: 'transparent' }}
-                    >
-                      <X className="w-5 md:w-6 h-5 md:h-6" strokeWidth={3} />
-                    </button>
-                  </div>
+                  <div className="font-medium text-gray-900">Team Support</div>
                 </div>
+                
+                {/* Close Button */}
+                <button 
+                  onClick={() => setOpen(false)} 
+                  className="w-8 h-8 flex items-center justify-center text-gray-500 hover:bg-gray-100 rounded-lg transition-colors"
+                  aria-label="Close chat"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                {/* Mobile sessions overlay */}
-                {showSessions && (
-                  <div className="absolute inset-0 bg-black/40">
-                    <div className="absolute left-0 top-0 bottom-0 w-64 bg-slate-900 border-r border-slate-700 shadow">
-                      <div className="flex items-center justify-between px-3 py-2 border-b border-slate-700">
-                        <span className="text-sm font-medium text-slate-100">Chats</span>
-                        <Button variant="ghost" onClick={newChat} className="h-8 px-2 text-xs text-slate-100 hover:bg-slate-800">New</Button>
-                      </div>
-                      <div className="h-[calc(100%-40px)] overflow-y-auto p-2 space-y-1">
-                        {sessions.map((s) => (
-                          <div key={s.id} className={`flex items-center justify-between rounded-md px-2 py-1 hover:bg-slate-800 ${currentSessionId === s.id ? 'bg-slate-800' : ''}`}>
-                            <button className="text-left truncate flex-1 pr-2 text-sm text-slate-100" onClick={() => { setShowSessions(false); switchChat(s.id) }} title={s.title}>
-                              {s.title || 'Untitled chat'}
-                            </button>
-                            <button className="text-slate-400 hover:text-red-400 text-[11px]" onClick={() => deleteChat(s.id)}>
-                              Delete
-                            </button>
-                          </div>
-                        ))}
-                        {sessions.length === 0 && (
-                          <div className="text-xs text-slate-400">No chats yet.</div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Messages */}
-                <div ref={scrollRef} className="flex-1 overflow-y-auto px-3 md:px-4 py-3 md:py-4 space-y-3 bg-slate-900">
-                  {/* Contact Form Helper */}
+              {/* Chat Content */}
+              <div className="flex-1 flex flex-col min-h-0">
+                {/* Messages Container */}
+                <div 
+                  ref={scrollRef} 
+                  className="flex-1 overflow-y-auto px-4 py-3 space-y-4 bg-gray-50"
+                >
+                  {/* Welcome Message */}
                   {messages.length === 0 && (
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-2 justify-start">
-                        <div className="w-7 h-7 rounded-md bg-blue-500/20 text-blue-300 flex items-center justify-center flex-shrink-0 border border-blue-500/30">
-                          <Bot className="w-4 h-4" />
-                        </div>
-                        <div className="max-w-[86%] md:max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed border shadow-sm bg-slate-800 text-slate-100 border-slate-700">
-                          <p className="mb-3">👋 Hi! I'm the marketflow AI assistant. I can help you:</p>
-                          <ul className="text-xs space-y-1.5 mb-3 list-disc list-inside">
-                            <li>Learn about our services</li>
-                            <li>Answer questions about your business</li>
-                            <li>Submit a contact request to our team</li>
-                            <li>Schedule a free consultation</li>
-                          </ul>
-                          <p className="text-xs text-slate-300">How can I help you today?</p>
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-start gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-[#6A00FF] flex items-center justify-center text-white flex-shrink-0">
+                        <Bot className="w-5 h-5" />
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium text-sm text-gray-900 mb-1">Team Support</div>
+                        <div className="bg-white rounded-2xl rounded-tl-none px-4 py-3 text-sm border border-gray-200 shadow-sm">
+                          <p className="mb-2">👋 Hi there! I'm your AI assistant. How can I help you today?</p>
+                          <p className="text-gray-500 text-xs">Usually responds in 5 mins</p>
                         </div>
                       </div>
-                      <button
-                        onClick={() => {
-                          setMessages([{
-                            role: 'user',
-                            content: 'I\'d like to get in touch with your team'
-                          }, {
-                            role: 'assistant',
-                            content: `Great! I'd be happy to help connect you with our team. To get started, could you please provide me with the following information?
-
-1. Your full name
-2. Your email address
-3. Your business name
-4. What industry are you in? (e.g., Technology, E-commerce, Healthcare, Finance, etc.)
-5. A brief message about what you're looking for
-
-You can share all this information in your next message, and I'll make sure it gets to the right person on our team!`
-                          }])
-                        }}
-                        className="ml-9 px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold shadow-md transition-colors touch-manipulation"
-                        style={{ WebkitTapHighlightColor: 'transparent' }}
-                      >
-                        💼 Get in Touch with Our Team
-                      </button>
-                    </div>
+                    </motion.div>
                   )}
-                  
-                  {messages.map((m, i) => (
-                    <div key={i} className={`flex items-start gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      {m.role === 'assistant' && (
-                        <div className="w-7 h-7 rounded-md bg-blue-500/20 text-blue-300 flex items-center justify-center flex-shrink-0 border border-blue-500/30">
-                          <Bot className="w-4 h-4" />
-                        </div>
-                      )}
-                      <div className={`max-w-[86%] md:max-w-[80%] rounded-2xl px-3.5 py-2.5 text-[13.5px] leading-relaxed border shadow-sm ${m.role === 'user' ? 'bg-slate-800 text-slate-100 border-slate-700' : 'bg-slate-800 text-slate-100 border-slate-700'}`}>
-                        {m.content}
+
+                  {/* Messages grouped by date */}
+                  {Object.entries(groupedMessages).map(([dateKey, dateMessages]) => (
+                    <div key={dateKey}>
+                      <div className="flex items-center my-3">
+                        <div className="flex-1 border-t border-gray-200"></div>
+                        <span className="mx-2 text-xs text-gray-500 font-medium">
+                          {formatDate(new Date(dateKey))}
+                        </span>
+                        <div className="flex-1 border-t border-gray-200"></div>
                       </div>
+                      
+                      {dateMessages.map((msg, index) => (
+                        <motion.div
+                          key={`${dateKey}-${index}`}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} gap-3 mb-4`}
+                        >
+                          {msg.role === 'assistant' && (
+                            <div className="w-10 h-10 rounded-full bg-[#6A00FF] flex items-center justify-center text-white flex-shrink-0">
+                              <Bot className="w-5 h-5" />
+                            </div>
+                          )}
+                          
+                          <div className={`flex-1 ${msg.role === 'user' ? 'order-first' : ''}`}>
+                            {msg.role === 'assistant' && (
+                              <div className="font-medium text-sm text-gray-900 mb-1">Team Support</div>
+                            )}
+                            <div className={`rounded-2xl px-4 py-3 text-sm border break-words max-w-[85%] md:max-w-[90%] ${
+                              msg.role === 'user' 
+                                ? 'bg-[#6A00FF] text-white border-[#6A00FF] rounded-br-none ml-auto' 
+                                : 'bg-white text-gray-900 border-gray-200 rounded-tl-none shadow-sm'
+                            }`}>
+                              {msg.content}
+                              <div className={`flex items-center justify-end mt-1 ${
+                                msg.role === 'user' ? 'text-[#e0d0ff]' : 'text-gray-400'
+                              }`}>
+                                <span className="text-xs">{formatTime(new Date(msg.timestamp))}</span>
+                                {msg.role === 'user' && (
+                                  <CheckCheck className="w-3.5 h-3.5 ml-1" />
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          
+                          {msg.role === 'user' && (
+                            <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 flex-shrink-0">
+                              <User className="w-5 h-5" />
+                            </div>
+                          )}
+                        </motion.div>
+                      ))}
                     </div>
                   ))}
-                  {loading && (
-                    <div className="flex items-start gap-2 justify-start">
-                      <div className="w-7 h-7 rounded-md bg-blue-500/20 text-blue-300 flex items-center justify-center flex-shrink-0 border border-blue-500/30">
-                        <Bot className="w-4 h-4" />
+
+                  {/* Typing Indicator */}
+                  {isTyping && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-start gap-3"
+                    >
+                      <div className="w-10 h-10 rounded-full bg-[#6A00FF] flex items-center justify-center text-white flex-shrink-0">
+                        <Bot className="w-5 h-5" />
                       </div>
-                      <div className="text-xs text-slate-400 bg-slate-800 px-4 py-2 rounded-2xl border border-slate-700">Thinking…</div>
-                    </div>
+                      <div className="flex-1 bg-white rounded-2xl rounded-tl-none px-4 py-3 text-sm border border-gray-200 shadow-sm">
+                        <div className="flex space-x-1">
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                          <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                        </div>
+                      </div>
+                    </motion.div>
                   )}
                 </div>
 
-                {/* Composer - Compact */}
-                <div className="border-t border-slate-700 p-2 md:p-2.5 flex gap-2 bg-slate-900 shrink-0">
-                  <input
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={onKeyDown}
-                    placeholder="Send a message..."
-                    className="text-sm flex-1 rounded-full border border-slate-700 bg-slate-800 text-slate-100 px-4 py-2.5 md:py-2 outline-none focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 touch-manipulation"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  />
-                  <Button 
-                    onClick={send} 
-                    disabled={loading || !input.trim() || !currentSessionId} 
-                    className="inline-flex gap-1 rounded-full px-4 md:px-5 h-10 md:h-9 bg-blue-600 hover:bg-blue-500 touch-manipulation"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
-                  >
-                    <Send className="w-4 h-4" />
-                    <span className="hidden md:inline">Send</span>
-                  </Button>
+                {/* Composer */}
+                <div className="border-t border-gray-200 p-3 bg-white shrink-0">
+                  <div className="flex gap-2 items-end">
+                    <Input
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                      onKeyDown={onKeyDown}
+                      placeholder="Type your message..."
+                      className="flex-1 rounded-full border border-gray-300 bg-white text-gray-900 px-4 py-3 outline-none focus:ring-2 focus:ring-[#6A00FF] focus:border-transparent placeholder:text-gray-400 min-h-[48px] max-h-[120px]"
+                    />
+                    <Button 
+                      onClick={send} 
+                      disabled={loading || !input.trim() || !currentSessionId} 
+                      className="rounded-full w-12 h-12 bg-[#6A00FF] hover:bg-[#7B1FFF] text-white flex items-center justify-center shadow-md hover:shadow-lg transition-all flex-shrink-0"
+                    >
+                      {loading ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      ) : (
+                        <Send className="w-5 h-5" />
+                      )}
+                    </Button>
+                  </div>
+                  <div className="text-xs text-gray-500 mt-2 text-center">
+                    Team Support • Responds in 5 mins
+                  </div>
                 </div>
-                {!currentSessionId && (
-                  <div className="text-[12px] text-slate-400 px-4 pb-3">Create a new chat from Chats to start.</div>
-                )}
-              </section>
-            </div>
-          </Card>
-        </div>
-      )}
+              </div>
+            </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   )
 }

@@ -22,11 +22,7 @@ NOTIFICATION_EMAIL=your-email@example.com
 NEXT_PUBLIC_APP_URL=https://your-domain.com
 ```
 
-#### Optional but Recommended
-```
-RECAPTCHA_SECRET_KEY=your_recaptcha_secret
-NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
-```
+
 
 ### 3. Email Service Configuration (Optional but Recommended)
 - [ ] Create account at [Resend.com](https://resend.com)
