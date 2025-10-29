@@ -92,26 +92,47 @@ export default function ChatPage() {
           <Card className="border-0 shadow-xl">
             <CardContent className="p-0">
               {/* Chat area */}
-              <div ref={listRef} className="h-[60vh] overflow-y-auto p-6 space-y-4 bg-white">
+              <div ref={listRef} className="h-[60vh] overflow-y-auto p-4 md:p-6 space-y-4 bg-white">
                 {messages.map((m, i) => (
-                  <div key={i} className={`flex items-start gap-3 ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                  <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"} gap-3`}>
                     {m.role === "assistant" && (
-                      <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-5 h-5 text-blue-600" />
+                      <div className="flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
+                          <Bot className="w-5 h-5 text-blue-600" />
+                        </div>
                       </div>
                     )}
-                    <div className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow ${m.role === "user" ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white" : "bg-gray-100 text-gray-900"}`}>
+                    <div className={`max-w-[85%] md:max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                      m.role === "user" 
+                        ? "bg-gradient-to-r from-blue-600 to-cyan-500 text-white rounded-br-none" 
+                        : "bg-gray-100 text-gray-900 rounded-tl-none border border-gray-200"
+                    }`}>
                       {m.content}
                     </div>
                     {m.role === "user" && (
-                      <div className="w-9 h-9 rounded-lg bg-gray-200 flex items-center justify-center flex-shrink-0">
-                        <User className="w-5 h-5 text-gray-700" />
+                      <div className="flex-shrink-0">
+                        <div className="w-9 h-9 rounded-lg bg-gray-200 flex items-center justify-center">
+                          <User className="w-5 h-5 text-gray-700" />
+                        </div>
                       </div>
                     )}
                   </div>
                 ))}
                 {loading && (
-                  <div className="text-sm text-gray-500">Thinking…</div>
+                  <div className="flex justify-start gap-3">
+                    <div className="flex-shrink-0">
+                      <div className="w-9 h-9 rounded-lg bg-blue-100 flex items-center justify-center">
+                        <Bot className="w-5 h-5 text-blue-600" />
+                      </div>
+                    </div>
+                    <div className="bg-gray-100 text-gray-900 rounded-2xl rounded-tl-none px-4 py-3 text-sm border border-gray-200">
+                      <div className="flex space-x-1">
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                        <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                      </div>
+                    </div>
+                  </div>
                 )}
               </div>
 

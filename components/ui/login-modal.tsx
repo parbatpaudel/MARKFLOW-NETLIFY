@@ -1,10 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSupabase } from '@/lib/supabase-context'
-import { X, Mail, Lock, Play } from 'lucide-react'
+import { X, Mail, Lock, Play, Shield } from 'lucide-react'
 import { Button } from './button'
+import { useRecaptcha } from '@/hooks/useRecaptcha'
 
 interface LoginModalProps {
   open: boolean
@@ -17,10 +18,20 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { isLoaded, isLoading, executeAndVerify } = useRecaptcha()
 
   const onGoogle = async () => {
     try {
       setLoading(true)
+      setError(null)
+
+      // Execute reCAPTCHA
+      const recaptchaResult = await executeAndVerify('google_login')
+      
+      if (!recaptchaResult.success || !recaptchaResult.isHuman) {
+        throw new Error('Security verification failed. Please try again.')
+      }
+
       const redirectTo = typeof window !== 'undefined' ? `${window.location.origin}/` : undefined
       const { error } = await supabase.auth.signInWithOAuth({ 
         provider: 'google', 
@@ -43,6 +54,14 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
         setError('Email and password are required')
         return
       }
+
+      // Execute reCAPTCHA
+      const recaptchaResult = await executeAndVerify('email_login')
+      
+      if (!recaptchaResult.success || !recaptchaResult.isHuman) {
+        throw new Error('Security verification failed. Please try again.')
+      }
+
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
       
@@ -154,6 +173,15 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                     style={{ WebkitTapHighlightColor: 'transparent' }}
                   />
                 </div>
+                
+                {/* reCAPTCHA Status */}
+                <div className="flex items-center justify-center gap-2 py-2">
+                  <Shield className={`w-4 h-4 ${isLoaded ? 'text-green-500' : isLoading ? 'text-yellow-500' : 'text-gray-400'}`} />
+                  <span className="text-xs text-slate-500">
+                    {isLoading ? 'Loading security...' : isLoaded ? 'Protected by reCAPTCHA' : 'Security loading...'}
+                  </span>
+                </div>
+
                 {error && (
                   <div className="p-3 rounded-lg bg-red-50 border border-red-200">
                     <p className="text-xs sm:text-sm text-red-600 font-medium">{error}</p>
@@ -161,11 +189,11 @@ export default function LoginModal({ open, onClose }: LoginModalProps) {
                 )}
                 <Button 
                   onClick={onEmail} 
-                  disabled={loading} 
-                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all touch-manipulation"
+                  disabled={loading || !isLoaded} 
+                  className="w-full h-12 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 text-white font-bold text-sm sm:text-base shadow-md hover:shadow-lg transition-all touch-manipulation disabled:opacity-50"
                   style={{ WebkitTapHighlightColor: 'transparent' }}
                 >
-                  Sign In
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </Button>
               </div>
               </div>

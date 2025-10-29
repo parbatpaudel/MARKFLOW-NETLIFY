@@ -13,7 +13,7 @@ export default function TestRecaptchaPage() {
   const testRecaptcha = async (action: string) => {
     setTesting(true)
     setTestResult(null)
-    
+
     try {
       const result = await executeAndVerify(action)
       setTestResult(result)
@@ -63,7 +63,7 @@ export default function TestRecaptchaPage() {
             >
               {testing ? 'Testing...' : 'Test Login Action'}
             </Button>
-            
+
             <Button
               onClick={() => testRecaptcha('contact_form')}
               disabled={!isLoaded || testing}
@@ -71,7 +71,7 @@ export default function TestRecaptchaPage() {
             >
               {testing ? 'Testing...' : 'Test Contact Form Action'}
             </Button>
-            
+
             <Button
               onClick={() => testRecaptcha('test_action')}
               disabled={!isLoaded || testing}
@@ -102,14 +102,14 @@ export default function TestRecaptchaPage() {
                     {testResult.success ? 'Yes' : 'No'}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between">
                   <span className="font-medium">Score:</span>
                   <span className={`font-mono ${testResult.score >= 0.5 ? 'text-green-600' : 'text-red-600'}`}>
                     {testResult.score?.toFixed(2) || 'N/A'}
                   </span>
                 </div>
-                
+
                 <div className="flex justify-between">
                   <span className="font-medium">Is Human:</span>
                   <span className={testResult.isHuman ? 'text-green-600' : 'text-red-600'}>

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY || '6LebtPorAAAAADY8r2IzWeS_qdkk4REebMUsTXrT'
+const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
 const RECAPTCHA_VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify'
 
 export async function POST(request: NextRequest) {
@@ -11,6 +11,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'reCAPTCHA token is required' },
         { status: 400 }
+      )
+    }
+
+    if (!RECAPTCHA_SECRET_KEY) {
+      console.error('RECAPTCHA_SECRET_KEY is not configured')
+      return NextResponse.json(
+        { success: false, error: 'reCAPTCHA is not properly configured' },
+        { status: 500 }
       )
     }
 

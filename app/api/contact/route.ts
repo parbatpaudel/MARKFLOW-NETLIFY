@@ -1,121 +1,101 @@
 import { NextResponse } from 'next/server'
-
-// Try to import sql and handle any errors
-let sql;
-let importError = null;
-
-try {
-  const neonModule = require('../../../lib/neon');
-  sql = neonModule.sql;
-} catch (err) {
-  importError = err;
-  console.error('Failed to import neon module:', err);
-}
+import { sql } from '../../../lib/neon'
 
 export async function POST(request: Request) {
-  if (importError) {
-    return NextResponse.json({ 
-      success: false,
-      error: 'Internal server error',
-      message: 'Failed to initialize database connection'
-    }, { status: 500 });
-  }
-  
   try {
+    let data;
+    try {
+      data = await request.json()
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError)
+      return NextResponse.json({ error: 'Invalid JSON format' }, { status: 400 })
+    }
+
     const { 
       name, 
       email, 
       businessName, 
-      industry, 
+      businessDescription,
       company, 
       subject, 
       message, 
-      phone, 
-      businessDescription,
-      // Additional fields from onboarding questionnaire
+      phone,
       country,
-      otherCountry,
-      countryCode,
       businessSize,
-      annualRevenue,
-      ebitda,
-      currency,
       howHeard,
-      otherHowHeard,
-      scheduleMeeting
-    } = await request.json();
+      scheduleMeeting,
+      industry
+    } = data
 
     // Validation - require at least name, email, and message
     if (!name || !email || !message) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
-      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid email format' }, { status: 400 })
     }
 
     // Sanitize input data to prevent injection attacks
     const sanitizeInput = (input: string): string => {
-      if (typeof input !== 'string') return '';
+      if (typeof input !== 'string') return ''
       return input
         .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '') // Remove script tags
         .replace(/<!--.*?-->/g, '') // Remove HTML comments
-        .trim();
-    };
+        .trim()
+    }
 
     // Sanitize all string inputs
     const sanitizedData = {
       name: sanitizeInput(name).substring(0, 100),
       email: sanitizeInput(email).toLowerCase().substring(0, 255),
       businessName: businessName ? sanitizeInput(businessName).substring(0, 255) : null,
-      industry: industry ? sanitizeInput(industry).substring(0, 100) : null,
+      businessDescription: businessDescription ? sanitizeInput(businessDescription).substring(0, 5000) : null,
       company: company ? sanitizeInput(company).substring(0, 255) : null,
       subject: subject ? sanitizeInput(subject).substring(0, 255) : null,
       message: sanitizeInput(message).substring(0, 5000),
       phone: phone ? sanitizeInput(phone).substring(0, 20) : null,
-      businessDescription: businessDescription ? sanitizeInput(businessDescription).substring(0, 5000) : null,
       country: country ? sanitizeInput(country).substring(0, 100) : null,
-      otherCountry: otherCountry ? sanitizeInput(otherCountry).substring(0, 100) : null,
-      countryCode: countryCode ? sanitizeInput(countryCode).substring(0, 10) : null,
       businessSize: businessSize ? sanitizeInput(businessSize).substring(0, 50) : null,
-      annualRevenue: annualRevenue ? sanitizeInput(annualRevenue).substring(0, 50) : null,
-      ebitda: ebitda ? sanitizeInput(ebitda).substring(0, 50) : null,
-      currency: currency ? sanitizeInput(currency).substring(0, 10) : null,
       howHeard: howHeard ? sanitizeInput(howHeard).substring(0, 100) : null,
-      otherHowHeard: otherHowHeard ? sanitizeInput(otherHowHeard).substring(0, 255) : null,
-      scheduleMeeting: scheduleMeeting ? sanitizeInput(scheduleMeeting).substring(0, 10) : null
-    };
+      scheduleMeeting: scheduleMeeting ? sanitizeInput(scheduleMeeting).substring(0, 10) : null,
+      industry: industry ? sanitizeInput(industry).substring(0, 100) : null
+    }
 
     // Log the incoming data for debugging
     console.log('Contact submission received (sanitized data)', { 
       name: sanitizedData.name, 
       email: sanitizedData.email, 
       hasBusinessName: !!sanitizedData.businessName,
-      hasIndustry: !!sanitizedData.industry,
+      hasBusinessDescription: !!sanitizedData.businessDescription,
       hasCompany: !!sanitizedData.company,
       hasSubject: !!sanitizedData.subject,
       hasMessage: !!sanitizedData.message,
       hasPhone: !!sanitizedData.phone,
-      hasBusinessDescription: !!sanitizedData.businessDescription,
+      hasCountry: !!sanitizedData.country,
+      hasBusinessSize: !!sanitizedData.businessSize,
+      hasHowHeard: !!sanitizedData.howHeard,
+      hasScheduleMeeting: !!sanitizedData.scheduleMeeting,
+      hasIndustry: !!sanitizedData.industry,
       timestamp: new Date().toISOString() 
-    });
+    })
 
     // Store to Neon Database (if available)
     if (sql) {
       try {
         // Provide default values for NOT NULL columns
-        const businessNameValue = sanitizedData.businessName || sanitizedData.name || 'Not provided';
-        const industryValue = sanitizedData.industry || 'Not specified';
+        const businessNameValue = sanitizedData.businessName || sanitizedData.name || 'Not provided'
+        const industryValue = sanitizedData.industry || 'Not specified' // Use industry if provided, otherwise default
         
         await sql`
-          INSERT INTO contacts (name, email, business_name, industry, message)
-          VALUES (${sanitizedData.name}, ${sanitizedData.email}, ${businessNameValue}, ${industryValue}, ${sanitizedData.message})
-        `;
-        console.log('✅ Contact saved to Neon database');
+          INSERT INTO contacts (name, email, business_name, industry, business_description, company, subject, message, phone, country, business_size, how_heard, schedule_meeting)
+          VALUES (${sanitizedData.name}, ${sanitizedData.email}, ${businessNameValue}, ${industryValue}, ${sanitizedData.businessDescription}, ${sanitizedData.company}, ${sanitizedData.subject}, ${sanitizedData.message}, ${sanitizedData.phone}, ${sanitizedData.country}, ${sanitizedData.businessSize}, ${sanitizedData.howHeard}, ${sanitizedData.scheduleMeeting})
+        `
+        console.log('✅ Contact saved to Neon database')
       } catch (dbError: any) {
-        console.error('❌ Neon database error:', dbError.message);
+        console.error('❌ Neon database error:', dbError.message)
         // Even if database fails, we still want to show success to the user
         // This prevents information leakage about database issues to the user
         // But we log the error for debugging
@@ -123,10 +103,10 @@ export async function POST(request: Request) {
           success: false, 
           error: 'Database error', 
           message: 'Failed to save to database. Please check server logs.' 
-        }, { status: 500 });
+        }, { status: 500 })
       }
     } else {
-      console.log('⚠️  Database not configured, skipping database save');
+      console.log('⚠️  Database not configured, skipping database save')
     }
 
     // Send email notification (non-blocking)
@@ -137,17 +117,16 @@ export async function POST(request: Request) {
         name: sanitizedData.name,
         email: sanitizedData.email,
         businessName: sanitizedData.businessName,
-        industry: sanitizedData.industry,
+        businessDescription: sanitizedData.businessDescription,
         message: sanitizedData.message,
         phone: sanitizedData.phone,
-        businessDescription: sanitizedData.businessDescription,
         source: 'contact_form'
       })
-    }).catch(err => console.error('Notification error:', err));
+    }).catch(err => console.error('Notification error:', err))
 
-    return NextResponse.json({ success: true, message: 'Message received successfully' });
+    return NextResponse.json({ success: true, message: 'Message received successfully' })
   } catch (err) {
-    console.error('Internal server error:', err);
-    return NextResponse.json({ error: 'Internal server error', message: 'An unexpected error occurred' }, { status: 500 });
+    console.error('Internal server error:', err)
+    return NextResponse.json({ error: 'Internal server error', message: 'An unexpected error occurred' }, { status: 500 })
   }
 }

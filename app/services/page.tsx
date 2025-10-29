@@ -1,8 +1,15 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { ArrowRight, Play, Building2, TrendingUp, DollarSign, Users, Target, Zap, Brain, MessageCircle, BarChart3, Workflow, Search, Lightbulb, Megaphone } from 'lucide-react'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+
+// Register GSAP plugins
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger)
+}
 
 // Custom Illustration Components with enhanced animations
 const ProspectingIllustration = () => (
@@ -214,12 +221,80 @@ export default function ServicesPage() {
   const containerRef = useRef(null)
   const leftColumnRef = useRef(null)
   const rightColumnRef = useRef(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"]
-  })
+  const heroRef = useRef(null)
+  const titleRef = useRef(null)
+  const bubble1Ref = useRef(null)
+  const bubble2Ref = useRef(null)
+  const bubble3Ref = useRef(null)
 
   const isInView = useInView(leftColumnRef, { once: false, margin: "-20%" })
+
+  // Initialize GSAP animations
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+    if (!titleRef.current || !bubble1Ref.current || !bubble2Ref.current || !bubble3Ref.current) return
+
+    // Set initial state to visible
+    gsap.set([titleRef.current, bubble1Ref.current, bubble2Ref.current, bubble3Ref.current], {
+      opacity: 1,
+      y: 0
+    })
+
+    // Hero title animation - plays immediately on load
+    const titleAnimation = gsap.from(titleRef.current, {
+      opacity: 0,
+      y: 50,
+      duration: 1.2,
+      ease: "power3.out",
+      delay: 0.3
+    })
+
+    // Chat bubbles animation sequence - plays immediately on load
+    const tl = gsap.timeline({ delay: 0.8 })
+
+    tl.from(bubble1Ref.current, {
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      ease: "power2.out"
+    })
+    .from(bubble2Ref.current, {
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.3")
+    .from(bubble3Ref.current, {
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.3")
+
+    // Floating animation for bubbles
+    gsap.to([bubble1Ref.current, bubble2Ref.current, bubble3Ref.current], {
+      y: -5,
+      duration: 2,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut",
+      delay: 2
+    })
+
+    // Handle resize
+    const handleResize = () => {
+      ScrollTrigger.refresh()
+    }
+
+    window.addEventListener('resize', handleResize)
+
+    return () => {
+      titleAnimation?.kill()
+      tl?.kill()
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill())
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [])
 
   // Services data with illustrations instead of icons - updated with shorter, more engaging value text
   const services = [
@@ -319,192 +394,96 @@ export default function ServicesPage() {
     }
   ]
 
-  // Scene 1 transforms with constant opacity to prevent fading away
-  const scene1Opacity = useTransform(scrollYProgress, [0, 1], [1, 1])
-  const scene1Scale = useTransform(scrollYProgress, [0, 1], [1, 1])
-  const scene1Y = useTransform(scrollYProgress, [0, 1], [0, 0])
-
   return (
-    <main className="relative bg-[#0D1117]" ref={containerRef}>
-      {/* Interactive Hero Section - Markflow with enhanced background */}
-      <section className="relative h-screen w-full overflow-hidden bg-[#0D1117]" id="hero-section">
-        {/* Enhanced Background Elements - Radial glow with multiple layers */}
-        <div className="absolute inset-0">
+    <main className="relative bg-[#000814]" ref={containerRef}>
+      {/* Interactive Hero Section - Supermemory.ai style */}
+      <section 
+        ref={heroRef}
+        className="relative w-full overflow-hidden bg-gradient-to-b from-[#000814] to-[#001d3d] min-h-[80vh] md:min-h-[85vh] flex items-center justify-center py-12 md:py-16 lg:py-20"
+        id="hero-section"
+      >
+        {/* Background Elements */}
+        <div className="absolute inset-0 z-0">
+          {/* Deep radial gradient background */}
           <div 
-            className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[1200px] h-[1200px] rounded-full opacity-30 blur-[150px]"
+            className="absolute inset-0 z-0"
             style={{
-              background: 'radial-gradient(circle, #6E00FF 0%, #4A0080 70%)'
+              background: 'radial-gradient(circle at center bottom, rgba(100,100,255,0.25) 0%, transparent 70%)'
             }}
           ></div>
-          <div 
-            className="absolute top-0 right-1/4 w-[600px] h-[600px] rounded-full opacity-20 blur-[100px]"
-            style={{
-              background: 'radial-gradient(circle, #0047FF 0%, #002B80 70%)'
-            }}
-          ></div>
-          <div 
-            className="absolute top-1/3 left-1/4 w-[400px] h-[400px] rounded-full opacity-25 blur-[80px]"
-            style={{
-              background: 'radial-gradient(circle, #4A0080 0%, #6E00FF 70%)'
-            }}
-          ></div>
+          
+          {/* Floating geometric shapes */}
+          <div className="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-white opacity-5 rotate-45 z-0"></div>
+          <div className="absolute top-1/3 right-1/4 w-12 h-12 rounded-full bg-white opacity-5 z-0"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-20 h-20 rounded-full bg-white opacity-5 rotate-12 z-0"></div>
         </div>
         
-        {/* Floating Shapes with enhanced animations */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div 
-            className="absolute top-1/4 left-1/4 w-40 h-40 opacity-15"
-            animate={{ 
-              rotate: 360,
-              y: [0, -30, 0]
-            }}
-            transition={{ 
-              rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-              y: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-            }}
+        {/* Hero Content */}
+        <div className="relative z-20 max-w-6xl mx-auto px-4 md:px-8 text-center">
+          {/* Animated Headline */}
+          <h1 
+            ref={titleRef}
+            className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-extrabold mb-8 md:mb-12 lg:mb-14 max-w-4xl mx-auto leading-tight relative z-30"
             style={{
-              background: 'linear-gradient(45deg, #6E00FF, #4A0080)',
-              clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'
+              background: 'linear-gradient(180deg, #ffffff 0%, #9a5cff 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              filter: 'drop-shadow(0 4px 15px rgba(154, 92, 255, 0.3))',
+              fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, sans-serif'
             }}
-          />
-          
-          <motion.div 
-            className="absolute top-1/3 right-1/4 w-32 h-32 opacity-15"
-            animate={{ 
-              rotate: -360,
-              x: [0, 30, 0]
-            }}
-            transition={{ 
-              rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-              x: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-            }}
-            style={{
-              background: 'linear-gradient(45deg, #0047FF, #6E00FF)',
-              borderRadius: '30% 70% 70% 30% / 30% 30% 70% 70%'
-            }}
-          />
-          
-          <motion.div 
-            className="absolute bottom-1/3 left-1/3 w-28 h-28 opacity-15"
-            animate={{ 
-              rotate: 360,
-              y: [0, 30, 0]
-            }}
-            transition={{ 
-              rotate: { duration: 30, repeat: Infinity, ease: "linear" },
-              y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-            }}
-            style={{
-              background: 'linear-gradient(45deg, #4A0080, #0047FF)',
-              clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)'
-            }}
-          />
-        </div>
-        
-        {/* Navbar - Empty header structure */}
-        <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-4">
-          {/* Empty div to maintain header structure */}
-          <div></div>
-          {/* Empty div to maintain header structure */}
-          <div></div>
-        </nav>
-        
-        {/* Scene 1 - Problem Setup ONLY (Chat Messages) with scroll-triggered animations */}
-        <motion.div 
-          className="absolute inset-0 flex flex-col items-center justify-center text-center px-4 z-10"
-          style={{ 
-            opacity: scene1Opacity.get() || 1,
-            scale: scene1Scale.get() || 1,
-            y: scene1Y.get() || 0
-          }}
-        >
-          {/* Animated Headline - Responsive for small screens */}
-          <motion.h1 
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 max-w-4xl"
-            style={{ 
-              textShadow: '0 0 15px rgba(110, 0, 255, 0.7)',
-              fontFamily: 'Inter, sans-serif',
-              fontWeight: 700
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
           >
             Your sales team...
-          </motion.h1>
+          </h1>
           
-          <motion.div
-            className="mt-8 space-y-4 w-full max-w-2xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            {/* AI Message with entrance animation - Responsive for small screens */}
-            <motion.div 
-              className="self-start bg-[#2A2F36] text-white rounded-2xl rounded-tl-none py-3 px-5 max-w-md ml-0 mr-auto shadow-lg"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              style={{
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(110, 0, 255, 0.2)'
-              }}
+          {/* Chat Bubbles - Supermemory.ai style */}
+          <div className="chat-scene flex flex-col items-center space-y-5 md:space-y-7 lg:space-y-8 w-full max-w-3xl mx-auto px-4">
+            {/* First Message - Gray, Left side */}
+            <div 
+              ref={bubble1Ref}
+              className="bubble-1 chat-bubble flex justify-start w-full pl-4 md:pl-8 lg:pl-12"
             >
-              <p className="text-sm sm:text-base">Hey, did you follow up with the lead from yesterday?</p>
-            </motion.div>
+              <div 
+                className="bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.15)] text-[#e2e2e2] rounded-[18px] backdrop-blur-[12px] py-3 px-5 md:py-4 md:px-6 shadow-2xl max-w-[280px] md:max-w-[320px]"
+                style={{
+                  boxShadow: '0 0 25px rgba(127, 90, 255, 0.4)'
+                }}
+              >
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed font-normal">Hey, did you follow up with the lead from yesterday?</p>
+              </div>
+            </div>
             
-            {/* Human Message with entrance animation - Responsive for small screens */}
-            <motion.div 
-              className="self-end bg-[#007AFF] text-white rounded-2xl rounded-tr-none py-3 px-5 max-w-md mr-0 ml-auto shadow-lg"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.9 }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              style={{
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(0, 122, 255, 0.3)'
-              }}
+            {/* Second Message - Blue, Right side */}
+            <div 
+              ref={bubble2Ref}
+              className="bubble-2 chat-bubble flex justify-end w-full pr-4 md:pr-8 lg:pr-12"
             >
-              <p className="text-sm sm:text-base">Wait… which one?</p>
-            </motion.div>
+              <div 
+                className="bg-gradient-to-r from-[#4f7bff] to-[#7c4dff] text-white rounded-[18px] py-3 px-5 md:py-4 md:px-6 shadow-2xl max-w-[240px] md:max-w-[280px]"
+                style={{
+                  boxShadow: '0 0 25px rgba(127, 90, 255, 0.4)'
+                }}
+              >
+                <p className="text-sm md:text-base lg:text-lg leading-relaxed font-normal">Wait… which one?</p>
+              </div>
+            </div>
             
-            {/* AI Message with entrance animation - Responsive for small screens */}
-            <motion.div 
-              className="self-start bg-[#2A2F36] text-white rounded-2xl rounded-tl-none py-3 px-5 max-w-md ml-0 mr-auto shadow-lg"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
-              whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
-              style={{
-                boxShadow: '0 10px 25px rgba(0, 0, 0, 0.3), 0 0 15px rgba(110, 0, 255, 0.2)'
-              }}
+            {/* Third Message - Gray, Left side */}
+            <div 
+              ref={bubble3Ref}
+              className="bubble-3 chat-bubble flex justify-start w-full pl-4 md:pl-8 lg:pl-12"
             >
-              <p className="text-sm sm:text-base">The one ready to close 😡</p>
-            </motion.div>
-          </motion.div>
-          
-          {/* Scroll Indicator with pulsing animation - Responsive for small screens */}
-          <motion.div 
-            className="absolute bottom-10 flex flex-col items-center"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 1.5 }}
-          >
-            <motion.div 
-              className="text-white text-sm mb-2"
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              KEEP SCROLLING
-            </motion.div>
-            <motion.div 
-              className="w-8 h-12 rounded-full border-2 border-white flex justify-center"
-              animate={{ y: [0, 15, 0] }}
-              transition={{ duration: 1.5, repeat: Infinity }}
-            >
-              <div className="w-1.5 h-3.5 bg-white rounded-full mt-2.5"></div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
+              <div 
+                className="bg-[rgba(255,255,255,0.1)] border border-[rgba(255,255,255,0.15)] text-[#e2e2e2] rounded-[18px] backdrop-blur-[12px] py-3 px-5 md:py-4 md:px-6 shadow-2xl max-w-[260px] md:max-w-[300px]"
+                style={{
+                  boxShadow: '0 0 25px rgba(127, 90, 255, 0.4)'
+                }}
+              >
+                <p className="text-[15px] md:text-base leading-snug font-normal">The one ready to close 😡</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* Services Section - Two-column layout with enhanced design and unified background */}
@@ -546,13 +525,6 @@ export default function ServicesPage() {
               <div className="inline-block bg-[#F3F3F3] text-[#333333] rounded-full px-4 py-2 text-sm font-medium mb-8">
                 Powered by Markflow
               </div>
-              
-              <button className="flex items-center gap-2 border border-[#111111] text-[#111111] px-6 py-3 rounded-full font-medium hover:bg-[#111111] hover:text-white transition-colors duration-300 shadow-lg hover:shadow-xl">
-                See our work
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </button>
             </motion.div>
             
             {/* Right Column (Scrollable Cards) - Enhanced card design */}
@@ -599,17 +571,6 @@ export default function ServicesPage() {
                         <span className="font-medium">{service.value}</span>
                       </div>
                     </div>
-                    
-                    {/* Enhanced CTA Button */}
-                    <div className="mt-8 pt-6 border-t border-gray-200">
-                      <a 
-                        href="/case-studies"
-                        className="inline-flex items-center gap-3 bg-gradient-to-r from-gray-900 to-black text-white px-6 py-3.5 rounded-xl font-bold hover:from-purple-900 hover:to-indigo-900 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
-                      >
-                        Read case study
-                        <ArrowRight className="w-5 h-5" />
-                      </a>
-                    </div>
                   </motion.div>
                 ))}
               </div>
@@ -619,7 +580,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Working Process Section - Amazing design with illustration */}
-      <section id="working-process" className="py-20 md:py-32 px-4 md:px-20 bg-gradient-to-br from-[#0D1117] to-[#1A1F25] relative overflow-hidden">
+      <section id="working-process" className="py-12 md:py-20 lg:py-32 px-4 md:px-8 lg:px-20 bg-gradient-to-br from-[#0D1117] to-[#1A1F25] relative overflow-hidden">
         {/* Background elements */}
         <div className="absolute inset-0">
           <div 
@@ -637,50 +598,40 @@ export default function ServicesPage() {
         </div>
         
         <div className="max-w-7xl mx-auto relative z-10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+          <div className="text-center mb-10 md:mb-16">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 md:mb-6 px-4">
               Our Working Process
             </h2>
-            <p className="text-xl text-[#B3B3B3] max-w-3xl mx-auto">
+            <p className="text-base md:text-lg lg:text-xl text-[#B3B3B3] max-w-3xl mx-auto px-4">
               A proven 4-step approach to transform your sales with AI-powered automation
             </p>
           </div>
           
-          <div className="flex flex-col lg:flex-row gap-12 items-center">
-            <div className="lg:w-1/2">
-              <WorkingProcessIllustration />
+          <div className="flex flex-col lg:flex-row gap-8 md:gap-12 items-center">
+            <div className="w-full lg:w-1/2 flex justify-center">
+              <div className="scale-75 sm:scale-90 md:scale-100">
+                <WorkingProcessIllustration />
+              </div>
             </div>
             
-            <div className="lg:w-1/2">
-              <div className="space-y-10">
+            <div className="w-full lg:w-1/2">
+              <div className="space-y-6 md:space-y-10">
                 {workingProcessSteps.map((step, index) => (
                   <motion.div
                     key={step.id}
-                    className="relative pl-8 border-l-2 border-purple-500"
+                    className="relative pl-6 md:pl-8 border-l-2 border-purple-500"
                     initial={{ opacity: 0, x: -20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.2 }}
                   >
-                    <div className="absolute -left-4 top-0 w-8 h-8 rounded-full bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center">
-                      <span className="text-white font-bold text-sm">{step.id}</span>
+                    <div className="absolute -left-3 md:-left-4 top-0 w-6 h-6 md:w-8 md:h-8 rounded-full bg-gradient-to-br from-purple-600 to-indigo-800 flex items-center justify-center">
+                      <span className="text-white font-bold text-xs md:text-sm">{step.id}</span>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-3">{step.title}</h3>
-                    <p className="text-[#B3B3B3] text-lg">{step.description}</p>
+                    <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2 md:mb-3">{step.title}</h3>
+                    <p className="text-[#B3B3B3] text-sm sm:text-base md:text-lg">{step.description}</p>
                   </motion.div>
                 ))}
-              </div>
-              
-              <div className="mt-12">
-                <a 
-                  href="/case-studies"
-                  className="flex items-center gap-3 bg-gradient-to-r from-purple-600 to-indigo-700 text-white px-8 py-4 rounded-full font-bold text-lg hover:from-purple-700 hover:to-indigo-800 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl"
-                >
-                  View Our Case Studies
-                  <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </a>
               </div>
             </div>
           </div>
