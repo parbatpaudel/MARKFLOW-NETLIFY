@@ -5,6 +5,7 @@
 ### 1. **Contact Form Backend** ✨
 - ✅ Connected to Supabase database
 - ✅ Saves submissions to `contacts` table
+- ✅ reCAPTCHA validation included
 - ✅ Email notifications configured
 - 📍 File: [`app/api/contact/route.ts`](./app/api/contact/route.ts)
 
@@ -49,6 +50,30 @@
 ### **Step 2: Enable Google OAuth** (10 minutes)
 
 📖 **Follow the detailed guide:** [`GOOGLE_AUTH_SETUP.md`](./GOOGLE_AUTH_SETUP.md)
+
+**Quick Steps:**
+
+1. **Create Google OAuth Credentials:**
+   - Go to: https://console.cloud.google.com/
+   - Create OAuth Client ID
+   - Add redirect URI: `https://ldsppreromxfqqfzsvjl.supabase.co/auth/v1/callback`
+
+2. **Configure in Supabase:**
+   - Go to: https://supabase.com/dashboard/project/ldsppreromxfqqfzsvjl/auth/providers
+   - Enable **Google** provider
+   - Add your Client ID and Secret
+   - Click **Save**
+
+3. **Set Site URL:**
+   - Go to **Authentication** > **URL Configuration**
+   - Site URL: `http://localhost:3000` (dev) or your domain (prod)
+   - Add redirect URLs:
+     ```
+     http://localhost:3000/**
+     https://your-domain.com/**
+     ```
+
+---
 
 ### **Step 3: Test Everything** (5 minutes)
 
@@ -106,6 +131,7 @@ npm run dev
 - Form validation
 - Supabase database storage
 - Email notifications
+- reCAPTCHA protection
 - Success/error feedback
 
 #### 🎨 UI/UX:
@@ -128,6 +154,10 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbG...
 
 # ✅ App Configuration
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+
+# ✅ reCAPTCHA (CONFIGURED)
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=6LcOjO8r...
+RECAPTCHA_SECRET_KEY=6LcOjO8r...
 
 # ✅ AI APIs (CONFIGURED)
 GEMINI_API_KEY=AIzaSyB...

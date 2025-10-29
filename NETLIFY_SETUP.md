@@ -85,6 +85,13 @@ Value: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxk
 NEXT_PUBLIC_APP_URL
 Value: https://YOUR-SITE-NAME.netlify.app
 
+# reCAPTCHA
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+Value: 6LcOjO8rAAAAABwdQ40OGdkm1zS36qa9rrJEZWFm
+
+RECAPTCHA_SECRET_KEY
+Value: 6LcOjO8rAAAAACSk_b6RTt79IOEJ7daX93UKBYKr
+
 # Gemini AI
 GEMINI_API_KEY
 Value: AIzaSyB6kXUj7Qjo14pL-vitKzT7vP2czTSXeiI
@@ -219,7 +226,8 @@ SELECT * FROM contact_stats;
 | `NEXTAUTH_URL` | Desktop auth | Production only |
 | `NEXT_PUBLIC_SUPABASE_URL` | Desktop auth | All deploys |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Desktop auth | All deploys |
-
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Contact form | All deploys |
+| `RECAPTCHA_SECRET_KEY` | Contact form | All deploys |
 
 ---
 

@@ -1,0 +1,11 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer hexagon -->
+  <path d="M256 76L436 166V346L256 436L76 346V166L256 76Z" stroke="#1E3A8A" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Inner hexagon (rotated) -->
+  <path d="M256 136L376 196V316L256 376L136 316V196L256 136Z" stroke="#1E3A8A" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Diagonal lines creating the "flow" pattern -->
+  <line x1="256" y1="136" x2="376" y2="316" stroke="#1E3A8A" stroke-width="40" stroke-linecap="round"/>
+  <line x1="136" y1="316" x2="256" y2="136" stroke="#1E3A8A" stroke-width="40" stroke-linecap="round"/>
+</svg>

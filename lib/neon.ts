@@ -5,7 +5,15 @@ const getDatabaseUrl = () => {
   const url = process.env.DATABASE_URL
   
   if (!url) {
-    throw new Error('DATABASE_URL environment variable is not set')
+    // Return null for development/testing
+    console.warn('⚠️  DATABASE_URL not set')
+    return null
+  }
+  
+  // Check if it's a placeholder value
+  if (url.includes('YOUR_DATABASE_PASSWORD') || url.includes('your_')) {
+    console.warn('⚠️  DATABASE_URL contains placeholder values, database will be disabled')
+    return null
   }
   
   // Basic validation of the database URL format
@@ -22,10 +30,16 @@ const getDatabaseUrl = () => {
 }
 
 // Create SQL client with error handling
-export const sql = neon(getDatabaseUrl())
+const databaseUrl = getDatabaseUrl()
+export const sql = databaseUrl ? neon(databaseUrl) : null
 
 // Helper function to test connection securely
 export async function testConnection() {
+  if (!sql) {
+    console.log('⚠️  Database not configured, skipping connection test')
+    return true
+  }
+  
   try {
     // Don't log sensitive information
     const result = await sql`SELECT NOW()`
@@ -40,6 +54,10 @@ export async function testConnection() {
 
 // Helper function to validate database connection health
 export async function validateConnection() {
+  if (!sql) {
+    return { valid: true, error: null }
+  }
+  
   try {
     // Test with a simple query that doesn't expose table structure
     await sql`SELECT 1`

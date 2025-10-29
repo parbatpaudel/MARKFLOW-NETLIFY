@@ -4,7 +4,7 @@
 
 ### 1. Firebase Configuration
 - ✅ Created `lib/firebase.ts` with your Firebase credentials
-- ✅ Configured Firebase Authentication
+- ✅ Configured Firebase Authentication with reCAPTCHA support
 - ✅ Added Firebase package to `package.json`
 - ✅ Removed Firestore database (authentication only)
 
@@ -12,7 +12,7 @@
 - ✅ Created `contexjuats/AuthContext.tsx` for managing user authentication
 - ✅ Integrated AuthProvider into root layout
 - ✅ Support for Email/Password and Google sign-in
-- 
+- ✅ reCAPTCHA integration for bot protection
 
 ### 3. UI Updates
 - ✅ Added "Home" link to navbar
@@ -103,12 +103,17 @@ export default function LoginPage() {
 ### 4. Update Navbar to Use Auth
 Connect the navbar buttons to the authentication system by updating the onClick handlers to navigate to `/login` or `/register`.
 
-
+### 5. Enable reCAPTCHA (Optional)
+To enable reCAPTCHA for additional security:
+1. Go to Firebase Console > Authentication > Settings
+2. Scroll to "App verification" section
+3. Enable reCAPTCHA Enterprise (recommended) or reCAPTCHA v2
+4. Add your domain to the authorized domains list
 
 ## 🔒 Security Notes
 
 - Firebase credentials are already configured in `lib/firebase.ts`
-
+- reCAPTCHA support is built-in for bot protection
 - Authentication tokens are automatically managed by Firebase
 - User data is stored in Firebase Authentication (not Firestore)
 

@@ -212,7 +212,9 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
 GEMINI_API_KEY=your_gemini_key
 GEMINI_MODEL=gemini-2.0-flash
 
-
+# reCAPTCHA (optional, for spam protection)
+RECAPTCHA_SECRET_KEY=your_recaptcha_secret
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=your_recaptcha_site_key
 ```
 
 ---
